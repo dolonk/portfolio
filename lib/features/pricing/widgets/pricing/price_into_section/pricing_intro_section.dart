@@ -15,7 +15,7 @@ class PricingIntroSection extends StatelessWidget {
     final fonts = context.fonts;
 
     return SectionContainer(
-      padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
+      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, top: s.spaceBtwSections),
       child: Center(
         child: Container(
           constraints: BoxConstraints(

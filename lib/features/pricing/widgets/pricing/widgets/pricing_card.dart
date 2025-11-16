@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'popular_badge.dart';
 import 'gradient_header.dart';
-import 'popular_badge_v2.dart';
 import 'features_expandable.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_website/route/route_name.dart';
@@ -12,16 +12,16 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/data_layer/model/pricing_tier_model.dart';
 
-class PricingCardV2 extends StatefulWidget {
+class PricingCard extends StatefulWidget {
   final PricingTierModel tier;
 
-  const PricingCardV2({super.key, required this.tier});
+  const PricingCard({super.key, required this.tier});
 
   @override
-  State<PricingCardV2> createState() => _PricingCardV2State();
+  State<PricingCard> createState() => _PricingCardState();
 }
 
-class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProviderStateMixin {
+class _PricingCardState extends State<PricingCard> with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
@@ -63,7 +63,7 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
         transform: Matrix4.identity()
-          ..scale(isPopular && !context.isMobile ? (_isHovered ? 1.10 : 1.08) : (_isHovered ? 1.03 : 1.0))
+          ..scale(isPopular && !context.isMobile ? (_isHovered ? 1.04 : 1.02) : (_isHovered ? 1.03 : 0.99))
           ..translate(0.0, _isHovered ? -10.0 : 0.0),
         child: Stack(
           clipBehavior: Clip.none,
@@ -83,7 +83,9 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
                         ),
                       )
                     : Border.all(
-                        color: _isHovered ? widget.tier.accentColor : DColors.cardBorder, width: 1.5),
+                        color: _isHovered ? widget.tier.accentColor : DColors.cardBorder,
+                        width: 1.5,
+                      ),
                 boxShadow: [
                   BoxShadow(
                     color: isPopular
@@ -102,9 +104,7 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
 
                   // Card Body
                   Padding(
-                    padding: EdgeInsets.all(
-                      context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-                    ),
+                    padding: EdgeInsets.all(s.paddingLg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -142,7 +142,7 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
               Positioned(
                 top: -12,
                 right: context.responsiveValue(mobile: 20, tablet: 30, desktop: 30),
-                child: PopularBadgeV2(),
+                child: PopularBadge(),
               ),
           ],
         ),
@@ -155,13 +155,7 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Starting from',
-          style: fonts.labelMedium.rubik(
-            fontSize: context.responsiveValue(mobile: 12, tablet: 13, desktop: 14),
-            color: DColors.textSecondary,
-          ),
-        ),
+        Text('Starting from', style: fonts.bodySmall.rubik(color: DColors.textSecondary)),
         SizedBox(height: s.paddingSm),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,6 +168,7 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
                 color: DColors.textPrimary,
               ),
             ),
+
             Text(
               widget.tier.price,
               style: fonts.displayMedium.rajdhani(
@@ -200,9 +195,9 @@ class _PricingCardV2State extends State<PricingCardV2> with SingleTickerProvider
     return Container(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
       decoration: BoxDecoration(
-        color: widget.tier.accentColor.withOpacity(0.1),
+        color: widget.tier.accentColor.withAlpha((255 * 0.1).round()),
         borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        border: Border.all(color: widget.tier.accentColor.withOpacity(0.3), width: 1),
+        border: Border.all(color: widget.tier.accentColor.withAlpha((255 * 0.3).round()), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

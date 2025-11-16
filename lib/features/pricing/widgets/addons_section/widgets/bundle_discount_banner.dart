@@ -29,7 +29,7 @@ class _BundleDiscountBannerState extends State<BundleDiscountBanner> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        //transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
         padding: EdgeInsets.all(
           context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
         ),

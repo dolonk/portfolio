@@ -86,7 +86,7 @@ class PricingTierModel {
         isPopular: false,
         accentColor: Color(0xFF3B82F6), // Blue
         features: [
-          PricingFeature(text: 'All platforms (iOS + Android + Web + Desktop)'),
+          PricingFeature(text: 'All platforms (mobile + Web + Desktop)'),
           PricingFeature(text: '15+ screens'),
           PricingFeature(text: 'Complex architecture (MVVM + Clean)'),
           PricingFeature(text: 'Custom backend development'),

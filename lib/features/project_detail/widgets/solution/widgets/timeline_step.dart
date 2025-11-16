@@ -110,14 +110,7 @@ class TimelineStep extends StatelessWidget {
                 SizedBox(height: s.paddingMd),
 
                 // Description paragraph
-                Text(
-                  description,
-                  style: fonts.bodyMedium.rubik(
-                    color: DColors.textSecondary,
-                    height: 1.7,
-                    fontSize: context.responsiveValue(mobile: 14, tablet: 15, desktop: 16),
-                  ),
-                ),
+                Text(description, style: fonts.bodyMedium.rubik(color: DColors.textSecondary)),
 
                 // Highlights (if provided)
                 if (highlights != null && highlights!.isNotEmpty) ...[

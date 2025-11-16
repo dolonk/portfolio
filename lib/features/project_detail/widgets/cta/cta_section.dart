@@ -52,7 +52,6 @@ class CtaSection extends StatelessWidget {
               SizedBox(height: s.paddingMd),
 
               _buildCtaButton(context, s),
-
             ],
           ),
         ],

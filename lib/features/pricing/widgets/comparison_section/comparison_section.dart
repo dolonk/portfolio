@@ -76,7 +76,7 @@ class _ComparisonSectionState extends State<ComparisonSection> {
         : categories.where((c) => c.id == _selectedFilter).toList();
 
     return SectionContainer(
-      padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
+      padding: EdgeInsets.symmetric(horizontal: s.paddingMd),
       child: Center(
         child: Container(
           constraints: BoxConstraints(
@@ -90,7 +90,7 @@ class _ComparisonSectionState extends State<ComparisonSection> {
 
               // Filter Tabs
               CategoryFilterTabs(selectedFilter: _selectedFilter, onFilterChanged: _handleFilterChange),
-              SizedBox(height: s.spaceBtwSections),
+              SizedBox(height: s.spaceBtwItems),
 
               // Expand/Collapse All Button
               if (!context.isMobile) _buildExpandCollapseButton(fonts, s),
@@ -159,7 +159,11 @@ class _ComparisonSectionState extends State<ComparisonSection> {
               SizedBox(width: s.paddingSm),
               Text(
                 allExpanded ? 'Collapse All' : 'Expand All',
-                style: fonts.bodyMedium.rubik(fontSize: 14, fontWeight: FontWeight.w600, color: DColors.primaryButton),
+                style: fonts.bodyMedium.rubik(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: DColors.primaryButton,
+                ),
               ),
             ],
           ),

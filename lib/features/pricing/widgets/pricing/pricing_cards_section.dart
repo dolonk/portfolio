@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/pricing_card_v2.dart';
+import 'widgets/pricing_card.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
@@ -21,7 +21,12 @@ class PricingCardsSection extends StatelessWidget {
           constraints: BoxConstraints(
             maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1400),
           ),
-          child: _buildPricingCards(context, tiers, s),
+          child: Column(
+            children: [
+              _buildPricingCards(context, tiers, s),
+              SizedBox(height: s.spaceBtwItems),
+            ],
+          ),
         ),
       ),
     );
@@ -31,12 +36,12 @@ class PricingCardsSection extends StatelessWidget {
     final crossAxisCount = context.responsiveValue(mobile: 1, tablet: 2, desktop: 3);
     final spacing = context.responsiveValue(
       mobile: s.spaceBtwItems,
-      tablet: s.spaceBtwSections,
+      tablet: s.spaceBtwSections * 0.75,
       desktop: s.spaceBtwSections,
     );
 
+    // Mobile: Vertical list with stagger
     if (context.isMobile) {
-      // Mobile: Vertical list with stagger
       return AnimationLimiter(
         child: Column(
           children: AnimationConfiguration.toStaggeredList(
@@ -46,7 +51,7 @@ class PricingCardsSection extends StatelessWidget {
             children: tiers.map((tier) {
               return Padding(
                 padding: EdgeInsets.only(bottom: spacing),
-                child: PricingCardV2(tier: tier),
+                child: PricingCard(tier: tier),
               );
             }).toList(),
           ),
@@ -75,7 +80,7 @@ class PricingCardsSection extends StatelessWidget {
                   child: FadeInAnimation(
                     child: SizedBox(
                       width: cardWidth,
-                      child: PricingCardV2(tier: tier),
+                      child: PricingCard(tier: tier),
                     ),
                   ),
                 ),

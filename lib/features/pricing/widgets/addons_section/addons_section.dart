@@ -20,7 +20,7 @@ class PriceAddonsSection extends StatelessWidget {
     final addons = AddonServiceModel.getAllAddons();
 
     return SectionContainer(
-      padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
+      padding: EdgeInsets.symmetric(horizontal: s.paddingMd),
       child: Center(
         child: Container(
           constraints: BoxConstraints(

@@ -48,7 +48,9 @@ class _AddonCardState extends State<AddonCard> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: _isHovered ? widget.addon.accentColor.withOpacity(0.3) : Colors.black.withOpacity(0.08),
+                    color: _isHovered
+                        ? widget.addon.accentColor.withAlpha((255 * 0.3).round())
+                        : Colors.black.withAlpha((255 * 0.08).round()),
                     blurRadius: _isHovered ? 25 : 12,
                     offset: Offset(0, _isHovered ? 12 : 6),
                   ),
@@ -88,7 +90,10 @@ class _AddonCardState extends State<AddonCard> {
                         _buildFeaturesToggle(fonts, s),
 
                         // Expanded Features List
-                        if (_isFeaturesExpanded) ...[SizedBox(height: s.paddingMd), _buildFeaturesList(fonts, s)],
+                        if (_isFeaturesExpanded) ...[
+                          SizedBox(height: s.paddingMd),
+                          _buildFeaturesList(fonts, s),
+                        ],
 
                         SizedBox(height: s.spaceBtwItems),
 
@@ -118,12 +123,17 @@ class _AddonCardState extends State<AddonCard> {
   Widget _buildHeader(AppFonts fonts, DSizes s) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl)),
+      padding: EdgeInsets.all(
+        context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [widget.addon.accentColor.withOpacity(0.15), widget.addon.accentColor.withOpacity(0.05)],
+          colors: [
+            widget.addon.accentColor.withAlpha((255 * 0.15).round()),
+            widget.addon.accentColor.withAlpha((255 * 0.05).round()),
+          ],
         ),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(s.borderRadiusLg),
@@ -155,11 +165,7 @@ class _AddonCardState extends State<AddonCard> {
   Widget _buildDescription(AppFonts fonts, DSizes s) {
     return Text(
       widget.addon.description,
-      style: fonts.bodyMedium.rubik(
-        fontSize: context.responsiveValue(mobile: 13, tablet: 14, desktop: 15),
-        color: DColors.textSecondary,
-        height: 1.6,
-      ),
+      style: fonts.bodyMedium.rubik(color: DColors.textSecondary),
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
     );
@@ -170,9 +176,9 @@ class _AddonCardState extends State<AddonCard> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
       decoration: BoxDecoration(
-        color: widget.addon.accentColor.withOpacity(0.1),
+        color: widget.addon.accentColor.withAlpha((255 * 0.1).round()),
         borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        border: Border.all(color: widget.addon.accentColor.withOpacity(0.3), width: 1),
+        border: Border.all(color: widget.addon.accentColor.withAlpha((255 * 0.3).round()), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -200,7 +206,7 @@ class _AddonCardState extends State<AddonCard> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
         decoration: BoxDecoration(
-          border: Border.all(color: widget.addon.accentColor.withOpacity(0.3), width: 1),
+          border: Border.all(color: widget.addon.accentColor.withAlpha((255 * 0.1).round()), width: 1),
           borderRadius: BorderRadius.circular(s.borderRadiusMd),
         ),
         child: Row(
@@ -274,7 +280,13 @@ class _AddonCardState extends State<AddonCard> {
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFFBBF24)]),
         borderRadius: BorderRadius.circular(s.borderRadiusLg),
-        boxShadow: [BoxShadow(color: Color(0xFFFBBF24).withOpacity(0.5), blurRadius: 15, offset: Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFFFBBF24).withAlpha((255 * 0.5).round()),
+            blurRadius: 15,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

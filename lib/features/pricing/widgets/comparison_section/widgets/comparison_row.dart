@@ -43,7 +43,7 @@ class ComparisonRow extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: s.paddingSm / 2, horizontal: s.paddingSm),
               decoration: BoxDecoration(
-                color: Color(0xFFF59E0B).withAlpha((255 * 0.8).round()),
+                color: Color(0xFFF59E0B).withAlpha((255 * 0.4).round()),
                 borderRadius: BorderRadius.circular(s.borderRadiusSm),
               ),
               child: _buildValue(row.pro, row.proIncluded, fonts, s, isHighlighted: true),

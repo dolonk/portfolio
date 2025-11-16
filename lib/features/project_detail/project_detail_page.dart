@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/features/project_detail/widgets/cta/cta_section.dart';
-import 'package:responsive_website/features/project_detail/widgets/related_projects/related_projects_section.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'widgets/demo_links/demo_links_section.dart';
 import 'widgets/features/features_section.dart';
 import 'widgets/gallery/gallery_section.dart';
 import 'widgets/results/results_section.dart';
@@ -10,10 +6,13 @@ import 'widgets/solution/solution_section.dart';
 import 'widgets/challenge/challenge_section.dart';
 import 'widgets/hero/project_hero_section.dart';
 import '../../data_layer/model/project_model.dart';
+import 'widgets/demo_links/demo_links_section.dart';
 import 'widgets/overview/widgets/project_overview_section.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/common_function/base_screen/base_screen.dart';
+import 'package:responsive_website/features/project_detail/widgets/cta/cta_section.dart';
 import 'package:responsive_website/features/project_detail/widgets/tech_stack/tech_stack_section.dart';
+import 'package:responsive_website/features/project_detail/widgets/related_projects/related_projects_section.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String projectId;
@@ -60,7 +59,6 @@ class ProjectDetailPage extends StatelessWidget {
 
           // CTA
           const CtaSection(),
-          SizedBox(height: context.sizes.spaceBtwItems),
         ],
       ),
     );

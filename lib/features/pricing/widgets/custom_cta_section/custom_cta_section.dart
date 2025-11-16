@@ -38,9 +38,7 @@ class _PriceCustomCtaSectionState extends State<PriceCustomCtaSection> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
               transform: Matrix4.translationValues(0.0, _isHovered ? -5.0 : 0.0, 0.0),
-              padding: EdgeInsets.all(
-                context.responsiveValue(mobile: s.paddingXl, tablet: s.paddingXl, desktop: s.paddingXl),
-              ),
+              padding: EdgeInsets.all(s.paddingXl),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -49,7 +47,9 @@ class _PriceCustomCtaSectionState extends State<PriceCustomCtaSection> {
                 ),
                 borderRadius: BorderRadius.circular(s.borderRadiusLg),
                 border: Border.all(
-                  color: _isHovered ? DColors.primaryButton : DColors.primaryButton.withAlpha((255 * 0.5).round()),
+                  color: _isHovered
+                      ? DColors.primaryButton
+                      : DColors.primaryButton.withAlpha((255 * 0.5).round()),
                   width: 2,
                 ),
                 boxShadow: [
@@ -102,7 +102,10 @@ class _PriceCustomCtaSectionState extends State<PriceCustomCtaSection> {
               ),
             ],
           ),
-          child: Text('💡', style: TextStyle(fontSize: context.responsiveValue(mobile: 36, tablet: 44, desktop: 48))),
+          child: Text(
+            '💡',
+            style: TextStyle(fontSize: context.responsiveValue(mobile: 36, tablet: 44, desktop: 48)),
+          ),
         )
         .animate(onPlay: (controller) => controller.repeat())
         .shimmer(duration: 2000.ms, color: Colors.white.withAlpha((255 * 0.3).round()));

@@ -8,7 +8,7 @@ import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 
-class BaseScreen extends StatelessWidget {
+class BaseScreen extends StatefulWidget {
   final Widget child;
   final bool? extendBody;
   final bool? extendBodyBehindAppBar;
@@ -29,18 +29,40 @@ class BaseScreen extends StatelessWidget {
   });
 
   @override
+  State<BaseScreen> createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<BaseScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
-      extendBody: extendBody ?? false,
-      extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
+      backgroundColor: widget.backgroundColor,
+      extendBody: widget.extendBody ?? false,
+      extendBodyBehindAppBar: widget.extendBodyBehindAppBar ?? false,
       appBar: const CustomAppBar(),
       drawer: context.isMobile ? _buildDrawer(context) : null,
-      body: useCustomScrollView
-          ? child
-          : SingleChildScrollView(child: Column(children: [child, const FooterSection()])),
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonLocation: floatingActionButtonLocation,
+      body: widget.useCustomScrollView
+          ? widget.child
+          : Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Scrollbar(
+                controller: _scrollController,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(children: [widget.child, const FooterSection()]),
+                ),
+              ),
+            ),
+      floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonLocation: widget.floatingActionButtonLocation,
     );
   }
 
@@ -136,7 +158,10 @@ class BaseScreen extends StatelessWidget {
           // Social Links Section
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text('Connect with us', style: context.fonts.labelMedium.copyWith(color: DColors.textSecondary)),
+            child: Text(
+              'Connect with us',
+              style: context.fonts.labelMedium.copyWith(color: DColors.textSecondary),
+            ),
           ),
         ],
       ),
