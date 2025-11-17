@@ -8,6 +8,8 @@ import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/features/home/widgets/experience_section/widgets/start_card.dart';
 import 'package:responsive_website/features/home/widgets/experience_section/widgets/year_card.dart';
 
+import '../../../../common_function/widgets/section_header.dart';
+
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
 
@@ -35,7 +37,13 @@ class ExperienceSection extends StatelessWidget {
       padding: EdgeInsets.only(top: s.spaceBtwSections, left: s.paddingMd, right: s.paddingMd),
       child: Column(
         children: [
-          _buildSectionHeader(),
+          DSectionHeader(
+            label: 'Journey & Achievements',
+            title: 'Experience & Milestones',
+            subtitle: 'Building innovative solutions with 3+ years of expertise in cross-platform development',
+            alignment: TextAlign.center,
+            maxWidth: 800,
+          ),
           SizedBox(height: s.spaceBtwItems),
           ResponsiveWidget(
             mobile: _buildMobileLayout(context),
@@ -44,14 +52,6 @@ class ExperienceSection extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildSectionHeader() {
-    return const SectionHeader(
-      subtitle: 'Journey & Achievements',
-      title: 'Experience & Milestones',
-      description: 'Building innovative solutions with 3+ years of expertise in cross-platform development',
     );
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../route/route_name.dart';
 import '../../../../../utility/constants/colors.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import '../../../../../common_function/style/custom_button.dart';
@@ -7,160 +9,110 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/common_function/style/animation_social_icon.dart';
 
-class IntroContent extends StatefulWidget {
+class IntroContent extends StatelessWidget {
   const IntroContent({super.key});
-
-  @override
-  State<IntroContent> createState() => _IntroContentState();
-}
-
-class _IntroContentState extends State<IntroContent> {
-  bool _isOutlineHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
     final fonts = context.fonts;
+
     return Column(
       crossAxisAlignment: context.isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
       mainAxisAlignment: context.isDesktop ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
-        // "Hello" Text
+        // Greeting
         Text('Hello', style: fonts.bodyLarge.rubik(color: DColors.textPrimary)),
+        SizedBox(height: s.paddingXs),
 
-        // Name & Title (Animated)
-        Column(
-          crossAxisAlignment: context.isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-          children: [
-            // Static part of the text
-            Text(
-              "I'm Dolon km, an",
-              style: fonts.displayMedium,
-              textAlign: context.isDesktop ? TextAlign.start : TextAlign.center,
-            ),
-            // Animated part of the text
-            AnimatedTextKit(
-              isRepeatingAnimation: true,
-              repeatForever: true,
-              animatedTexts: [
-                TypewriterAnimatedText(
-                  'App Developer',
-                  textStyle: fonts.displayMedium.rajdhani(color: DColors.primaryButton),
-                  speed: const Duration(milliseconds: 150),
-                  cursor: '|',
-                ),
-                TypewriterAnimatedText(
-                  'Flutter Expert',
-                  textStyle: fonts.displayMedium.rajdhani(color: DColors.primaryButton),
-                  speed: const Duration(milliseconds: 150),
-                  cursor: '|',
-                ),
-              ],
-            ),
-          ],
-        ),
+        // Name & Animated Title
+        _buildNameWithAnimation(context, fonts),
         SizedBox(height: s.spaceBtwItems),
 
-        // ✅ Fixed: Description with proper overflow handling
-        _buildDescription(context),
+        // Description (responsive max width)
+        _buildDescription(context, fonts),
         SizedBox(height: s.spaceBtwItems),
 
-        // Action Buttons
-        _buildActionButtons(context),
+        // CTA Buttons
+        _buildCTAButtons(context),
         SizedBox(height: s.spaceBtwItems),
 
         // Social Icons
-        AnimationSocialIcon(),
+        const AnimationSocialIcon(),
       ],
     );
   }
 
-  // ✅ NEW: Separate method for description with proper responsive handling
-  Widget _buildDescription(BuildContext context) {
-    final s = context.sizes;
-    final fonts = context.fonts;
+  /// Name with typewriter animation
+  Widget _buildNameWithAnimation(BuildContext context, AppFonts fonts) {
+    return Column(
+      crossAxisAlignment: context.isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      children: [
+        Text(
+          "I'm Dolon km, an",
+          style: fonts.displayMedium,
+          textAlign: context.isDesktop ? TextAlign.start : TextAlign.center,
+        ),
+        AnimatedTextKit(
+          isRepeatingAnimation: true,
+          repeatForever: true,
+          animatedTexts: [
+            TypewriterAnimatedText(
+              'App Developer',
+              textStyle: fonts.displayMedium.rajdhani(color: DColors.primaryButton),
+              speed: const Duration(milliseconds: 150),
+              cursor: '|',
+            ),
+            TypewriterAnimatedText(
+              'Flutter Expert',
+              textStyle: fonts.displayMedium.rajdhani(color: DColors.primaryButton),
+              speed: const Duration(milliseconds: 150),
+              cursor: '|',
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-    const descriptionText =
+  /// Description with proper constraints
+  Widget _buildDescription(BuildContext context, AppFonts fonts) {
+    const description =
         'Crafting sleek, high-performance apps with clean code and seamless user '
         'experiences. Explore my portfolio to see how I bring ideas to life through '
         'intuitive and scalable mobile applications.';
 
-    if (context.isMobile) {
-      return Padding(
-        padding: EdgeInsets.symmetric(horizontal: s.paddingMd),
-        child: Text(
-          descriptionText,
-          style: fonts.bodyMedium.rubik(color: DColors.textPrimary, height: 1.6),
-          textAlign: TextAlign.center,
-          maxLines: 6,
-          overflow: TextOverflow.ellipsis,
-        ),
-      );
-    } else if (context.isTablet) {
-      return SizedBox(
-        width: context.screenWidth * 0.8,
-        child: Text(
-          descriptionText,
-          style: fonts.bodyMedium.rubik(color: DColors.textPrimary, height: 1.5),
-          textAlign: TextAlign.center,
-          maxLines: 4,
-          overflow: TextOverflow.ellipsis,
-        ),
-      );
-    } else {
-      // Desktop layout
-      return SizedBox(
-        width: context.screenWidth * 0.45,
-        child: Text(
-          descriptionText,
-          style: fonts.bodyMedium.rubik(color: DColors.textPrimary, height: 1.5),
-          textAlign: TextAlign.start,
-          maxLines: 4,
-          overflow: TextOverflow.ellipsis,
-        ),
-      );
-    }
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 500, desktop: 600),
+      ),
+      child: Text(
+        description,
+        style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
+        textAlign: context.isDesktop ? TextAlign.start : TextAlign.center,
+        maxLines: 5,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 
-  // 🎯 Action Buttons - Improved responsive sizing
-  Widget _buildActionButtons(BuildContext context) {
-    final s = context.sizes;
-    final fonts = context.fonts;
-
-    // ✅ Fixed: Button sizes based on device
-    final buttonHeight = context.responsiveValue(mobile: 44.0, tablet: 48.0, desktop: 52.0);
-
-    final buttonSpacing = context.responsiveValue(
-      mobile: s.spaceBtwItems * 0.75,
-      tablet: s.spaceBtwItems,
-      desktop: s.spaceBtwItems * 1.2,
-    );
-
+  /// CTA Buttons (no hover state needed, CustomButton handles it)
+  Widget _buildCTAButtons(BuildContext context) {
     return Wrap(
+      spacing: 16,
+      runSpacing: 16,
       alignment: context.isDesktop ? WrapAlignment.start : WrapAlignment.center,
-      spacing: buttonSpacing,
-      runSpacing: s.spaceBtwItems * 0.5,
       children: [
-        // Download CV Button
-        CustomButton(height: buttonHeight, tittleText: 'Download CV', onPressed: () {}),
+        // Primary CTA
+        CustomButton(width: 160, height: 50, tittleText: 'Hire Me', onPressed: () => context.go(RouteNames.contact)),
 
-        // Hire Me Button
-        MouseRegion(
-          onEnter: (_) => setState(() => _isOutlineHovered = true),
-          onExit: (_) => setState(() => _isOutlineHovered = false),
-          child: SizedBox(
-            height: buttonHeight,
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                backgroundColor: _isOutlineHovered ? DColors.cardBorder : DColors.background,
-                side: BorderSide(color: DColors.buttonBorder, width: 1.5),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(s.borderRadiusSm)),
-                padding: EdgeInsets.symmetric(horizontal: s.paddingLg),
-              ),
-              child: Text("Hire Me", style: fonts.bodyMedium),
-            ),
-          ),
+        // Secondary CTA
+        CustomButton(
+          width: 160,
+          height: 50,
+          tittleText: 'My Works',
+          isPrimary: false,
+          onPressed: () => context.go(RouteNames.portfolio),
         ),
       ],
     );
