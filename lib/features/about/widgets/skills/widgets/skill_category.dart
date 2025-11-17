@@ -4,7 +4,7 @@ import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/data_layer/model/skill_model.dart';
+import 'package:responsive_website/data_layer/model/about/skill_model.dart';
 import 'language_chip.dart';
 import 'skill_progress_bar.dart';
 

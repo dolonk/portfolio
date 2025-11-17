@@ -3,7 +3,7 @@ import 'widgets/pricing_card.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/pricing_tier_model.dart';
+import 'package:responsive_website/data_layer/model/pricing/pricing_tier_model.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class PricingCardsSection extends StatelessWidget {

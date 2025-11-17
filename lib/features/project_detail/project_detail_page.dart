@@ -5,7 +5,7 @@ import 'widgets/results/results_section.dart';
 import 'widgets/solution/solution_section.dart';
 import 'widgets/challenge/challenge_section.dart';
 import 'widgets/hero/project_hero_section.dart';
-import '../../data_layer/model/project_model.dart';
+import '../../data_layer/model/portfolio/project_model.dart';
 import 'widgets/demo_links/demo_links_section.dart';
 import 'widgets/overview/widgets/project_overview_section.dart';
 import 'package:responsive_website/utility/constants/colors.dart';

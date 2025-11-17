@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/process_step_card.dart';
 import '../../../../utility/constants/colors.dart';
-import '../../../../data_layer/model/process_step_model.dart';
+import '../../../../data_layer/model/services/process_step_model.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_helper.dart';
 import '../../../../utility/responsive/responsive_widget.dart';

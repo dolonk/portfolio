@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/data_layer/model/comment_model.dart';
+import 'package:responsive_website/data_layer/model/blog/comment_model.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/data_layer/model/blog_post_model.dart';
+import 'package:responsive_website/data_layer/model/blog/blog_post_model.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
@@ -124,11 +124,11 @@ class _CommentsSectionState extends State<CommentsSection> {
     final s = context.sizes;
 
     return SectionContainer(
-      padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
+      padding: EdgeInsets.symmetric(horizontal: s.paddingMd),
       child: Center(
         child: Container(
           constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 800),
+            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 900),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

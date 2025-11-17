@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../data_layer/model/service_model.dart';
+import '../../../../data_layer/model/home/service_model.dart';
 import '../../../../common_function/style/custom_button.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';

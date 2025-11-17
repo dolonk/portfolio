@@ -34,6 +34,7 @@ class SkillCategoryModel {
           SkillModel(name: 'Swift', percentage: 80),
           SkillModel(name: 'Python', percentage: 70),
           SkillModel(name: 'JavaScript', percentage: 70),
+          SkillModel(name: 'C++', percentage: 70),
         ],
       ),
 

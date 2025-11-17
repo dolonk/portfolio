@@ -5,7 +5,7 @@ import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/contact_form_model.dart';
+import 'package:responsive_website/data_layer/model/contact/contact_form_model.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/custom_dropdown.dart';
 import 'widgets/platform_checkbox_group.dart';

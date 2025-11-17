@@ -1,9 +1,11 @@
+import 'package:go_router/go_router.dart';
 import 'package:responsive_website/common_function/style/custom_button.dart';
+import 'package:responsive_website/route/route_name.dart';
 
 import 'widgets/addon_card.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_website/common_function/style/section_header.dart';
-import 'package:responsive_website/data_layer/model/addon_model.dart';
+import 'package:responsive_website/data_layer/model/services/addon_model.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
@@ -118,10 +120,7 @@ class AddonsSection extends StatelessWidget {
           SizedBox(height: s.spaceBtwItems),
 
           // CTA Button
-          CustomButton(tittleText:  'Contact for Bundle Quote', onPressed: () {
-            // TODO: Navigate to contact page
-            debugPrint('Contact for Bundle Quote clicked');
-          },)
+          CustomButton(tittleText: 'Contact for Bundle Quote', onPressed: () => context.go(RouteNames.contact)),
         ],
       ),
     );

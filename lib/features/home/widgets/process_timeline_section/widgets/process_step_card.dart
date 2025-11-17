@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../data_layer/model/process_step_model.dart';
+import '../../../../../data_layer/model/services/process_step_model.dart';
 import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../utility/default_sizes/default_sizes.dart';
@@ -148,7 +148,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> with SingleTickerProv
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       width: double.infinity,
-      padding: EdgeInsets.all(s.paddingLg),
+      padding: EdgeInsets.all(s.paddingMd),
       decoration: BoxDecoration(
         color: _isHovered ? DColors.primaryButton.withAlpha((255 * 0.1).round()) : DColors.cardBackground,
         borderRadius: BorderRadius.circular(s.borderRadiusLg),

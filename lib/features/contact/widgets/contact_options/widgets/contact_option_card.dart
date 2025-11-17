@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../../data_layer/model/contact_info_model.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
+import '../../../../../data_layer/model/contact/contact_info_model.dart';
 
 class ContactOptionCard extends StatefulWidget {
   final ContactInfoModel option;

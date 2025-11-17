@@ -1,7 +1,7 @@
 import 'widgets/industry_card.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/data_layer/model/industry_model.dart';
+import 'package:responsive_website/data_layer/model/services/industry_model.dart';
 import 'package:responsive_website/common_function/style/section_header.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';

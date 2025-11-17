@@ -2,7 +2,7 @@ import 'widgets/article_content.dart';
 import 'widgets/table_of_contents.dart';
 import 'package:flutter/material.dart';
 import '../../../project_detail/widgets/gallery/gallery_section.dart';
-import 'package:responsive_website/data_layer/model/blog_post_model.dart';
+import 'package:responsive_website/data_layer/model/blog/blog_post_model.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';

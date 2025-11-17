@@ -2,7 +2,7 @@ import 'widgets/tech_icon_card.dart';
 import 'package:flutter/material.dart';
 import '../../../../utility/constants/colors.dart';
 import '../../../../utility/default_sizes/font_size.dart';
-import '../../../../data_layer/model/tech_stack_model.dart';
+import '../../../../data_layer/model/home/tech_stack_model.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_helper.dart';
 import '../../../../utility/responsive/responsive_widget.dart';

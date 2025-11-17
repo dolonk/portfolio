@@ -8,7 +8,7 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:responsive_website/data_layer/model/comparison_feature_model.dart';
+import 'package:responsive_website/data_layer/model/pricing/comparison_feature_model.dart';
 
 class ComparisonSection extends StatefulWidget {
   const ComparisonSection({super.key});

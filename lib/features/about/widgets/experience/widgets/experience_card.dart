@@ -5,7 +5,7 @@ import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/data_layer/model/experience_model.dart';
+import 'package:responsive_website/data_layer/model/about/experience_model.dart';
 import 'timeline_marker.dart';
 import 'tech_badge.dart';
 

@@ -5,7 +5,7 @@ import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/value_model.dart';
+import 'package:responsive_website/data_layer/model/about/value_model.dart';
 import 'widgets/value_item.dart';
 
 class ValuesSection extends StatelessWidget {

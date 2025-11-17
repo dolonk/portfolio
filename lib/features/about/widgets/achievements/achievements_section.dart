@@ -5,7 +5,7 @@ import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/achievement_model.dart';
+import 'package:responsive_website/data_layer/model/about/achievement_model.dart';
 import 'widgets/achievement_item.dart';
 
 class AchievementsSection extends StatelessWidget {

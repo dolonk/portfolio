@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_website/common_function/style/hoverable_card.dart';
-import 'package:responsive_website/data_layer/model/process_step_model.dart';
+import 'package:responsive_website/data_layer/model/services/process_step_model.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
@@ -23,7 +23,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
     final fonts = context.fonts;
 
     return HoverableCard(
-      padding: EdgeInsets.all(s.paddingLg),
+      padding: EdgeInsets.all(s.paddingMd),
       onHoverChanged: (isHovered) => setState(() => _isHovered = isHovered),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

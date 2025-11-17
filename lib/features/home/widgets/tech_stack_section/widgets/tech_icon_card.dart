@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../common_function/style/hoverable_card.dart';
-import '../../../../../data_layer/model/tech_stack_model.dart';
+import '../../../../../data_layer/model/home/tech_stack_model.dart';
 import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../utility/default_sizes/default_sizes.dart';

@@ -4,7 +4,7 @@ import 'widgets/benefit_card.dart';
 import 'package:flutter/material.dart';
 import '../../../../utility/constants/colors.dart';
 import '../../../../utility/constants/image_string.dart';
-import '../../../../data_layer/model/benefit_model.dart';
+import '../../../../data_layer/model/home/benefit_model.dart';
 import '../../../../utility/default_sizes/font_size.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_helper.dart';

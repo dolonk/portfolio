@@ -21,8 +21,7 @@ class _PricingHeroSectionState extends State<PricingHeroSection> with TickerProv
     super.initState();
 
     // Gradient shift animation (infinite)
-    _gradientController = AnimationController(duration: const Duration(seconds: 8), vsync: this)
-      ..repeat(reverse: true);
+    _gradientController = AnimationController(duration: const Duration(seconds: 8), vsync: this)..repeat(reverse: true);
 
     _gradientAnimation = Tween<double>(
       begin: 0.0,
@@ -56,45 +55,32 @@ class _PricingHeroSectionState extends State<PricingHeroSection> with TickerProv
             ),
           ),
           child: Stack(
+            alignment: Alignment.center,
             children: [
-              // // Diamond
-              // Positioned(left: 30, top: 20, child: FloatingIcon(icon: '💎', delay: 0)),
-              //
-              // // Star
-              // Positioned(left: 30, top: 80, child: FloatingIcon(icon: '⭐', delay: 200)),
-              //
-              // // Sparkle
-              // Positioned(left: 30, top: 140, child: FloatingIcon(icon: '✨', delay: 400)),
-              //
-              // // Trophy
-              // Positioned(left: 30, top: 200, child: FloatingIcon(icon: '🏆', delay: 600)),
-
               // Main content
-              Center(
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 900),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Main Heading
-                      _buildHeading(fonts, s),
-                      SizedBox(height: s.paddingMd),
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 900),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Main Heading
+                    _buildHeading(fonts, s),
+                    SizedBox(height: s.paddingMd),
 
-                      // Gradient underline decoration
-                      _buildUnderlineDecoration(),
-                      SizedBox(height: s.spaceBtwItems),
+                    // Gradient underline decoration
+                    _buildUnderlineDecoration(),
+                    SizedBox(height: s.spaceBtwItems),
 
-                      // Subheading
-                      _buildSubheading(fonts, s),
-                      SizedBox(height: s.paddingSm),
+                    // Subheading
+                    _buildSubheading(fonts, s),
+                    SizedBox(height: s.paddingSm),
 
-                      // Description
-                      _buildDescription(fonts, s),
-                      SizedBox(height: s.spaceBtwSections),
-                    ],
-                  ),
+                    // Description
+                    _buildDescription(fonts, s),
+                    SizedBox(height: s.spaceBtwSections),
+                  ],
                 ),
               ),
             ],

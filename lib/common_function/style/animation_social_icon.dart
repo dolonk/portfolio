@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utility/constants/colors.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../data_layer/model/social_link_model.dart';
+import '../../data_layer/model/about/social_link_model.dart';
 import '../../utility/url_launcher_service/url_launcher_service.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';

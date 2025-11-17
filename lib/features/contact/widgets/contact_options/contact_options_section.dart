@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../../data_layer/model/contact_info_model.dart';
-import '../../../../utility/url_launcher_service/url_launcher_service.dart';
 import 'widgets/phone_options_modal.dart';
 import 'widgets/contact_option_card.dart';
 import 'widgets/chat_options_modal.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
+import '../../../../data_layer/model/contact/contact_info_model.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import '../../../../utility/url_launcher_service/url_launcher_service.dart';
 
 class ContactOptionsSection extends StatelessWidget {
   const ContactOptionsSection({super.key, required this.onScrollToForm});

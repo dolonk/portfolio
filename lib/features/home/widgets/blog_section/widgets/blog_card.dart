@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../utility/constants/colors.dart';
-import '../../../../../../data_layer/model/blog_model.dart';
+import '../../../../../data_layer/model/home/blog_model.dart';
 import '../../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../common_function/style/hoverable_card.dart';
 import '../../../../../../utility/default_sizes/default_sizes.dart';

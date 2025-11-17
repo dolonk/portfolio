@@ -6,7 +6,7 @@ import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/faq_model.dart';
+import 'package:responsive_website/data_layer/model/services/faq_model.dart';
 import 'widgets/faq_item.dart';
 
 class FaqSection extends StatefulWidget {

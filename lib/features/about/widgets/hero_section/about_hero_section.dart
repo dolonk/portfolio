@@ -6,8 +6,8 @@ import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/about_stats_model.dart';
-import 'package:responsive_website/data_layer/model/social_link_model.dart';
+import 'package:responsive_website/data_layer/model/about/about_stats_model.dart';
+import 'package:responsive_website/data_layer/model/about/social_link_model.dart';
 import 'widgets/stats_card.dart';
 import 'widgets/social_link_button.dart';
 
@@ -114,7 +114,7 @@ class AboutHeroSection extends StatelessWidget {
             style: fonts.displaySmall.rajdhani(
               fontSize: context.responsiveValue(mobile: 32, tablet: 40, desktop: 48),
               fontWeight: FontWeight.bold,
-              color: Colors.white, // Required for ShaderMask
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),

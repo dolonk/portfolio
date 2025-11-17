@@ -6,7 +6,7 @@ import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/common_function/style/custom_button.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/data_layer/model/addon_service_model.dart';
+import 'package:responsive_website/data_layer/model/pricing/addon_service_model.dart';
 
 class AddonCard extends StatefulWidget {
   final AddonServiceModel addon;
@@ -64,9 +64,7 @@ class _AddonCardState extends State<AddonCard> {
 
                   // Card Body
                   Padding(
-                    padding: EdgeInsets.all(
-                      context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-                    ),
+                    padding: EdgeInsets.all(s.paddingLg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -90,11 +88,7 @@ class _AddonCardState extends State<AddonCard> {
                         _buildFeaturesToggle(fonts, s),
 
                         // Expanded Features List
-                        if (_isFeaturesExpanded) ...[
-                          SizedBox(height: s.paddingMd),
-                          _buildFeaturesList(fonts, s),
-                        ],
-
+                        if (_isFeaturesExpanded) ...[SizedBox(height: s.paddingMd), _buildFeaturesList(fonts, s)],
                         SizedBox(height: s.spaceBtwItems),
 
                         // CTA Button
@@ -123,9 +117,7 @@ class _AddonCardState extends State<AddonCard> {
   Widget _buildHeader(AppFonts fonts, DSizes s) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(
-        context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-      ),
+      padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl)),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -281,11 +273,7 @@ class _AddonCardState extends State<AddonCard> {
         gradient: LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFFBBF24)]),
         borderRadius: BorderRadius.circular(s.borderRadiusLg),
         boxShadow: [
-          BoxShadow(
-            color: Color(0xFFFBBF24).withAlpha((255 * 0.5).round()),
-            blurRadius: 15,
-            offset: Offset(0, 4),
-          ),
+          BoxShadow(color: Color(0xFFFBBF24).withAlpha((255 * 0.5).round()), blurRadius: 15, offset: Offset(0, 4)),
         ],
       ),
       child: Row(

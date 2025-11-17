@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/data_layer/model/pricing_tier_model.dart';
+import 'package:responsive_website/data_layer/model/pricing/pricing_tier_model.dart';
 
 class GradientHeader extends StatelessWidget {
   final PricingTierModel tier;

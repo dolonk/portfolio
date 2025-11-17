@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'widgets/process_timeline_section/process_timeline_section.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/common_function/base_screen/base_screen.dart';
 import 'package:responsive_website/features/home/widgets/blog_section/blog_section.dart';
 import 'package:responsive_website/features/home/widgets/get_in_touch/get_in_touch.dart';
@@ -22,15 +21,34 @@ class HomePage extends StatelessWidget {
       backgroundColor: DColors.secondaryBackground,
       child: Column(
         children: [
+          // Hero Section
           HeroSection(),
+
+          // Services Section
           MyServiceSection(),
+
+          // Experience Section
           ExperienceSection(),
+
+          // Latest Projects Section
           LatestProjectsSection(),
+
+          // Why Choose Me Section
           WhyChooseMeSection(),
+
+          // Tech Stack Section
           TechStackSection(),
+
+          // Process Timeline Section
           ProcessTimelineSection(),
+
+          // Reviews Section
           ReviewsSection(),
+
+          // Blog Section
           BlogSection(),
+
+          // Get In Touch Section
           GetInTouchSection(),
         ],
       ),

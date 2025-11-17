@@ -6,7 +6,7 @@ import 'widgets/hero/portfolio_hero_section.dart';
 import 'widgets/filter_bar/filter_bar_section.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import '../../common_function/base_screen/footer/custom_footer.dart';
-import 'package:responsive_website/data_layer/model/project_model.dart';
+import 'package:responsive_website/data_layer/model/portfolio/project_model.dart';
 import 'package:responsive_website/common_function/base_screen/base_screen.dart';
 import 'package:responsive_website/features/portfolio/widgets/project_grid/project_grid_section.dart';
 
