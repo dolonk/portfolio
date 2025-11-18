@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -15,55 +16,19 @@ class YearCard extends StatefulWidget {
   State<YearCard> createState() => _YearCardState();
 }
 
-class _YearCardState extends State<YearCard> with SingleTickerProviderStateMixin {
+class _YearCardState extends State<YearCard> {
   bool _isHovered = false;
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(duration: const Duration(milliseconds: 800), vsync: this);
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    Future.delayed(Duration(milliseconds: 200 * widget.index), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
     final fonts = context.fonts;
 
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: SlideTransition(
-        position: _slideAnimation,
-        child: MouseRegion(
+    return MouseRegion(
           onEnter: (_) => setState(() => _isHovered = true),
           onExit: (_) => setState(() => _isHovered = false),
           child: AnimatedScale(
-            duration: const Duration(milliseconds: 200),
+            duration: 200.ms,
             scale: _isHovered ? 1.02 : 1.0,
             child: Container(
               padding: EdgeInsets.all(
@@ -99,7 +64,7 @@ class _YearCardState extends State<YearCard> with SingleTickerProviderStateMixin
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height:context.isDesktop ? 4: s.paddingSm),
+                  SizedBox(height: context.isDesktop ? 4 : s.paddingSm),
 
                   // Description
                   Flexible(
@@ -114,8 +79,10 @@ class _YearCardState extends State<YearCard> with SingleTickerProviderStateMixin
               ),
             ),
           ),
-        ),
-      ),
-    );
+        )
+        // Animation chain
+        .animate(delay: (200 * widget.index).ms)
+        .fadeIn(duration: 600.ms, curve: Curves.easeIn)
+        .slide(begin: const Offset(0, 0.3), end: Offset.zero, duration: 650.ms, curve: Curves.easeOutCubic);
   }
 }

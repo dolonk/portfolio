@@ -42,11 +42,17 @@ class _BenefitCardState extends State<BenefitCard> with SingleTickerProviderStat
                   : DColors.primaryButton.withAlpha((255 * 0.1).round()),
               borderRadius: BorderRadius.circular(s.borderRadiusSm),
               border: Border.all(
-                color: _isHovered ? DColors.primaryButton : DColors.primaryButton.withAlpha((255 * 0.3).round()),
+                color: _isHovered
+                    ? DColors.primaryButton
+                    : DColors.primaryButton.withAlpha((255 * 0.3).round()),
                 width: 2,
               ),
             ),
-            child: Icon(widget.benefit.icon, size: 28, color: _isHovered ? DColors.primaryButton : DColors.textPrimary),
+            child: Icon(
+              widget.benefit.icon,
+              size: 28,
+              color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
+            ),
           ),
           SizedBox(width: s.spaceBtwItems),
 

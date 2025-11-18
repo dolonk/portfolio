@@ -1,13 +1,11 @@
 import 'widgets/tech_icon_card.dart';
 import 'package:flutter/material.dart';
-import '../../../../utility/constants/colors.dart';
 import '../../../../utility/default_sizes/font_size.dart';
-import '../../../../data_layer/model/home/tech_stack_model.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_helper.dart';
-import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../utility/responsive/section_container.dart';
-import '../../../../common_function/style/section_header.dart';
+import '../../../../common_function/widgets/section_header.dart';
+import '../../../../data_layer/model/home/tech_stack_model.dart';
 
 class TechStackSection extends StatelessWidget {
   const TechStackSection({super.key});
@@ -17,60 +15,30 @@ class TechStackSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      backgroundColor: DColors.secondaryBackground,
-      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, top: s.spaceBtwSections),
+      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: Column(
         children: [
           // Section Header
-          _buildSectionHeader(context),
-
-          // Tech Stack Grid
-          ResponsiveWidget(
-            mobile: _buildMobileLayout(context),
-            tablet: _buildTabletLayout(context),
-            desktop: _buildDesktopLayout(context),
+          DSectionHeader(
+            label: 'TECHNOLOGIES I MASTER',
+            title: 'Tech Stack & Tools',
+            subtitle:
+                'Building cross-platform applications with modern frameworks and industry-leading tools',
+            alignment: TextAlign.center,
+            maxWidth: 800,
           ),
+
+          // Tech Stack by Categories
+          _buildCategoryGroups(context),
         ],
       ),
     );
   }
 
-  // 📱 Mobile Layout - 3 columns
-  Widget _buildMobileLayout(BuildContext context) {
-    final techStacks = _getTechStackData();
-    return Column(children: _buildCategoryGroups(context, techStacks, crossAxisCount: 3));
-  }
-
-  // 📱 Tablet Layout - 4 columns
-  Widget _buildTabletLayout(BuildContext context) {
-    final techStacks = _getTechStackData();
-    return Column(children: _buildCategoryGroups(context, techStacks, crossAxisCount: 4));
-  }
-
-  // 💻 Desktop Layout - 6 columns
-  Widget _buildDesktopLayout(BuildContext context) {
-    final techStacks = _getTechStackData();
-
-    return Column(children: _buildCategoryGroups(context, techStacks, crossAxisCount: 6));
-  }
-
-  // 📝 Section Header
-  Widget _buildSectionHeader(BuildContext context) {
-    return SectionHeader(
-      subtitle: 'Technologies I Master',
-      title: 'Tech Stack & Tools',
-      description: 'Building cross-platform applications with modern frameworks and industry-leading tools',
-    );
-  }
-
-  // 📋 Build Category Groups
-  List<Widget> _buildCategoryGroups(
-    BuildContext context,
-    List<TechStackModel> techStacks, {
-    required int crossAxisCount,
-  }) {
+  Widget _buildCategoryGroups(BuildContext context) {
     final s = context.sizes;
     final fonts = context.fonts;
+    final techStacks = _getTechStackData();
 
     // Group by category
     final categories = <String, List<TechStackModel>>{};
@@ -89,10 +57,10 @@ class TechStackSection extends StatelessWidget {
       widgets.add(
         Padding(
           padding: EdgeInsets.only(
-            left: s.spaceBtwItems,
-            right: s.spaceBtwItems,
+            left: s.paddingMd,
+            right: s.paddingMd,
             bottom: s.spaceBtwItems,
-            top: s.spaceBtwSections,
+            top: s.spaceBtwItems,
           ),
           child: Text(
             category,
@@ -102,23 +70,24 @@ class TechStackSection extends StatelessWidget {
         ),
       );
 
-      // ✅ Tech Wrap for this category (OPTIMIZED)
+      // Tech Icons Grid
       widgets.add(
         LayoutBuilder(
           builder: (context, constraints) {
-            // Calculate card width based on crossAxisCount
+            final crossAxisCount = context.responsiveValue(mobile: 3, tablet: 4, desktop: 6);
+
             final spacing = s.spaceBtwItems;
             final totalSpacing = spacing * (crossAxisCount - 1);
             final cardWidth = (constraints.maxWidth - totalSpacing) / crossAxisCount;
 
             return Wrap(
               spacing: spacing,
-              runSpacing: context.isMobile ? 12 : spacing,
+              runSpacing: context.isMobile ? s.spaceBtwItems * 1.5 : spacing,
               alignment: WrapAlignment.center,
               children: techs.map((tech) {
                 return SizedBox(
                   width: cardWidth,
-                  height: cardWidth, // Square cards
+                  height: cardWidth,
                   child: TechIconCard(tech: tech, index: globalIndex++),
                 );
               }).toList(),
@@ -128,13 +97,12 @@ class TechStackSection extends StatelessWidget {
       );
     });
 
-    return widgets;
+    return Column(children: widgets);
   }
 
-  // 📊 Tech Stack Data
   List<TechStackModel> _getTechStackData() {
     return [
-      // Languages
+      // Core Technologies
       TechStackModel(
         name: 'Flutter',
         iconPath: 'assets/tech_icons/flutter.svg',

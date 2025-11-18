@@ -40,8 +40,7 @@ class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderSt
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               transform: Matrix4.identity()..scale(_isHovered ? 1.1 : 1.0),
-              //child: _buildTechIcon(iconSize),
-              child: _buildPlaceholder(iconSize),
+              child: _buildTechIcon(iconSize),
             ),
           ),
           SizedBox(height: s.spaceBtwItems),
@@ -71,7 +70,10 @@ class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderSt
         widget.tech.iconPath,
         width: size,
         height: size,
-        colorFilter: ColorFilter.mode(_isHovered ? DColors.primaryButton : DColors.textPrimary, BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(
+          _isHovered ? DColors.primaryButton : DColors.textPrimary,
+          BlendMode.srcIn,
+        ),
         placeholderBuilder: (context) => _buildPlaceholder(size),
       );
     } else {

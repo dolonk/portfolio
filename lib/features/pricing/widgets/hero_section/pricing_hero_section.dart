@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'widgets/floating_icon.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -21,7 +20,8 @@ class _PricingHeroSectionState extends State<PricingHeroSection> with TickerProv
     super.initState();
 
     // Gradient shift animation (infinite)
-    _gradientController = AnimationController(duration: const Duration(seconds: 8), vsync: this)..repeat(reverse: true);
+    _gradientController = AnimationController(duration: const Duration(seconds: 8), vsync: this)
+      ..repeat(reverse: true);
 
     _gradientAnimation = Tween<double>(
       begin: 0.0,
@@ -54,36 +54,32 @@ class _PricingHeroSectionState extends State<PricingHeroSection> with TickerProv
               stops: [0.0 + (_gradientAnimation.value * 0.1), 0.5 + (_gradientAnimation.value * 0.1), 1.0],
             ),
           ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Main content
-              Container(
-                constraints: BoxConstraints(
-                  maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 900),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Main Heading
-                    _buildHeading(fonts, s),
-                    SizedBox(height: s.paddingMd),
-
-                    // Gradient underline decoration
-                    _buildUnderlineDecoration(),
-                    SizedBox(height: s.spaceBtwItems),
-
-                    // Subheading
-                    _buildSubheading(fonts, s),
-                    SizedBox(height: s.paddingSm),
-
-                    // Description
-                    _buildDescription(fonts, s),
-                    SizedBox(height: s.spaceBtwSections),
-                  ],
-                ),
+          child: Center(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 900),
               ),
-            ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Main Heading
+                  _buildHeading(fonts, s),
+                  SizedBox(height: s.paddingMd),
+
+                  // Gradient underline decoration
+                  _buildUnderlineDecoration(),
+                  SizedBox(height: s.spaceBtwItems),
+
+                  // Subheading
+                  _buildSubheading(fonts, s),
+                  SizedBox(height: s.paddingSm),
+
+                  // Description
+                  _buildDescription(fonts, s),
+                  SizedBox(height: s.spaceBtwSections),
+                ],
+              ),
+            ),
           ),
         );
       },

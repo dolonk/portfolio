@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../route/route_name.dart';
+import '../../../../common_function/style/custom_button.dart';
+import '../../../../utility/responsive/responsive_widget.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_widget.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/common_function/style/section_header.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/features/home/widgets/experience_section/widgets/start_card.dart';
 import 'package:responsive_website/features/home/widgets/experience_section/widgets/year_card.dart';
-
-import '../../../../common_function/widgets/section_header.dart';
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
@@ -37,18 +38,32 @@ class ExperienceSection extends StatelessWidget {
       padding: EdgeInsets.only(top: s.spaceBtwSections, left: s.paddingMd, right: s.paddingMd),
       child: Column(
         children: [
+          // Section Header
           DSectionHeader(
             label: 'Journey & Achievements',
             title: 'Experience & Milestones',
-            subtitle: 'Building innovative solutions with 3+ years of expertise in cross-platform development',
+            subtitle:
+                'Building innovative solutions with 3+ years of expertise in cross-platform development',
             alignment: TextAlign.center,
             maxWidth: 800,
           ),
           SizedBox(height: s.spaceBtwItems),
+
+          // Responsive Layout
           ResponsiveWidget(
             mobile: _buildMobileLayout(context),
             tablet: _buildTabletLayout(context),
             desktop: _buildDesktopLayout(context),
+          ),
+          SizedBox(height: s.spaceBtwItems),
+
+          // View Full Resume Button
+          CustomButton(
+            width: context.isMobile ? double.infinity : 260,
+            height: 50,
+            tittleText: 'View Full Resume',
+            icon: Icons.description_rounded,
+            onPressed: () => context.go(RouteNames.about),
           ),
         ],
       ),
@@ -176,14 +191,22 @@ class ExperienceSection extends StatelessWidget {
           final data = _timelineData[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16.0),
-            child: YearCard(year: data['year'] as int, description: data['description'] as String, index: index),
+            child: YearCard(
+              year: data['year'] as int,
+              description: data['description'] as String,
+              index: index,
+            ),
           );
         }),
       ),
     );
   }
 
-  Widget _buildStatCard({required Map<String, dynamic> stat, required int index, required double aspectRatio}) {
+  Widget _buildStatCard({
+    required Map<String, dynamic> stat,
+    required int index,
+    required double aspectRatio,
+  }) {
     return Expanded(
       child: StartCard(
         icon: stat['icon'] as String,

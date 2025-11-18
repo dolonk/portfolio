@@ -1,5 +1,3 @@
-import 'package:responsive_website/common_function/style/section_header.dart';
-
 import 'widgets/benefit_card.dart';
 import 'package:flutter/material.dart';
 import '../../../../utility/constants/colors.dart';
@@ -10,6 +8,7 @@ import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_helper.dart';
 import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../utility/responsive/section_container.dart';
+import '../../../../common_function/widgets/section_header.dart';
 
 class WhyChooseMeSection extends StatelessWidget {
   const WhyChooseMeSection({super.key});
@@ -20,7 +19,7 @@ class WhyChooseMeSection extends StatelessWidget {
 
     return SectionContainer(
       backgroundColor: DColors.background,
-      padding: EdgeInsets.only(top: s.spaceBtwSections),
+      padding: EdgeInsets.only(top: s.spaceBtwSections, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: ResponsiveWidget(
         mobile: _buildMobileLayout(context),
         tablet: _buildTabletLayout(context),
@@ -29,62 +28,43 @@ class WhyChooseMeSection extends StatelessWidget {
     );
   }
 
-  // 📱 Mobile Layout - Vertical Stack
   Widget _buildMobileLayout(BuildContext context) {
     final s = context.sizes;
-
     return Column(
       children: [
-        // Professional Image
         _buildProfessionalImage(context),
         SizedBox(height: s.spaceBtwItems),
-
-        // Section Header
         _buildSectionHeader(context),
         SizedBox(height: s.spaceBtwItems),
-
-        // Benefits List
         _buildBenefitsList(context),
       ],
     );
   }
 
-  // 📱 Tablet Layout - Similar to Mobile
   Widget _buildTabletLayout(BuildContext context) {
     final s = context.sizes;
-
     return Column(
       children: [
-        // Professional Image
         _buildProfessionalImage(context),
         SizedBox(height: s.spaceBtwItems),
-
-        // Section Header
         _buildSectionHeader(context),
         SizedBox(height: s.spaceBtwItems),
-
-        // Benefits List
         _buildBenefitsList(context),
       ],
     );
   }
 
-  // 💻 Desktop Layout - Side by Side
   Widget _buildDesktopLayout(BuildContext context) {
     final s = context.sizes;
-
     return Column(
       children: [
         _buildSectionHeader(context),
         SizedBox(height: s.spaceBtwItems),
-
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Left side with Image
             Expanded(flex: 2, child: _buildProfessionalImage(context)),
             SizedBox(width: s.spaceBtwItems),
-            //benefit section
             Expanded(flex: 3, child: _buildBenefitsList(context)),
           ],
         ),
@@ -92,7 +72,7 @@ class WhyChooseMeSection extends StatelessWidget {
     );
   }
 
-  // 🖼️ Professional Image Section
+  // Professional Image Section
   Widget _buildProfessionalImage(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
@@ -105,8 +85,8 @@ class WhyChooseMeSection extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                DColors.primaryButton.withAlpha((255 * 0.2).round()),
-                DColors.primaryButton.withAlpha((255 * 0.05).round()),
+                DColors.primaryButton.withOpacity(0.2),
+                DColors.primaryButton.withOpacity(0.05),
                 Colors.transparent,
               ],
               stops: const [0.0, 0.6, 1.0],
@@ -114,7 +94,7 @@ class WhyChooseMeSection extends StatelessWidget {
           ),
         ),
 
-        // Professional Image/Illustration
+        // Professional Image
         Container(
           width: context.responsiveValue(mobile: 250, tablet: 320, desktop: 500),
           height: context.responsiveValue(mobile: 250, tablet: 320, desktop: 500),
@@ -123,7 +103,7 @@ class WhyChooseMeSection extends StatelessWidget {
             border: Border.all(color: DColors.cardBorder, width: 3),
             boxShadow: [
               BoxShadow(
-                color: DColors.primaryButton.withAlpha((255 * 0.2).round()),
+                color: DColors.primaryButton.withOpacity(0.2),
                 blurRadius: 30,
                 offset: const Offset(0, 10),
               ),
@@ -143,25 +123,25 @@ class WhyChooseMeSection extends StatelessWidget {
           ),
         ),
 
-        // Floating Badge (Optional - "2.6+ Years")
+        // Floating Badge
         Positioned(
           bottom: context.responsiveValue(mobile: 20, desktop: 40),
           right: context.responsiveValue(mobile: 20, desktop: 40),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: DColors.primaryButton,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: DColors.primaryButton.withAlpha((255 * 0.4).round()),
+                  color: DColors.primaryButton.withOpacity(0.4),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
               ],
             ),
             child: Text(
-              '3+ Years',
+              '2.6+ Years',
               style: context.fonts.labelLarge.rubik(color: DColors.textPrimary, fontWeight: FontWeight.bold),
             ),
           ),
@@ -170,20 +150,21 @@ class WhyChooseMeSection extends StatelessWidget {
     );
   }
 
-  // 📝 Section Header
+  // Using DSectionHeader
   Widget _buildSectionHeader(BuildContext context) {
-    return SectionHeader(
-      subtitle: 'Why Work With Me?',
+    return DSectionHeader(
+      label: 'WHY WORK WITH ME?',
       title: 'Building Excellence in Every Line of Code',
-      description:
+      subtitle:
           'I deliver high-quality, scalable Flutter applications with clean architecture and best practices. Your success is my priority.',
+      alignment: TextAlign.center,
+      maxWidth: 1400,
     );
   }
 
-  // 📋 Benefits List
+  // Benefits List Section
   Widget _buildBenefitsList(BuildContext context) {
     final benefits = _getBenefitsData();
-
     return Column(
       children: List.generate(
         benefits.length,
@@ -192,7 +173,6 @@ class WhyChooseMeSection extends StatelessWidget {
     );
   }
 
-  // 📊 Benefits Data
   List<BenefitModel> _getBenefitsData() {
     return [
       BenefitModel(

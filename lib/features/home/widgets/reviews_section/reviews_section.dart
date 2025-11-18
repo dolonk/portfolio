@@ -13,6 +13,7 @@ import 'package:responsive_website/features/home/widgets/reviews_section/widgets
 
 class ReviewsSection extends StatelessWidget {
   const ReviewsSection({super.key});
+
   List<ReviewsModel> _getReviewsData() {
     return [
       ReviewsModel(

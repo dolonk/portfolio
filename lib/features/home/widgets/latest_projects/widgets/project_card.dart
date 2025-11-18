@@ -29,6 +29,7 @@ class _ProjectCardState extends State<ProjectCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Project Image
           Expanded(
             flex: 3,
             child: ClipRRect(
@@ -62,6 +63,8 @@ class _ProjectCardState extends State<ProjectCard> {
             ),
           ),
           const SizedBox(height: 12),
+
+          // Project Title
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
@@ -72,6 +75,8 @@ class _ProjectCardState extends State<ProjectCard> {
             ),
           ),
           const SizedBox(height: 8),
+
+          // Project Description
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
@@ -86,6 +91,8 @@ class _ProjectCardState extends State<ProjectCard> {
                   ),
                 ),
                 const SizedBox(width: 8),
+
+                // View Button
                 AnimatedCustomButton(
                   onPressed: () => context.go(RouteNames.portfolio),
                   text: 'View',

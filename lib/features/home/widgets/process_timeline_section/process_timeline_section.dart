@@ -1,4 +1,6 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_website/common_function/widgets/section_header.dart';
 import 'widgets/process_step_card.dart';
 import '../../../../utility/constants/colors.dart';
 import '../../../../data_layer/model/services/process_step_model.dart';
@@ -17,11 +19,17 @@ class ProcessTimelineSection extends StatelessWidget {
 
     return SectionContainer(
       backgroundColor: DColors.background,
-      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, top: s.spaceBtwSections),
+      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd),
       child: Column(
         children: [
           // Section Header
-          _buildSectionHeader(context),
+          //_buildSectionHeader(context),
+          DSectionHeader(
+            label: 'How I Work',
+            title: 'My Development Process',
+            subtitle: 'A structured approach to deliver exceptional results, from discovery to deployment',
+            alignment: TextAlign.center,
+          ),
           SizedBox(height: s.spaceBtwItems),
 
           // Process Steps
