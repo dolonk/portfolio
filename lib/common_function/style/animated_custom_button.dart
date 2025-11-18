@@ -101,6 +101,7 @@ class AnimatedCustomButton extends StatefulWidget {
   final Color? iconColor;
   final Color? hoverIconColor;
   final Duration animationDuration;
+  final double iconSlideDistance;
 
   const AnimatedCustomButton({
     super.key,
@@ -115,6 +116,7 @@ class AnimatedCustomButton extends StatefulWidget {
     this.hoverTextColor,
     this.iconColor,
     this.hoverIconColor,
+    this.iconSlideDistance = 5.0,
     this.animationDuration = const Duration(milliseconds: 300),
   });
 
@@ -179,7 +181,7 @@ class _AnimatedCustomButtonState extends State<AnimatedCustomButton> {
 
               widget.icon
                   .animate(target: _isHovered ? 1 : 0)
-                  .slideX(begin: 0, end: 5, curve: Curves.easeOut)
+                  .slideX(begin: 0, end: widget.iconSlideDistance, curve: Curves.easeOut)
                   .tint(color: effectiveIconColor),
             ],
           ),

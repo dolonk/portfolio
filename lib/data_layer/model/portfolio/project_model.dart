@@ -69,8 +69,10 @@ class ProjectModel {
         imagePath: 'assets/home/projects/project_1.png',
         platforms: ['iOS', 'Android'],
         techStack: ['Flutter', 'Firebase', 'Stripe', 'BLoC'],
-        category: 'Mobile',
+        category: 'Android App',
         projectUrl: 'https://example.com',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 2. Healthcare Web App
@@ -81,8 +83,10 @@ class ProjectModel {
         imagePath: 'assets/home/projects/project_2.png',
         platforms: ['Web'],
         techStack: ['Flutter Web', 'Firebase', 'WebRTC'],
-        category: 'Web',
+        category: "Web Development",
         projectUrl: 'https://example.com',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 3. Finance Desktop App
@@ -94,6 +98,8 @@ class ProjectModel {
         platforms: ['Windows', 'macOS', 'Linux'],
         techStack: ['Flutter Desktop', 'SQLite', 'Provider'],
         category: 'Desktop',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 4. Education Mobile App
@@ -104,7 +110,9 @@ class ProjectModel {
         imagePath: 'assets/home/projects/project_4.png',
         platforms: ['iOS', 'Android'],
         techStack: ['Flutter', 'Firebase', 'GetX'],
-        category: 'Mobile',
+        category: "Ios App",
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 5. Restaurant Booking Web
@@ -115,7 +123,9 @@ class ProjectModel {
         imagePath: 'assets/home/projects/project_5.png',
         platforms: ['Web'],
         techStack: ['Flutter Web', 'Node.js', 'MongoDB'],
-        category: 'Web',
+        category: "Mac Os",
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 6. UI/UX Design Project
@@ -126,6 +136,8 @@ class ProjectModel {
         imagePath: 'assets/home/projects/project_6.png',
         techStack: ['Figma', 'Adobe XD'],
         category: 'UI/UX',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 7. IoT Dashboard
@@ -137,6 +149,8 @@ class ProjectModel {
         platforms: ['Web', 'Android'],
         techStack: ['Flutter', 'MQTT', 'Firebase'],
         category: 'Web',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 8. Social Media Mobile App
@@ -148,6 +162,8 @@ class ProjectModel {
         platforms: ['iOS', 'Android'],
         techStack: ['Flutter', 'Firebase', 'Riverpod'],
         category: 'Mobile',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 9. Task Management Desktop
@@ -159,6 +175,8 @@ class ProjectModel {
         platforms: ['Windows', 'macOS'],
         techStack: ['Flutter Desktop', 'Hive', 'Provider'],
         category: 'Desktop',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 10. Travel Web App
@@ -170,6 +188,8 @@ class ProjectModel {
         platforms: ['Web'],
         techStack: ['Flutter Web', 'REST API', 'BLoC'],
         category: 'Web',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 11. Fitness Tracking App
@@ -181,6 +201,8 @@ class ProjectModel {
         platforms: ['iOS', 'Android'],
         techStack: ['Flutter', 'Firebase', 'Provider'],
         category: 'Mobile',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
 
       // 12. Portfolio Website Design
@@ -191,6 +213,8 @@ class ProjectModel {
         imagePath: 'assets/home/projects/project_6.png',
         techStack: ['Figma', 'Sketch'],
         category: 'UI/UX',
+        description:
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
       ),
     ];
   }

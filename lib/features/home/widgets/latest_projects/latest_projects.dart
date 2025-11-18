@@ -67,6 +67,12 @@ class _LatestProjectsSectionState extends State<LatestProjectsSection> {
     );
   }
 
+  List<ProjectModel> _getFilteredProjects() {
+    final allProjects = getAllProjects();
+    if (_selectedFilter == 'All') return allProjects;
+    return allProjects.where((project) => project.category == _selectedFilter).toList();
+  }
+
   // Filter Chips
   Widget _buildFilterChips(BuildContext context) {
     return Wrap(
@@ -88,7 +94,7 @@ class _LatestProjectsSectionState extends State<LatestProjectsSection> {
     );
   }
 
-  List<ProjectModel> _getFilteredProjects() {
+  List<ProjectModel> getAllProjects() {
     return ProjectModel.getAllProjects().take(6).toList();
   }
 }
