@@ -1,14 +1,13 @@
-import 'package:go_router/go_router.dart';
-import 'package:responsive_website/route/route_name.dart';
-
 import 'deliverable_item.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:responsive_website/route/route_name.dart';
+import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/common_function/style/custom_button.dart';
 import 'package:responsive_website/common_function/style/hoverable_card.dart';
 import 'package:responsive_website/data_layer/model/services/service_detail_model.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
 
 class ServiceCardDetailed extends StatefulWidget {
   final ServiceDetailModel service;
@@ -71,7 +70,10 @@ class _ServiceCardDetailedState extends State<ServiceCardDetailed> {
               // Price
               Text(
                 widget.service.pricing!,
-                style: fonts.headlineSmall.rajdhani(color: DColors.primaryButton, fontWeight: FontWeight.bold),
+                style: fonts.headlineSmall.rajdhani(
+                  color: DColors.primaryButton,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               // Button

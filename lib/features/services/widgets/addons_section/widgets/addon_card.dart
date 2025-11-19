@@ -27,7 +27,7 @@ class _AddonCardState extends State<AddonCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        transform: Matrix4.diagonal3Values(_isHovered ? 1.03 : 1.0, _isHovered ? 1.03 : 1.0, 1.0),
         child: Container(
           padding: EdgeInsets.all(s.paddingLg),
           decoration: BoxDecoration(

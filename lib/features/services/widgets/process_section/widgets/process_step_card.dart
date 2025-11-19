@@ -23,10 +23,10 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
     final fonts = context.fonts;
 
     return HoverableCard(
-      padding: EdgeInsets.all(s.paddingMd),
+      padding: EdgeInsets.all(s.paddingSm),
       onHoverChanged: (isHovered) => setState(() => _isHovered = isHovered),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .center,
         children: [
           // Step Number Badge
           Center(child: _buildStepBadge(s, fonts)),
@@ -55,7 +55,10 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
           SizedBox(height: s.spaceBtwItems),
 
           // Description
-          Text(widget.step.description, style: fonts.bodyMedium.rubik(color: DColors.textSecondary, height: 1.6)),
+          Text(
+            widget.step.description,
+            style: fonts.bodyMedium.rubik(color: DColors.textSecondary, height: 1.6),
+          ),
           SizedBox(height: s.spaceBtwItems),
 
           // Divider
@@ -79,7 +82,9 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [DColors.primaryButton, DColors.primaryButton.withAlpha((255 * 0.7).round())]),
+        gradient: LinearGradient(
+          colors: [DColors.primaryButton, DColors.primaryButton.withAlpha((255 * 0.7).round())],
+        ),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
@@ -103,7 +108,10 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
   Widget _buildIconCircle(DSizes s) {
     return Container(
       padding: EdgeInsets.all(s.paddingMd),
-      decoration: BoxDecoration(color: DColors.primaryButton.withAlpha((255 * 0.1).round()), shape: BoxShape.circle),
+      decoration: BoxDecoration(
+        color: DColors.primaryButton.withAlpha((255 * 0.1).round()),
+        shape: BoxShape.circle,
+      ),
       child: Icon(widget.step.icon, color: DColors.primaryButton, size: 32),
     );
   }

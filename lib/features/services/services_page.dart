@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import '../../common_function/base_screen/base_screen.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/features/services/widgets/faq_section/faq_section.dart';

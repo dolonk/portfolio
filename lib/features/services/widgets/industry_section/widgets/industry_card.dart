@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/data_layer/model/services/industry_model.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:responsive_website/data_layer/model/services/industry_model.dart';
 
 class IndustryCard extends StatefulWidget {
   final IndustryModel industry;
@@ -28,14 +28,16 @@ class _IndustryCardState extends State<IndustryCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
+        transform: Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0),
         child: Container(
           padding: EdgeInsets.all(s.paddingMd),
           decoration: BoxDecoration(
             color: DColors.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: _isHovered ? widget.industry.accentColor.withAlpha((255 * 0.5).round()) : DColors.cardBorder,
+              color: _isHovered
+                  ? widget.industry.accentColor.withAlpha((255 * 0.5).round())
+                  : DColors.cardBorder,
               width: 2,
             ),
             boxShadow: [
@@ -82,7 +84,9 @@ class _IndustryCardState extends State<IndustryCard> {
   /// Icon Circle with accent color background
   Widget _buildIconCircle(DSizes s) {
     return Container(
-      padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg)),
+      padding: EdgeInsets.all(
+        context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
