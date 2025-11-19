@@ -30,10 +30,7 @@ class StartCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               // Icon
-              Text(
-                icon,
-                style: TextStyle(fontSize: context.responsiveValue(mobile: 36, tablet: 44, desktop: 52)),
-              ),
+              Text(icon, style: TextStyle(fontSize: context.responsiveValue(mobile: 36, tablet: 44, desktop: 52))),
 
               // Animated Counter
               AnimatedCounter(
@@ -60,12 +57,7 @@ class StartCard extends StatelessWidget {
         )
         .animate()
         .fadeIn(duration: 600.ms, curve: Curves.easeIn)
-        .scale(
-          begin: const Offset(0.8, 0.8),
-          end: const Offset(1.0, 1.0),
-          duration: 600.ms,
-          curve: Curves.easeOutBack,
-        )
+        .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0), duration: 600.ms, curve: Curves.easeOutBack)
         .then(delay: (150 * index).ms); // Staggered delay
   }
 }

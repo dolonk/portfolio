@@ -40,12 +40,7 @@ class ReviewsSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      padding: EdgeInsets.only(
-        top: s.spaceBtwSections,
-        left: s.paddingMd,
-        right: s.paddingMd,
-        bottom: s.paddingLg,
-      ),
+      padding: EdgeInsets.only(top: s.spaceBtwSections, left: s.paddingMd, right: s.paddingMd, bottom: s.paddingLg),
       child: Container(
         decoration: BoxDecoration(gradient: DColors.reviewsSectionGradient),
         child: ResponsiveWidget(
@@ -61,7 +56,7 @@ class ReviewsSection extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context) {
     final s = context.sizes;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildSectionHeader(context),
         SizedBox(height: s.spaceBtwSections),
@@ -135,9 +130,7 @@ class ReviewsSection extends StatelessWidget {
     final fonts = context.fonts;
 
     return Column(
-      crossAxisAlignment: context.isMobile || context.isTablet
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
+      crossAxisAlignment: context.isMobile || context.isTablet ? .center : .start,
       children: [
         // Subtitle
         Text("Reviews", style: fonts.headlineMedium.rajdhani(color: DColors.primaryButton)),
@@ -165,7 +158,7 @@ class ReviewsSection extends StatelessWidget {
             "Android app ahead of schedule with flawless performance. The communication was clear and responsive throughout.",
             style: fonts.labelLarge.rajdhani(color: DColors.textSecondary, height: 1.6),
             maxLines: 4,
-            textAlign: context.isMobile ? TextAlign.center : TextAlign.start,
+            textAlign: context.isMobile || context.isTablet ? TextAlign.center : TextAlign.start,
             overflow: TextOverflow.ellipsis,
           ),
         ),

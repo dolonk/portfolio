@@ -37,10 +37,7 @@ class _YearCardState extends State<YearCard> {
               decoration: BoxDecoration(
                 color: DColors.cardBackground,
                 borderRadius: BorderRadius.circular(s.borderRadiusLg),
-                border: Border.all(
-                  color: _isHovered ? DColors.primaryButton : DColors.cardBorder,
-                  width: 1.5,
-                ),
+                border: Border.all(color: _isHovered ? DColors.primaryButton : DColors.cardBorder, width: 1.5),
                 boxShadow: _isHovered
                     ? [
                         BoxShadow(
@@ -59,10 +56,7 @@ class _YearCardState extends State<YearCard> {
                   // Year
                   Text(
                     widget.year.toString(),
-                    style: fonts.titleLarge.rajdhani(
-                      color: DColors.primaryButton,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: fonts.titleLarge.rajdhani(color: DColors.primaryButton, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: context.isDesktop ? 4 : s.paddingSm),
 

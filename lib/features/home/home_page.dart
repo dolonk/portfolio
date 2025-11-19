@@ -10,7 +10,7 @@ import 'package:responsive_website/features/home/widgets/reviews_section/reviews
 import 'package:responsive_website/features/home/widgets/service_section/services_section.dart';
 import 'package:responsive_website/features/home/widgets/experience_section/experience_section.dart';
 import 'package:responsive_website/features/home/widgets/tech_stack_section/tech_stack_section.dart';
-import 'package:responsive_website/features/home/widgets/why_choose_me_section/why_choose_me_section.dart';
+import 'package:responsive_website/features/home/widgets/why_work_with_me_section/why_work_with_me_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
           LatestProjectsSection(),
 
           // Why Choose Me Section
-          WhyChooseMeSection(),
+          WhyWorkWithMeSection(),
 
           // Tech Stack Section
           TechStackSection(),

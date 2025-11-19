@@ -95,11 +95,8 @@ class _ServiceCardState extends State<ServiceCard> {
             AnimatedCustomButton(
               onPressed: () => context.go(RouteNames.services),
               text: 'Learn More',
-              icon: Icon(
-                Icons.arrow_forward_rounded,
-                color: _isButtonHovered ? Colors.white : DColors.textSecondary,
-                size: 20,
-              ),
+              iconSlideDistance: 1,
+              icon: Icon(Icons.arrow_forward_rounded, color: DColors.textSecondary, size: 20),
             ),
           ],
         ),

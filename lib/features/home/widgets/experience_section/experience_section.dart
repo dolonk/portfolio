@@ -42,8 +42,7 @@ class ExperienceSection extends StatelessWidget {
           DSectionHeader(
             label: 'Journey & Achievements',
             title: 'Experience & Milestones',
-            subtitle:
-                'Building innovative solutions with 3+ years of expertise in cross-platform development',
+            subtitle: 'Building innovative solutions with 3+ years of expertise in cross-platform development',
             alignment: TextAlign.center,
             maxWidth: 800,
           ),
@@ -139,26 +138,23 @@ class ExperienceSection extends StatelessWidget {
       );
     }
 
-    final spacing = s.spaceBtwItems;
-    final aspectRatio = context.isTablet ? 1.6 : 1.4;
-
     return Column(
       children: [
         // First Row
         Row(
           children: [
-            _buildStatCard(stat: _stats[0], index: 0, aspectRatio: aspectRatio),
-            SizedBox(width: spacing),
-            _buildStatCard(stat: _stats[1], index: 1, aspectRatio: aspectRatio),
+            _buildStatCard(stat: _stats[0], index: 0),
+            SizedBox(width: s.spaceBtwItems),
+            _buildStatCard(stat: _stats[1], index: 1),
           ],
         ),
-        SizedBox(height: spacing),
+        SizedBox(height: s.spaceBtwItems),
         // Second Row
         Row(
           children: [
-            _buildStatCard(stat: _stats[2], index: 2, aspectRatio: aspectRatio),
-            SizedBox(width: spacing),
-            _buildStatCard(stat: _stats[3], index: 3, aspectRatio: aspectRatio),
+            _buildStatCard(stat: _stats[2], index: 2),
+            SizedBox(width: s.spaceBtwItems),
+            _buildStatCard(stat: _stats[3], index: 3),
           ],
         ),
       ],
@@ -191,22 +187,14 @@ class ExperienceSection extends StatelessWidget {
           final data = _timelineData[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16.0),
-            child: YearCard(
-              year: data['year'] as int,
-              description: data['description'] as String,
-              index: index,
-            ),
+            child: YearCard(year: data['year'] as int, description: data['description'] as String, index: index),
           );
         }),
       ),
     );
   }
 
-  Widget _buildStatCard({
-    required Map<String, dynamic> stat,
-    required int index,
-    required double aspectRatio,
-  }) {
+  Widget _buildStatCard({required Map<String, dynamic> stat, required int index}) {
     return Expanded(
       child: StartCard(
         icon: stat['icon'] as String,

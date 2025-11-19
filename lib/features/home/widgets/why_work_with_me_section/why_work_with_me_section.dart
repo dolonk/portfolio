@@ -10,8 +10,8 @@ import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../utility/responsive/section_container.dart';
 import '../../../../common_function/widgets/section_header.dart';
 
-class WhyChooseMeSection extends StatelessWidget {
-  const WhyChooseMeSection({super.key});
+class WhyWorkWithMeSection extends StatelessWidget {
+  const WhyWorkWithMeSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,11 +102,7 @@ class WhyChooseMeSection extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(color: DColors.cardBorder, width: 3),
             boxShadow: [
-              BoxShadow(
-                color: DColors.primaryButton.withOpacity(0.2),
-                blurRadius: 30,
-                offset: const Offset(0, 10),
-              ),
+              BoxShadow(color: DColors.primaryButton.withOpacity(0.2), blurRadius: 30, offset: const Offset(0, 10)),
             ],
           ),
           child: ClipOval(
@@ -133,11 +129,7 @@ class WhyChooseMeSection extends StatelessWidget {
               color: DColors.primaryButton,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(
-                  color: DColors.primaryButton.withOpacity(0.4),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
+                BoxShadow(color: DColors.primaryButton.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 5)),
               ],
             ),
             child: Text(
@@ -166,10 +158,7 @@ class WhyChooseMeSection extends StatelessWidget {
   Widget _buildBenefitsList(BuildContext context) {
     final benefits = _getBenefitsData();
     return Column(
-      children: List.generate(
-        benefits.length,
-        (index) => BenefitCard(benefit: benefits[index], index: index),
-      ),
+      children: List.generate(benefits.length, (index) => BenefitCard(benefit: benefits[index], index: index)),
     );
   }
 
@@ -201,8 +190,7 @@ class WhyChooseMeSection extends StatelessWidget {
       ),
       BenefitModel(
         title: 'Post-Launch Support',
-        description:
-            'Every project includes support period. Bug fixes, updates, and guidance even after deployment.',
+        description: 'Every project includes support period. Bug fixes, updates, and guidance even after deployment.',
         icon: Icons.support_agent_rounded,
       ),
     ];

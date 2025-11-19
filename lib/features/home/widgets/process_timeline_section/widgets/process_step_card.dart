@@ -4,6 +4,7 @@ import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../../utility/responsive/responsive_helper.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class ProcessStepCard extends StatefulWidget {
   final ProcessStepModel step;
@@ -15,303 +16,109 @@ class ProcessStepCard extends StatefulWidget {
   State<ProcessStepCard> createState() => _ProcessStepCardState();
 }
 
-class _ProcessStepCardState extends State<ProcessStepCard> with SingleTickerProviderStateMixin {
+class _ProcessStepCardState extends State<ProcessStepCard> {
   bool _isHovered = false;
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(duration: const Duration(milliseconds: 800), vsync: this);
-
-    _scaleAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack));
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeIn));
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut));
-
-    // Staggered animation
-    Future.delayed(Duration(milliseconds: 200 * widget.step.stepNumber), () {
-      if (mounted) {
-        _animationController.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
     final fonts = context.fonts;
 
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: SlideTransition(
-        position: _slideAnimation,
-        child: ScaleTransition(
-          scale: _scaleAnimation,
-          child: MouseRegion(
-            onEnter: (_) => setState(() => _isHovered = true),
-            onExit: (_) => setState(() => _isHovered = false),
-            child: context.isDesktop ? _buildDesktopLayout(context, s, fonts) : _buildMobileLayout(context, s, fonts),
-          ),
-        ),
-      ),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: _mainCard(context, s, fonts)
+          .animate(delay: Duration(milliseconds: 200 * widget.step.stepNumber))
+          .fadeIn(duration: 600.ms)
+          .slideY(begin: 0.3, end: 0, curve: Curves.easeOut)
+          .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
     );
   }
 
-  // 💻 Desktop Layout - Horizontal with connector
-  Widget _buildDesktopLayout(BuildContext context, DSizes s, AppFonts fonts) {
-    return Column(
-      children: [
-        // Step Card
-        _buildStepCard(context, s, fonts),
-
-        // Connector Line (if not last)
-        if (!widget.isLast)
-          Container(
-            width: 2,
-            height: 60,
-            margin: EdgeInsets.symmetric(vertical: s.paddingSm),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [DColors.primaryButton, DColors.primaryButton.withAlpha((255 * 0.3).round())],
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  // 📱 Mobile Layout - Vertical with side connector
-  Widget _buildMobileLayout(BuildContext context, DSizes s, AppFonts fonts) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Left: Number + Connector
-        Column(
-          children: [
-            // Step Number Circle
-            _buildStepNumber(s, fonts),
-
-            // Connector Line
-            if (!widget.isLast)
-              Container(
-                width: 2,
-                height: 100,
-                margin: EdgeInsets.only(top: s.paddingSm),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [DColors.primaryButton, DColors.primaryButton.withAlpha((255 * 0.3).round())],
-                  ),
-                ),
-              ),
-          ],
-        ),
-        SizedBox(width: s.spaceBtwItems),
-
-        // Right: Content
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: widget.isLast ? 0 : s.spaceBtwSections),
-            child: _buildStepContent(context, s, fonts),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // 🎴 Step Card (Desktop)
-  Widget _buildStepCard(BuildContext context, DSizes s, AppFonts fonts) {
+  Widget _mainCard(BuildContext context, DSizes s, AppFonts fonts) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      width: double.infinity,
-      padding: EdgeInsets.all(s.paddingMd),
-      decoration: BoxDecoration(
-        color: _isHovered ? DColors.primaryButton.withAlpha((255 * 0.1).round()) : DColors.cardBackground,
-        borderRadius: BorderRadius.circular(s.borderRadiusLg),
-        border: Border.all(color: _isHovered ? DColors.primaryButton : DColors.cardBorder, width: 2),
-        boxShadow: _isHovered
-            ? [
-                BoxShadow(
-                  color: DColors.primaryButton.withAlpha((255 * 0.3).round()),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ]
-            : null,
-      ),
-      child: Column(
-        children: [
-          // Step Number
-          _buildStepNumber(s, fonts),
-          SizedBox(height: s.spaceBtwItems),
-
-          // Icon
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            padding: EdgeInsets.all(s.paddingMd),
-            decoration: BoxDecoration(
-              color: _isHovered
-                  ? DColors.primaryButton.withAlpha((255 * 0.2).round())
-                  : DColors.primaryButton.withAlpha((255 * 0.1).round()),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: _isHovered ? DColors.primaryButton : DColors.primaryButton.withAlpha((255 * 0.3).round()),
-                width: 2,
-              ),
-            ),
-            child: Icon(
-              widget.step.icon,
-              size: context.responsiveValue(mobile: 32.0, tablet: 36.0, desktop: 40.0),
-              color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
-            ),
+          duration: 250.ms,
+          curve: Curves.easeOut,
+          padding: EdgeInsets.all(s.paddingMd),
+          decoration: BoxDecoration(
+            color: _isHovered ? DColors.primaryButton.withAlpha(25) : DColors.cardBackground,
+            borderRadius: BorderRadius.circular(s.borderRadiusLg),
+            border: Border.all(color: _isHovered ? DColors.primaryButton : DColors.cardBorder, width: 2),
+            boxShadow: _isHovered
+                ? [BoxShadow(color: DColors.primaryButton.withAlpha(80), blurRadius: 25, offset: const Offset(0, 12))]
+                : [],
           ),
-          SizedBox(height: s.spaceBtwItems),
-
-          // Title
-          Text(
-            widget.step.title,
-            style: fonts.titleLarge.rajdhani(
-              fontWeight: FontWeight.bold,
-              color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(height: s.paddingSm),
-
-          // Description
-          Text(
-            widget.step.description,
-            style: fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.6),
-            textAlign: TextAlign.center,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // 📝 Step Content (Mobile)
-  Widget _buildStepContent(BuildContext context, DSizes s, AppFonts fonts) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      padding: EdgeInsets.all(s.paddingMd),
-      decoration: BoxDecoration(
-        color: _isHovered ? DColors.primaryButton.withAlpha((255 * 0.1).round()) : DColors.cardBackground,
-        borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        border: Border.all(color: _isHovered ? DColors.primaryButton : DColors.cardBorder, width: 2),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Icon + Title Row
-          Row(
+          child: Column(
             children: [
-              // Icon
-              Container(
-                padding: EdgeInsets.all(s.paddingSm),
-                decoration: BoxDecoration(
-                  color: DColors.primaryButton.withAlpha((255 * 0.1).round()),
-                  borderRadius: BorderRadius.circular(s.borderRadiusSm),
-                  border: Border.all(color: DColors.primaryButton.withAlpha((255 * 0.3).round()), width: 2),
-                ),
-                child: Icon(
-                  widget.step.icon,
-                  size: 24,
-                  color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
-                ),
-              ),
-              SizedBox(width: s.spaceBtwItems),
+              // Number
+              _stepNumber(s, fonts),
+              SizedBox(height: s.spaceBtwItems),
+
+              // ICON + LOOP ANIMATION
+              _animatedIcon(context, s),
+              SizedBox(height: s.spaceBtwItems),
 
               // Title
-              Expanded(
-                child: Text(
-                  widget.step.title,
-                  style: fonts.titleMedium.rajdhani(
-                    fontWeight: FontWeight.bold,
-                    color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                widget.step.title,
+                style: fonts.titleLarge.rajdhani(
+                  fontWeight: FontWeight.bold,
+                  color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
                 ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: s.paddingSm),
+
+              // Desc
+              Text(
+                widget.step.description,
+                style: fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.6),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
-          SizedBox(height: s.spaceBtwItems),
-
-          // Description
-          Text(
-            widget.step.description,
-            style: fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.6),
-            maxLines: 5,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
+        )
+        // 🪩 Hover scale feels premium
+        .animate(target: _isHovered ? 1 : 0)
+        .scaleXY(begin: 1, end: 1.05, duration: 180.ms, curve: Curves.easeOutBack);
   }
 
-  // 🔢 Step Number Badge
-  Widget _buildStepNumber(DSizes s, AppFonts fonts) {
+  // NUMBER BADGE
+  Widget _stepNumber(DSizes s, AppFonts fonts) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: 250.ms,
       width: context.responsiveValue(mobile: 48.0, tablet: 56.0, desktop: 64.0),
       height: context.responsiveValue(mobile: 48.0, tablet: 56.0, desktop: 64.0),
       decoration: BoxDecoration(
+        shape: BoxShape.circle,
         gradient: LinearGradient(
           colors: _isHovered
-              ? [DColors.primaryButton, DColors.primaryButton.withAlpha((255 * 0.7).round())]
-              : [
-                  DColors.primaryButton.withAlpha((255 * 0.8).round()),
-                  DColors.primaryButton.withAlpha((255 * 0.5).round()),
-                ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+              ? [DColors.primaryButton, DColors.primaryButton.withAlpha(200)]
+              : [DColors.primaryButton.withAlpha(200), DColors.primaryButton.withAlpha(120)],
         ),
-        shape: BoxShape.circle,
         boxShadow: _isHovered
-            ? [
-                BoxShadow(
-                  color: DColors.primaryButton.withAlpha((255 * 0.4).round()),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
-              ]
-            : null,
+            ? [BoxShadow(color: DColors.primaryButton.withAlpha(80), blurRadius: 18, offset: const Offset(0, 6))]
+            : [],
       ),
       child: Center(
         child: Text(
-          '${widget.step.stepNumber}',
+          "${widget.step.stepNumber}",
           style: fonts.headlineMedium.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
         ),
       ),
     );
+  }
+
+  // ICON (auto pulse loop)
+  Widget _animatedIcon(BuildContext context, DSizes s) {
+    return Icon(
+          widget.step.icon,
+          size: context.responsiveValue(mobile: 32.0, tablet: 36.0, desktop: 40.0),
+          color: _isHovered ? DColors.primaryButton : DColors.textPrimary,
+        )
+        .animate(onPlay: (controller) => controller.repeat(reverse: true))
+        .scale(begin: const Offset(1, 1), end: const Offset(1.15, 1.15), duration: 2000.ms, curve: Curves.easeInOut)
+        .then()
+        .scale(begin: const Offset(1.15, 1.15), end: const Offset(1, 1), duration: 2200.ms, curve: Curves.easeInOut);
   }
 }

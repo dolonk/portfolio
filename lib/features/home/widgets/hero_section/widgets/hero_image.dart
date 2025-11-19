@@ -1,45 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../utility/constants/colors.dart';
+import '../../../../../utility/constants/image_string.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 
-import '../../../../../utility/constants/image_string.dart';
-
-class HeroImage extends StatefulWidget {
+class HeroImage extends StatelessWidget {
   const HeroImage({super.key});
-
-  @override
-  State<HeroImage> createState() => _HeroImageState();
-}
-
-class _HeroImageState extends State<HeroImage> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.05,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-    _controller.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _scaleAnimation.removeListener(() {});
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
+        // Background Diamond Gradient Shape
         DiamondGradiantShape(
           vector1Width: context.responsiveValue(mobile: 500, tablet: 500, desktop: 530),
           vector1Height: context.responsiveValue(mobile: 400, tablet: 450, desktop: 500),
@@ -47,19 +21,27 @@ class _HeroImageState extends State<HeroImage> with SingleTickerProviderStateMix
           vector2Height: context.responsiveValue(mobile: 400, tablet: 450, desktop: 500),
         ),
 
-        // APP DEVELOPMENT Text
+        // Top Text
         Positioned(
           top: context.responsiveValue(mobile: 60, desktop: 80),
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 400),
-            opacity: 1,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: Text("APP DEVELOPMENT", style: context.fonts.displayLarge),
-            ),
-          ),
+          child: Text("APP DEVELOPMENT", style: context.fonts.displayLarge)
+              .animate(onComplete: (controller) => controller.repeat())
+              .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.05, 1.05),
+                duration: 2000.ms,
+                curve: Curves.easeInOut,
+              )
+              .then()
+              .scale(
+                begin: const Offset(1.05, 1.05),
+                end: const Offset(1, 1),
+                duration: 2000.ms,
+                curve: Curves.easeInOut,
+              ),
         ),
 
+        // Center Image
         Image.asset(
           DImages.profileImage,
           height: context.responsiveValue(mobile: 400, tablet: 450, desktop: 500),
@@ -68,25 +50,33 @@ class _HeroImageState extends State<HeroImage> with SingleTickerProviderStateMix
           filterQuality: FilterQuality.medium,
         ),
 
-        // FLUTTER EXPERT Text
+        // Bottom Text Stroke
         Positioned(
           bottom: context.responsiveValue(mobile: 6, desktop: 20),
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 400),
-            opacity: 0.6,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: Text(
-                "FLUTTER EXPERT",
-                style: context.fonts.displayLarge.copyWith(
-                  foreground: Paint()
-                    ..style = PaintingStyle.stroke
-                    ..strokeWidth = 1
-                    ..color = DColors.textPrimary,
-                ),
-              ),
-            ),
-          ),
+          child:
+              Text(
+                    "FLUTTER EXPERT",
+                    style: context.fonts.displayLarge.copyWith(
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 1
+                        ..color = DColors.textPrimary,
+                    ),
+                  )
+                  .animate(onComplete: (c) => c.repeat())
+                  .scale(
+                    begin: const Offset(1, 1),
+                    end: const Offset(1.05, 1.05),
+                    duration: 2000.ms,
+                    curve: Curves.easeInOut,
+                  )
+                  .then()
+                  .scale(
+                    begin: const Offset(1.05, 1.05),
+                    end: const Offset(1, 1),
+                    duration: 2000.ms,
+                    curve: Curves.easeInOut,
+                  ),
         ),
       ],
     );

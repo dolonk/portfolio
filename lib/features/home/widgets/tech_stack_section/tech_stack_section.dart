@@ -22,8 +22,7 @@ class TechStackSection extends StatelessWidget {
           DSectionHeader(
             label: 'TECHNOLOGIES I MASTER',
             title: 'Tech Stack & Tools',
-            subtitle:
-                'Building cross-platform applications with modern frameworks and industry-leading tools',
+            subtitle: 'Building cross-platform applications with modern frameworks and industry-leading tools',
             alignment: TextAlign.center,
             maxWidth: 800,
           ),
@@ -103,17 +102,9 @@ class TechStackSection extends StatelessWidget {
   List<TechStackModel> _getTechStackData() {
     return [
       // Core Technologies
-      TechStackModel(
-        name: 'Flutter',
-        iconPath: 'assets/tech_icons/flutter.svg',
-        category: 'Core Technologies',
-      ),
+      TechStackModel(name: 'Flutter', iconPath: 'assets/tech_icons/flutter.svg', category: 'Core Technologies'),
       TechStackModel(name: 'Dart', iconPath: 'assets/tech_icons/dart.svg', category: 'Core Technologies'),
-      TechStackModel(
-        name: 'Firebase',
-        iconPath: 'assets/tech_icons/firebase.svg',
-        category: 'Core Technologies',
-      ),
+      TechStackModel(name: 'Firebase', iconPath: 'assets/tech_icons/firebase.svg', category: 'Core Technologies'),
       TechStackModel(name: 'Kotlin', iconPath: 'assets/tech_icons/kotlin.svg', category: 'Core Technologies'),
       TechStackModel(name: 'Java', iconPath: 'assets/tech_icons/java.svg', category: 'Core Technologies'),
       TechStackModel(name: 'Swift', iconPath: 'assets/tech_icons/swift.svg', category: 'Core Technologies'),
@@ -126,27 +117,15 @@ class TechStackSection extends StatelessWidget {
       TechStackModel(name: 'macOS', iconPath: 'assets/tech_icons/macos.svg', category: 'Platforms'),
 
       // State Management
-      TechStackModel(
-        name: 'Provider',
-        iconPath: 'assets/tech_icons/provider.svg',
-        category: 'State Management',
-      ),
+      TechStackModel(name: 'Provider', iconPath: 'assets/tech_icons/provider.svg', category: 'State Management'),
       TechStackModel(name: 'BLoC', iconPath: 'assets/tech_icons/bloc.svg', category: 'State Management'),
-      TechStackModel(
-        name: 'Riverpod',
-        iconPath: 'assets/tech_icons/riverpod.svg',
-        category: 'State Management',
-      ),
+      TechStackModel(name: 'Riverpod', iconPath: 'assets/tech_icons/riverpod.svg', category: 'State Management'),
       TechStackModel(name: 'GetX', iconPath: 'assets/tech_icons/getx.svg', category: 'State Management'),
 
       // Tools & Platforms
       TechStackModel(name: 'Git', iconPath: 'assets/tech_icons/git.svg', category: 'Tools & Platforms'),
       TechStackModel(name: 'GitHub', iconPath: 'assets/tech_icons/github.svg', category: 'Tools & Platforms'),
-      TechStackModel(
-        name: 'VS Code',
-        iconPath: 'assets/tech_icons/vscode.svg',
-        category: 'Tools & Platforms',
-      ),
+      TechStackModel(name: 'VS Code', iconPath: 'assets/tech_icons/vscode.svg', category: 'Tools & Platforms'),
       TechStackModel(name: 'Figma', iconPath: 'assets/tech_icons/figma.svg', category: 'Tools & Platforms'),
     ];
   }

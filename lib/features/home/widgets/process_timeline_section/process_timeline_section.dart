@@ -18,12 +18,10 @@ class ProcessTimelineSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      backgroundColor: DColors.background,
-      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd),
+      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: Column(
         children: [
           // Section Header
-          //_buildSectionHeader(context),
           DSectionHeader(
             label: 'How I Work',
             title: 'My Development Process',
@@ -40,15 +38,6 @@ class ProcessTimelineSection extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  // 📝 Section Header
-  Widget _buildSectionHeader(BuildContext context) {
-    return SectionHeader(
-      subtitle: 'How I Work',
-      title: 'My Development Process',
-      description: 'A structured approach to deliver exceptional results, from discovery to deployment',
     );
   }
 

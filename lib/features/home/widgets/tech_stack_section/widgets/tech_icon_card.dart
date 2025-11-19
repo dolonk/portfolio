@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../../common_function/style/hoverable_card.dart';
-import '../../../../../data_layer/model/home/tech_stack_model.dart';
 import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../../utility/responsive/responsive_helper.dart';
+import '../../../../../common_function/style/hoverable_card.dart';
+import '../../../../../data_layer/model/home/tech_stack_model.dart';
 
 class TechIconCard extends StatefulWidget {
   final TechStackModel tech;
@@ -17,7 +17,7 @@ class TechIconCard extends StatefulWidget {
   State<TechIconCard> createState() => _TechIconCardState();
 }
 
-class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderStateMixin {
+class _TechIconCardState extends State<TechIconCard> {
   bool _isHovered = false;
 
   @override
@@ -28,7 +28,6 @@ class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderSt
 
     return HoverableCard(
       isBorderLine: false,
-
       padding: EdgeInsets.all(context.responsiveValue(mobile: 14, tablet: s.paddingMd, desktop: s.paddingLg)),
       onHoverChanged: (isHovered) => setState(() => _isHovered = isHovered),
       child: Column(
@@ -37,12 +36,15 @@ class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderSt
         children: [
           // Tech Icon
           Flexible(
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              transform: Matrix4.identity()..scale(_isHovered ? 1.1 : 1.0),
-              child: _buildTechIcon(iconSize),
+            child: AnimatedScale(
+              scale: _isHovered ? 1.1 : 1.0,
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeOutBack,
+              //child: _buildTechIcon(iconSize),
+              child: _buildPlaceholder(iconSize),
             ),
           ),
+
           SizedBox(height: s.spaceBtwItems),
 
           // Tech Name
@@ -62,7 +64,6 @@ class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderSt
   }
 
   Widget _buildTechIcon(double size) {
-    // Check if SVG or PNG
     final isSvg = widget.tech.iconPath.endsWith('.svg');
 
     if (isSvg) {
@@ -70,10 +71,7 @@ class _TechIconCardState extends State<TechIconCard> with SingleTickerProviderSt
         widget.tech.iconPath,
         width: size,
         height: size,
-        colorFilter: ColorFilter.mode(
-          _isHovered ? DColors.primaryButton : DColors.textPrimary,
-          BlendMode.srcIn,
-        ),
+        colorFilter: ColorFilter.mode(_isHovered ? DColors.primaryButton : DColors.textPrimary, BlendMode.srcIn),
         placeholderBuilder: (context) => _buildPlaceholder(size),
       );
     } else {
