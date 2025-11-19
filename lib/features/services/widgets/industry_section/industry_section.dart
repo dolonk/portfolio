@@ -1,11 +1,10 @@
 import 'widgets/industry_card.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/data_layer/model/services/industry_model.dart';
-import 'package:responsive_website/common_function/style/section_header.dart';
+import '../../../../common_function/widgets/section_header.dart';
+import '../../../../common_function/widgets/responsive_grid.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:responsive_website/data_layer/model/services/industry_model.dart';
 
 class IndustrySection extends StatelessWidget {
   const IndustrySection({super.key});
@@ -16,46 +15,29 @@ class IndustrySection extends StatelessWidget {
     final industries = IndustryModel.getAllIndustries();
 
     return SectionContainer(
-      backgroundColor: DColors.secondaryBackground,
       padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: Column(
         children: [
-          // Section Header
-          const SectionHeader(
-            subtitle: 'Industries I Serve',
+          // Section header
+          DSectionHeader(
+            label: 'INDUSTRIES I SERVE',
             title: 'Diverse Industry Experience',
-            description:
-                'Delivering tailored solutions across multiple industries with deep domain expertise',
+            subtitle: 'Delivering tailored solutions across multiple industries with deep domain expertise',
+            alignment: TextAlign.center,
+            maxWidth: 800,
           ),
           SizedBox(height: s.spaceBtwItems),
 
           // Industry Cards Grid
-          _buildIndustryGrid(context, industries, s),
+          DResponsiveGrid(
+            mobileColumns: 2,
+            tabletColumns: 3,
+            desktopColumns: 4,
+            animate: true,
+            children: industries.map((industry) => IndustryCard(industry: industry)).toList(),
+          ),
         ],
       ),
-    );
-  }
-
-  /// Industry Cards Grid Layout
-  Widget _buildIndustryGrid(BuildContext context, List<IndustryModel> industries, DSizes s) {
-    final crossAxisCount = context.responsiveValue(mobile: 2, tablet: 3, desktop: 4);
-    final spacing = s.spaceBtwItems;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final cardWidth = (constraints.maxWidth - (spacing * (crossAxisCount - 1))) / crossAxisCount;
-
-        return Wrap(
-          spacing: spacing,
-          runSpacing: spacing,
-          children: industries.map((industry) {
-            return SizedBox(
-              width: cardWidth,
-              child: IndustryCard(industry: industry),
-            );
-          }).toList(),
-        );
-      },
     );
   }
 }

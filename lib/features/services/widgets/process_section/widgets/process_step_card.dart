@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/common_function/style/hoverable_card.dart';
 import 'package:responsive_website/data_layer/model/services/process_step_model.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
 
 class ProcessStepCard extends StatefulWidget {
   final ProcessStepModel step;
@@ -116,11 +116,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Green Checkmark
-          Icon(
-            Icons.check_circle_rounded,
-            color: const Color(0xFF10B981), // Green
-            size: 20,
-          ),
+          Icon(Icons.check_circle_rounded, color: const Color(0xFF10B981), size: 20),
           SizedBox(width: s.paddingSm),
 
           // Text

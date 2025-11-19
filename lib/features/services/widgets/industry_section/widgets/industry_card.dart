@@ -35,9 +35,7 @@ class _IndustryCardState extends State<IndustryCard> {
             color: DColors.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: _isHovered
-                  ? widget.industry.accentColor.withAlpha((255 * 0.5).round())
-                  : DColors.cardBorder,
+              color: _isHovered ? widget.industry.accentColor.withAlpha((255 * 0.5).round()) : DColors.cardBorder,
               width: 2,
             ),
             boxShadow: [
@@ -84,9 +82,7 @@ class _IndustryCardState extends State<IndustryCard> {
   /// Icon Circle with accent color background
   Widget _buildIconCircle(DSizes s) {
     return Container(
-      padding: EdgeInsets.all(
-        context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
-      ),
+      padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg)),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [

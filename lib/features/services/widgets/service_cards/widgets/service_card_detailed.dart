@@ -28,7 +28,7 @@ class _ServiceCardDetailedState extends State<ServiceCardDetailed> {
     final fonts = context.fonts;
 
     return HoverableCard(
-      padding: EdgeInsets.all(s.paddingLg),
+      padding: EdgeInsets.all(s.paddingMd),
       onHoverChanged: (isHovered) => setState(() => _isHovered = isHovered),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,15 +59,6 @@ class _ServiceCardDetailedState extends State<ServiceCardDetailed> {
           SizedBox(height: s.paddingSm),
           ...widget.service.deliverables!.map((item) => DeliverableItem(text: item)),
           SizedBox(height: s.spaceBtwItems),
-
-          // Tech Stack Badges
-          // Wrap(
-          //   spacing: s.paddingSm,
-          //   spacing: s.paddingSm,
-          //   runSpacing: s.paddingSm,
-          //   children: widget.service.technologies.map((tech) => TechBadge(techName: tech)).toList(),
-          // ),
-          // SizedBox(height: s.spaceBtwItems),
 
           // Divider
           Divider(color: DColors.cardBorder),

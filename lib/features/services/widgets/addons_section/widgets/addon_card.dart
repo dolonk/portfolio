@@ -34,9 +34,7 @@ class _AddonCardState extends State<AddonCard> {
             color: DColors.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: _isHovered
-                  ? widget.addon.accentColor.withAlpha((255 * 0.5).round())
-                  : DColors.cardBorder,
+              color: _isHovered ? widget.addon.accentColor.withAlpha((255 * 0.5).round()) : DColors.cardBorder,
               width: 2,
             ),
             boxShadow: [
@@ -78,10 +76,7 @@ class _AddonCardState extends State<AddonCard> {
                 decoration: BoxDecoration(
                   color: widget.addon.accentColor.withAlpha((255 * 0.1).round()),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: widget.addon.accentColor.withAlpha((255 * 0.3).round()),
-                    width: 1,
-                  ),
+                  border: Border.all(color: widget.addon.accentColor.withAlpha((255 * 0.3).round()), width: 1),
                 ),
                 child: Text(
                   widget.addon.priceRange,

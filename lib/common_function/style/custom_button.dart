@@ -168,7 +168,7 @@ class _CustomButtonState extends State<CustomButton> {
         foregroundColor: fgColor,
         disabledBackgroundColor: DColors.cardBorder.withAlpha((255 * 0.3).round()),
         disabledForegroundColor: DColors.textSecondary,
-        padding: widget.padding ?? EdgeInsets.symmetric(horizontal: s.paddingLg),
+        padding: widget.padding ?? EdgeInsets.symmetric(horizontal: s.paddingMd),
         elevation: _isHovered ? 8 : 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(widget.borderRadius ?? s.borderRadiusSm)),
       ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'widgets/process_step_card.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/common_function/style/section_header.dart';
 import 'package:responsive_website/data_layer/model/services/process_step_model.dart';
 
 class ProcessSection extends StatelessWidget {
@@ -21,11 +21,12 @@ class ProcessSection extends StatelessWidget {
       child: Column(
         children: [
           // Section Header
-          const SectionHeader(
-            subtitle: 'How I Work',
+          DSectionHeader(
+            label: 'HOW I WORK',
             title: 'My Development Process',
-            description:
-                'A structured, transparent approach to deliver exceptional results from discovery to deployment',
+            subtitle: 'A structured, transparent approach to deliver exceptional results from discovery to deployment',
+            alignment: TextAlign.center,
+            maxWidth: 800,
           ),
           SizedBox(height: s.spaceBtwItems),
 
