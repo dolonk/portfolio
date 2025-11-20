@@ -7,7 +7,7 @@ import 'widgets/challenge/challenge_section.dart';
 import 'widgets/hero/project_hero_section.dart';
 import '../../data_layer/model/portfolio/project_model.dart';
 import 'widgets/demo_links/demo_links_section.dart';
-import 'widgets/overview/widgets/project_overview_section.dart';
+import 'widgets/overview/project_overview_section.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/common_function/base_screen/base_screen.dart';
 import 'package:responsive_website/features/project_detail/widgets/cta/cta_section.dart';

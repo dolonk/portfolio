@@ -160,10 +160,7 @@ class TimelineStep extends StatelessWidget {
                   Icon(Icons.check_rounded, color: stepColor, size: 18),
                   SizedBox(width: s.paddingSm),
                   Expanded(
-                    child: Text(
-                      highlight,
-                      style: fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.5),
-                    ),
+                    child: Text(highlight, style: fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.5)),
                   ),
                 ],
               ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:responsive_website/utility/url_launcher_service/url_launcher_service.dart';
 
 class LinkButton extends StatefulWidget {
   final IconData icon;
@@ -35,7 +35,8 @@ class _LinkButtonState extends State<LinkButton> {
           if (widget.onPressed != null) {
             widget.onPressed!();
           } else if (widget.url != null) {
-            _launchUrl(widget.url!);
+            final link = UrlLauncherService();
+            link.launchWebsite(widget.url!);
           }
         },
         child: AnimatedContainer(
@@ -102,15 +103,5 @@ class _LinkButtonState extends State<LinkButton> {
         ),
       ),
     );
-  }
-
-  /// Launch URL
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      debugPrint('Could not launch $url');
-    }
   }
 }

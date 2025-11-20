@@ -32,7 +32,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
         ..style.width = '100%'
         ..style.height = '100%';
 
-      iframe.setAttribute('allowfullscreen', 'true');
+      //iframe.setAttribute('allow fullscreen', 'true');
       return iframe;
     });
   }

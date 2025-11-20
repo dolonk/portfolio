@@ -40,7 +40,7 @@ class ChallengeSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('The Challenge', style: fonts.displaySmall),
-        SizedBox(height: s.spaceBtwItems),
+        SizedBox(height: s.paddingSm),
         Text('Understanding the problem space', style: fonts.bodyLarge.rubik(color: DColors.textSecondary)),
       ],
     );

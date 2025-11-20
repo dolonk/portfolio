@@ -30,11 +30,7 @@ class ChallengeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: DColors.cardBorder, width: 1),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha((255 * 0.05).round()),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+          BoxShadow(color: Colors.black.withAlpha((255 * 0.05).round()), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Column(

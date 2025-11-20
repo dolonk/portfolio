@@ -5,6 +5,7 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 
+import '../../../../common_function/style/custom_button.dart';
 import '../../../../route/route_name.dart';
 
 class CtaSection extends StatelessWidget {
@@ -82,29 +83,17 @@ class CtaSection extends StatelessWidget {
 
   /// CTA Button
   Widget _buildCtaButton(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
     return Center(
-      child: SizedBox(
+      child: CustomButton(
         width: context.responsiveValue(mobile: double.infinity, tablet: 300, desktop: 300),
-        child: ElevatedButton(
-          onPressed: () => context.go(RouteNames.contact),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: DColors.primaryButton,
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: s.paddingXl, vertical: s.paddingMd),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            elevation: 4,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Let's Build Your App", style: fonts.labelLarge.rubik(fontWeight: FontWeight.bold)),
-              SizedBox(width: s.paddingMd),
-              Icon(Icons.arrow_forward_rounded, size: 20),
-            ],
-          ),
-        ),
+        height: 52,
+        tittleText: "Let's Build Your App",
+        icon: Icons.arrow_forward_rounded,
+        isPrimary: true,
+        iconRight: true,
+        backgroundColor: DColors.primaryButton,
+        foregroundColor: Colors.white,
+        onPressed: () => context.go(RouteNames.contact),
       ),
     );
   }

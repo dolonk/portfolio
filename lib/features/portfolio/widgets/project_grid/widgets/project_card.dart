@@ -33,7 +33,7 @@ class _ProjectCardState extends State<ProjectCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        transform: Matrix4.diagonal3Values(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
         child: AspectRatio(
           aspectRatio: 4 / 3,
           child: Container(
@@ -63,10 +63,7 @@ class _ProjectCardState extends State<ProjectCard> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: _isHovered
-                            ? [
-                                Colors.black.withAlpha((255 * 0.7).round()),
-                                Colors.black.withAlpha((255 * 0.9).round()),
-                              ]
+                            ? [Colors.black.withAlpha((255 * 0.7).round()), Colors.black.withAlpha((255 * 0.9).round())]
                             : [
                                 Colors.black.withAlpha((255 * 0.3).round()),
                                 Colors.black.withAlpha((255 * 0.7).round()),
@@ -89,10 +86,7 @@ class _ProjectCardState extends State<ProjectCard> {
                         // Project Title
                         Text(
                           widget.project.title,
-                          style: fonts.headlineSmall.rajdhani(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: fonts.headlineSmall.rajdhani(color: Colors.white, fontWeight: FontWeight.bold),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -138,9 +132,7 @@ class _ProjectCardState extends State<ProjectCard> {
                                 Wrap(
                                   spacing: s.paddingSm,
                                   runSpacing: s.paddingSm,
-                                  children: widget.project.techStack
-                                      .map((tech) => TechBadge(techName: tech))
-                                      .toList(),
+                                  children: widget.project.techStack.map((tech) => TechBadge(techName: tech)).toList(),
                                 ),
                               ],
                             ),

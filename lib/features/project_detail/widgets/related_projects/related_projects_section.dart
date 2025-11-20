@@ -2,12 +2,13 @@ import 'widgets/project_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_website/route/route_name.dart';
+import '../../../../common_function/style/custom_button.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/data_layer/model/portfolio/project_model.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:responsive_website/data_layer/model/portfolio/project_model.dart';
 
 class RelatedProjectsSection extends StatelessWidget {
   final ProjectModel project;
@@ -33,7 +34,7 @@ class RelatedProjectsSection extends StatelessWidget {
             SizedBox(height: s.spaceBtwItems),
 
             // "View More Work" Button
-            _buildViewMoreButton(context, s),
+            _buildViewMoreButton(context),
           ],
         ),
       ),
@@ -77,30 +78,18 @@ class RelatedProjectsSection extends StatelessWidget {
   }
 
   /// "View More Work" Button
-  Widget _buildViewMoreButton(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
+  Widget _buildViewMoreButton(BuildContext context) {
     return Center(
-      child: SizedBox(
+      child: CustomButton(
         width: context.responsiveValue(mobile: double.infinity, tablet: 300, desktop: 300),
-        child: ElevatedButton(
-          onPressed: () => context.go(RouteNames.portfolio),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: DColors.primaryButton,
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: s.paddingXl, vertical: s.paddingMd),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            elevation: 4,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('View More Work', style: fonts.labelLarge.rubik(fontWeight: FontWeight.bold)),
-              SizedBox(width: s.paddingMd),
-              Icon(Icons.arrow_forward_rounded, size: 20),
-            ],
-          ),
-        ),
+        height: 52,
+        tittleText: "View More Work",
+        icon: Icons.arrow_forward_rounded,
+        isPrimary: true,
+        iconRight: true,
+        backgroundColor: DColors.primaryButton,
+        foregroundColor: Colors.white,
+        onPressed: () => context.go(RouteNames.portfolio),
       ),
     );
   }

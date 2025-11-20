@@ -19,8 +19,11 @@ class CustomButton extends StatefulWidget {
   /// Button style - true: filled, false: outline (default: true)
   final bool isPrimary;
 
-  /// Optional icon before text
+  /// Optional icon
   final IconData? icon;
+
+  /// Icon position - true: right, false: left (default: false)
+  final bool iconRight;
 
   /// Icon size (default: 18)
   final double? iconSize;
@@ -60,6 +63,7 @@ class CustomButton extends StatefulWidget {
     this.height = 50,
     this.isPrimary = true,
     this.icon,
+    this.iconRight = false, // Default to false (icon on left)
     this.iconSize,
     this.backgroundColor,
     this.foregroundColor,
@@ -94,44 +98,68 @@ class _CustomButtonState extends State<CustomButton> {
     // Check if button should be disabled
     final isDisabled = widget.isDisabled || widget.isLoading;
 
-    Widget buttonContent = Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Loading indicator
-        if (widget.isLoading) ...[
-          SizedBox(
+    // Create icon widget if available
+    final iconWidget = widget.icon != null && !widget.isLoading
+        ? Icon(
+            widget.icon,
+            size: widget.iconSize ?? 18,
+            color: widget.isPrimary ? fgColor : (_isHovered ? DColors.primaryButton : fgColor),
+          )
+        : null;
+
+    // Create loading indicator
+    final loadingWidget = widget.isLoading
+        ? SizedBox(
             width: 16,
             height: 16,
             child: CircularProgressIndicator(
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(widget.isPrimary ? Colors.white : DColors.primaryButton),
             ),
-          ),
-          const SizedBox(width: 8),
-        ],
+          )
+        : null;
 
-        // Icon
-        if (widget.icon != null && !widget.isLoading) ...[
-          Icon(
-            widget.icon,
-            size: widget.iconSize ?? 18,
+    // Create text widget
+    final textWidget = Text(
+      widget.tittleText,
+      style:
+          widget.textStyle ??
+          fonts.bodyMedium.rubik(
             color: widget.isPrimary ? fgColor : (_isHovered ? DColors.primaryButton : fgColor),
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(width: 8),
-        ],
+    );
 
-        // Text
-        Text(
-          widget.tittleText,
-          style:
-              widget.textStyle ??
-              fonts.bodyMedium.rubik(
-                color: widget.isPrimary ? fgColor : (_isHovered ? DColors.primaryButton : fgColor),
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-      ],
+    // Build children based on icon position
+    List<Widget> buildChildren() {
+      final children = <Widget>[];
+
+      // Add loading indicator
+      if (loadingWidget != null) {
+        children.addAll([loadingWidget, const SizedBox(width: 8)]);
+      }
+
+      if (widget.iconRight) {
+        // Icon on right: Text -> Icon
+        children.add(textWidget);
+        if (iconWidget != null) {
+          children.addAll([const SizedBox(width: 8), iconWidget]);
+        }
+      } else {
+        // Icon on left (default): Icon -> Text
+        if (iconWidget != null) {
+          children.addAll([iconWidget, const SizedBox(width: 8)]);
+        }
+        children.add(textWidget);
+      }
+
+      return children;
+    }
+
+    Widget buttonContent = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: buildChildren(),
     );
 
     return MouseRegion(

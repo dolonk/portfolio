@@ -6,6 +6,8 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 
+import '../../../../../route/route_name.dart';
+
 class RelatedProjectCard extends StatefulWidget {
   final ProjectModel project;
 
@@ -27,10 +29,7 @@ class _RelatedProjectCardState extends State<RelatedProjectCard> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
-        onTap: () {
-          // Navigate to project detail page
-          context.go('/portfolio/${widget.project.id}');
-        },
+        onTap: () => context.go('${RouteNames.portfolio}/${widget.project.id}'),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,

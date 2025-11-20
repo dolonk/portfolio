@@ -1,4 +1,4 @@
-import 'info_card.dart';
+import 'widgets/info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
@@ -97,21 +97,12 @@ class ProjectOverviewSection extends StatelessWidget {
   Widget _buildInfoCards(BuildContext context, DSizes s) {
     return Column(
       children: [
-        // Client Name Card
-        /*  InfoCard(
-          icon: Icons.business_rounded,
-          label: 'Client',
-          value: project.clientName,
-          iconColor: const Color(0xFF8B5CF6), // Purple
-        ),
-        SizedBox(height: s.spaceBtwItems),*/
-
         // Launch Date Card
         InfoCard(
           icon: Icons.calendar_today_rounded,
           label: 'Launch Date',
           value: project.launchDate,
-          iconColor: const Color(0xFF3B82F6), // Blue
+          iconColor: const Color(0xFF3B82F6),
         ),
         SizedBox(height: s.spaceBtwItems),
 
