@@ -58,7 +58,7 @@ class _TimelineStepState extends State<TimelineStep> {
       duration: const Duration(milliseconds: 300),
       width: circleSize,
       height: circleSize,
-      transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
+      transform: Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
@@ -151,10 +151,7 @@ class _TimelineStepState extends State<TimelineStep> {
           SizedBox(height: s.paddingSm),
 
           // Description
-          Text(
-            widget.step.description,
-            style: fonts.bodyMedium.rubik(color: DColors.textSecondary, height: 1.6),
-          ),
+          Text(widget.step.description, style: fonts.bodyMedium.rubik(color: DColors.textSecondary, height: 1.6)),
         ],
       ),
     );

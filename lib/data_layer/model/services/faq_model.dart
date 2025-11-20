@@ -5,7 +5,7 @@ class FaqModel {
   FaqModel({required this.question, required this.answer});
 
   // Sample data for 10 FAQs
-  static List<FaqModel> getAllFaqs() {
+  static List<FaqModel> getServicesFaqs() {
     return [
       // 1. Development timeline
       FaqModel(
@@ -75,6 +75,26 @@ class FaqModel {
         question: 'How do we communicate during the project?',
         answer:
             'Regular updates via email, Slack, or your preferred tool. Weekly progress meetings, access to project management platform, and responsive communication throughout development.',
+      ),
+    ];
+  }
+
+  // Contact Page FAQs
+  static List<FaqModel> getContactFaqs() {
+    return [
+      FaqModel(question: 'How quickly do you respond?', answer: 'I usually reply within 24 hours on weekdays.'),
+      FaqModel(question: 'Do you sign NDAs?', answer: 'Yes, I can sign an NDA upon request before any discussion.'),
+      FaqModel(
+        question: 'What information should I include?',
+        answer: 'Share your project scope, expected timeline, budget range, and platform needs.',
+      ),
+      FaqModel(
+        question: 'Can we schedule a call first?',
+        answer: 'Absolutely! Use the calendar above to book a discovery call anytime.',
+      ),
+      FaqModel(
+        question: 'What time zone are you in?',
+        answer: 'I’m in GMT+6 (Dhaka, Bangladesh), but I adjust to your timezone for meetings.',
       ),
     ];
   }

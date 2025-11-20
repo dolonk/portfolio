@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'widgets/chat_options_modal.dart';
 import 'widgets/phone_options_modal.dart';
 import 'widgets/contact_option_card.dart';
-import 'widgets/chat_options_modal.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import '../../../../data_layer/model/contact/contact_info_model.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
@@ -24,39 +23,18 @@ class ContactOptionsSection extends StatelessWidget {
       child: Column(
         children: [
           // Section Heading
-          _buildSectionHeading(context, s),
+          DSectionHeader(
+            label: 'GET IN TOUCH',
+            title: 'Choose Your Preferred Way to Connect',
+            subtitle: 'Select the method that works best for you. I\'m here to help bring your ideas to life!',
+            alignment: TextAlign.center,
+          ),
           SizedBox(height: s.spaceBtwItems),
 
           // Contact Options Cards Grid
           _buildContactOptionsGrid(context, s),
         ],
       ),
-    );
-  }
-
-  /// Section Heading
-  Widget _buildSectionHeading(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Column(
-      children: [
-        Text(
-          'Choose Your Preferred Way to Connect',
-          style: fonts.headlineLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: s.paddingSm),
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 600, desktop: 700),
-          ),
-          child: Text(
-            'Select the method that works best for you. I\'m here to help bring your ideas to life!',
-            style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
     );
   }
 

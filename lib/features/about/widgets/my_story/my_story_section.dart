@@ -27,6 +27,7 @@ class MyStorySection extends StatelessWidget {
           child: Column(
             children: [
               const DSectionHeader(
+                label: 'JOURNEY',
                 title: 'My Story',
                 subtitle: 'How I became a Flutter developer',
                 alignment: TextAlign.center,

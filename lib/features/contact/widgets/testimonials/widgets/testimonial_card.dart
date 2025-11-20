@@ -16,7 +16,7 @@ class TestimonialCard extends StatefulWidget {
 }
 
 class _TestimonialCardState extends State<TestimonialCard> {
-  bool _isHovered = false;
+  final bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +56,7 @@ class _TestimonialCardState extends State<TestimonialCard> {
               ),
               child: Text(
                 '"${widget.testimonial.testimonial}"',
-                style: fonts.bodyLarge.rubik(
-                  color: DColors.textPrimary,
-                  height: 1.7,
-                  fontStyle: FontStyle.italic,
-                ),
+                style: fonts.bodyLarge.rubik(color: DColors.textPrimary, height: 1.7, fontStyle: FontStyle.italic),
                 maxLines: 6,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -119,11 +115,7 @@ class _TestimonialCardState extends State<TestimonialCard> {
                         ),
                         child: Text(
                           widget.testimonial.projectType,
-                          style: fonts.bodySmall.rubik(
-                            color: DColors.primaryButton,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
-                          ),
+                          style: fonts.bodySmall.rubik(color: DColors.primaryButton, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],

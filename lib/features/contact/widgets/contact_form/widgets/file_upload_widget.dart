@@ -49,9 +49,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red.shade400));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red.shade400));
   }
 
   @override
@@ -103,10 +101,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
 
         // File format info
         SizedBox(height: s.paddingSm),
-        Text(
-          'Supported: PDF, DOC, DOCX, ZIP (Max 10MB)',
-          style: fonts.bodySmall.rubik(color: DColors.textSecondary),
-        ),
+        Text('Supported: PDF, DOC, DOCX, ZIP (Max 10MB)', style: fonts.bodySmall.rubik(color: DColors.textSecondary)),
       ],
     );
   }
@@ -114,11 +109,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
   Widget _buildUploadPrompt(AppFonts fonts, DSizes s) {
     return Column(
       children: [
-        Icon(
-          Icons.cloud_upload_outlined,
-          size: 40,
-          color: DColors.primaryButton.withAlpha((255 * 0.5).round()),
-        ),
+        Icon(Icons.cloud_upload_outlined, size: 40, color: DColors.primaryButton.withAlpha((255 * 0.5).round())),
         SizedBox(height: s.paddingSm),
         Text(
           'Click to upload or drag and drop',

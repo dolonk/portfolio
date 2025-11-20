@@ -25,7 +25,7 @@ class TestimonialModel {
         rating: 5.0,
         testimonial:
             'Outstanding work! The Flutter app exceeded our expectations. Clean code, beautiful UI, and delivered ahead of schedule. Highly professional and communicative throughout the project.',
-        clientPhoto: null, // TODO: Add actual photo URL
+        clientPhoto: null,
         projectType: 'Mobile App Development',
       ),
 
@@ -33,7 +33,7 @@ class TestimonialModel {
       TestimonialModel(
         clientName: 'Michael Chen',
         companyRole: 'CTO, StartupHub',
-        rating: 5.0,
+        rating: 4.0,
         testimonial:
             'Incredible expertise in Flutter development! Built a complex cross-platform solution that works flawlessly on iOS, Android, and Web. The MVVM architecture is pristine and maintainable.',
         clientPhoto: null,
@@ -44,7 +44,7 @@ class TestimonialModel {
       TestimonialModel(
         clientName: 'Emily Rodriguez',
         companyRole: 'Product Manager, HealthTech Co.',
-        rating: 5.0,
+        rating: 3.0,
         testimonial:
             'Best developer I\'ve worked with! Attention to detail is exceptional. The app is fast, responsive, and users love it. Post-launch support was excellent too.',
         clientPhoto: null,
@@ -55,7 +55,7 @@ class TestimonialModel {
       TestimonialModel(
         clientName: 'David Williams',
         companyRole: 'Founder, EduLearn',
-        rating: 5.0,
+        rating: 2.0,
         testimonial:
             'Transformed our vision into reality! The e-learning platform is intuitive and scalable. Great communication, regular updates, and delivered exactly what we needed.',
         clientPhoto: null,

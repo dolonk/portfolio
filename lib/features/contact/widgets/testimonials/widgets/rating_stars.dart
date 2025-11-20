@@ -22,11 +22,7 @@ class RatingStars extends StatelessWidget {
           return Icon(Icons.star_half_rounded, size: size, color: starColor);
         } else {
           // Empty star
-          return Icon(
-            Icons.star_outline_rounded,
-            size: size,
-            color: starColor.withAlpha((255 * 0.3).round()),
-          );
+          return Icon(Icons.star_outline_rounded, size: size, color: starColor.withAlpha((255 * 0.3).round()));
         }
       }),
     );

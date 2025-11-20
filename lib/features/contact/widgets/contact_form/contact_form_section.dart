@@ -6,6 +6,7 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
 import 'package:responsive_website/data_layer/model/contact/contact_form_model.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/custom_dropdown.dart';
 import 'widgets/platform_checkbox_group.dart';
@@ -67,8 +68,14 @@ class _ContactFormSectionState extends State<ContactFormSection> {
           child: Column(
             children: [
               // Section Heading
-              _buildSectionHeading(context, s),
-              SizedBox(height: s.spaceBtwSections),
+              DSectionHeader(
+                label: 'SEND A MESSAGE',
+                title: 'Tell Me About Your Project',
+                subtitle: 'Fill out the form below and I\'ll get back to you within 24 hours',
+                alignment: TextAlign.center,
+                maxWidth: 700,
+              ),
+              SizedBox(height: s.spaceBtwItems),
 
               // Form
               _buildForm(context, s),
@@ -77,23 +84,6 @@ class _ContactFormSectionState extends State<ContactFormSection> {
         ),
       ),
     );
-  }
-
-  /// Section Heading
-  Widget _buildSectionHeading(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Column(
-      children: [
-        Text('Get Started With Your Project', style: fonts.headlineLarge, textAlign: TextAlign.center),
-        SizedBox(height: s.paddingSm),
-        Text(
-          'Fill in the details below and I\'ll get back to you within 24 hours',
-          style: fonts.bodyLarge.rubik(color: DColors.textSecondary),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms);
   }
 
   /// Main Form with Two-Column Desktop Layout
@@ -281,16 +271,17 @@ class _ContactFormSectionState extends State<ContactFormSection> {
 
           // reCAPTCHA Placeholder
           _buildRecaptchaPlaceholder(s),
-          SizedBox(height: s.spaceBtwSections),
+          SizedBox(height: s.spaceBtwItems),
+
+          // Note
+          _buildFormNote(context, s),
+          SizedBox(height: s.spaceBtwItems),
 
           // Submit Button
           Center(
             child: FormSubmitButton(isLoading: _isLoading, onPressed: _submitForm),
           ),
           SizedBox(height: s.spaceBtwItems),
-
-          // Note
-          _buildFormNote(context, s),
         ],
       ),
     ).animate().fadeIn(duration: 800.ms, delay: 300.ms);
@@ -464,15 +455,15 @@ class _ContactFormSectionState extends State<ContactFormSection> {
     _phoneController.clear();
     _companyController.clear();
     _messageController.clear();
-    setState(() {
-      _projectType = null;
-      _budgetRange = null;
-      _timeline = null;
-      _selectedPlatforms = [];
-      _ndaRequired = false;
-      _newsletterSignup = false;
-      _attachedFileName = null;
-    });
+
+    _projectType = null;
+    _budgetRange = null;
+    _timeline = null;
+    _selectedPlatforms = [];
+    _ndaRequired = false;
+    _newsletterSignup = false;
+    _attachedFileName = null;
+    setState(() {});
   }
 
   /// Show Success Snackbar

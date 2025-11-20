@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'widgets/faq/contact_faq_section.dart';
 import 'widgets/timeline/timeline_section.dart';
 import 'widgets/calendar/calendar_section.dart';
 import 'widgets/testimonials/testimonials_section.dart';
 import 'widgets/social_links/social_links_section.dart';
 import 'widgets/availability/availability_section.dart';
 import 'widgets/contact_form/contact_form_section.dart';
-import '../services/widgets/faq_section/faq_section.dart';
 import 'widgets/contact_options/contact_options_section.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/common_function/base_screen/base_screen.dart';
@@ -53,7 +53,7 @@ class _ContactPageState extends State<ContactPage> {
           const SocialLinksSection(),
 
           // FAQ section
-          const FaqSection(),
+          const ContactFaqSection(),
 
           // Availability Status
           const AvailabilitySection(),

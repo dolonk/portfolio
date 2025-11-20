@@ -81,5 +81,3 @@ class PhoneOptionsModal extends StatelessWidget {
     );
   }
 }
-
-/// Phone Option Button Widget

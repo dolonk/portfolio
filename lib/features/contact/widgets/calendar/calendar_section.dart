@@ -2,13 +2,12 @@ import 'widgets/info_badge.dart';
 import 'widgets/calendly_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/contact/calendar_info_model.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:responsive_website/data_layer/model/contact/calendar_info_model.dart';
 
 class CalendarSection extends StatelessWidget {
   const CalendarSection({super.key});
@@ -27,8 +26,14 @@ class CalendarSection extends StatelessWidget {
           child: Column(
             children: [
               // Section Heading
-              _buildSectionHeading(context, s),
-              SizedBox(height: s.spaceBtwSections),
+              DSectionHeader(
+                label: 'BOOK A CALL',
+                title: 'Schedule a Free Consultation',
+                subtitle: 'Or pick a time that works for you',
+                alignment: TextAlign.center,
+                maxWidth: 700,
+              ),
+              SizedBox(height: s.spaceBtwItems),
 
               // Calendly Widget
               CalendlyWidget(calendlyUrl: 'https://calendly.com/your-username/30min', height: 700),
@@ -41,31 +46,6 @@ class CalendarSection extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// Section Heading
-  Widget _buildSectionHeading(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Column(
-      children: [
-        Text(
-          'Schedule a Free Consultation',
-          style: fonts.headlineLarge.rajdhani(
-            fontSize: context.responsiveValue(mobile: 28, tablet: 32, desktop: 36),
-            fontWeight: FontWeight.bold,
-            color: DColors.textPrimary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: s.paddingSm),
-        Text(
-          'Or pick a time that works for you',
-          style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms);
   }
 
   /// Info Badges Below Calendar

@@ -9,7 +9,13 @@ class DialogOptionButton extends StatefulWidget {
   final Color color;
   final VoidCallback onTap;
 
-  const DialogOptionButton({required this.icon, required this.label, required this.color, required this.onTap});
+  const DialogOptionButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
 
   @override
   State<DialogOptionButton> createState() => _DialogOptionButtonState();

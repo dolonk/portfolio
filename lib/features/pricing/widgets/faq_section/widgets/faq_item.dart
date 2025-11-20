@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
+import '../../../../../data_layer/model/pricing/pricing_faq_model.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/data_layer/model/pricing/pricing_faq_model.dart';
 
 class FaqItem extends StatefulWidget {
   final PricingFaqModel faq;
@@ -39,13 +39,7 @@ class _FaqItemState extends State<FaqItem> {
             width: widget.isExpanded ? 2 : 1.5,
           ),
           boxShadow: widget.isExpanded
-              ? [
-                  BoxShadow(
-                    color: DColors.primaryButton.withOpacity(0.15),
-                    blurRadius: 15,
-                    offset: Offset(0, 5),
-                  ),
-                ]
+              ? [BoxShadow(color: DColors.primaryButton.withOpacity(0.15), blurRadius: 15, offset: Offset(0, 5))]
               : null,
         ),
         child: Column(
@@ -104,21 +98,9 @@ class _FaqItemState extends State<FaqItem> {
               secondChild: Container(
                 width: double.infinity,
                 padding: EdgeInsets.only(
-                  left: context.responsiveValue(
-                    mobile: s.paddingLg,
-                    tablet: s.paddingXl,
-                    desktop: s.paddingXl,
-                  ),
-                  right: context.responsiveValue(
-                    mobile: s.paddingLg,
-                    tablet: s.paddingXl,
-                    desktop: s.paddingXl,
-                  ),
-                  bottom: context.responsiveValue(
-                    mobile: s.paddingLg,
-                    tablet: s.paddingXl,
-                    desktop: s.paddingXl,
-                  ),
+                  left: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
+                  right: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
+                  bottom: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
                   top: 0,
                 ),
                 child: Column(
