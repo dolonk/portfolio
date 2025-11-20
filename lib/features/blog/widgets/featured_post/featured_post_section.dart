@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 
+import '../../../../common_function/style/custom_button.dart';
 import '../../../../route/route_name.dart';
 import 'widgets/post_tags.dart';
 import 'widgets/featured_badge.dart';
@@ -41,12 +42,10 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
             onEnter: (_) => setState(() => _isHovered = true),
             onExit: (_) => setState(() => _isHovered = false),
             child: GestureDetector(
-              onTap: () {
-                context.go('${RouteNames.blog}/${post.id}');
-              },
+              onTap: () => context.go('${RouteNames.blog}/${post.id}'),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+                transform: Matrix4.diagonal3Values(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
                 decoration: BoxDecoration(
                   color: DColors.cardBackground,
                   borderRadius: BorderRadius.circular(s.borderRadiusLg),
@@ -73,8 +72,8 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(s.borderRadiusLg),
                   child: context.isMobile
-                      ? _buildMobileLayout(context, post, s)
-                      : _buildDesktopLayout(context, post, s),
+                      ? _buildMobileLayout(context, post, s, () => context.go('${RouteNames.blog}/${post.id}'))
+                      : _buildDesktopLayout(context, post, s, () => context.go('${RouteNames.blog}/${post.id}')),
                 ),
               ),
             ),
@@ -85,7 +84,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Desktop/Tablet Layout (Image on Left, Content on Right)
-  Widget _buildDesktopLayout(BuildContext context, BlogPostModel post, DSizes s) {
+  Widget _buildDesktopLayout(BuildContext context, BlogPostModel post, DSizes s, void Function() onPressed) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
@@ -96,7 +95,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
               Expanded(flex: 45, child: _buildImageSection(context, post, s)),
 
               // Content Section (Right - 55%)
-              Expanded(flex: 55, child: _buildContentSection(context, post, s)),
+              Expanded(flex: 55, child: _buildContentSection(context, post, s, onPressed)),
             ],
           ),
 
@@ -108,14 +107,14 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Mobile Layout (Image on Top, Content Below)
-  Widget _buildMobileLayout(BuildContext context, BlogPostModel post, DSizes s) {
+  Widget _buildMobileLayout(BuildContext context, BlogPostModel post, DSizes s, void Function() onPressed) {
     return Column(
       children: [
         // Image Section (Top)
         _buildImageSection(context, post, s),
 
         // Content Section (Bottom)
-        _buildContentSection(context, post, s),
+        _buildContentSection(context, post, s, onPressed),
       ],
     );
   }
@@ -158,7 +157,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Content Section
-  Widget _buildContentSection(BuildContext context, BlogPostModel post, DSizes s) {
+  Widget _buildContentSection(BuildContext context, BlogPostModel post, DSizes s, void Function() onPressed) {
     final fonts = context.fonts;
 
     return Padding(
@@ -203,43 +202,17 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
           SizedBox(height: s.spaceBtwItems),
 
           // CTA Button
-          _buildCTAButton(context, s, fonts),
-        ],
-      ),
-    );
-  }
-
-  /// CTA Button
-  Widget _buildCTAButton(BuildContext context, DSizes s, AppFonts fonts) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: context.responsiveValue(mobile: 24.0, tablet: 28.0, desktop: 32.0),
-        vertical: context.responsiveValue(mobile: 12.0, tablet: 14.0, desktop: 16.0),
-      ),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [DColors.primaryButton, Color(0xFFD4003D)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        boxShadow: [
-          BoxShadow(
-            color: DColors.primaryButton.withAlpha((255 * 0.4).round()),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Read Article',
-            style: fonts.bodyMedium.rubik(color: DColors.textPrimary, fontWeight: FontWeight.w600),
-          ),
-          SizedBox(width: s.paddingSm),
-          Icon(Icons.arrow_forward_rounded, color: DColors.textPrimary, size: 20),
+          CustomButton(
+            width: context.responsiveValue(mobile: double.infinity, desktop: 200),
+            height: 52,
+            tittleText: "Read Article",
+            icon: Icons.arrow_forward_rounded,
+            isPrimary: true,
+            iconRight: true,
+            backgroundColor: DColors.primaryButton,
+            foregroundColor: Colors.white,
+            onPressed: onPressed,
+          )
         ],
       ),
     );

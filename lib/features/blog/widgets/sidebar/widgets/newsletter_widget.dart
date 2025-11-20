@@ -25,15 +25,13 @@ class _NewsletterWidgetState extends State<NewsletterWidget> {
     if (_emailController.text.isEmpty) return;
 
     setState(() => _isLoading = true);
-
-    // TODO: Implement newsletter subscription
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('✅ Successfully subscribed!'), backgroundColor: DColors.primaryButton),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('✅ Successfully subscribed!'), backgroundColor: DColors.primaryButton));
       _emailController.clear();
     }
   }
@@ -77,10 +75,7 @@ class _NewsletterWidgetState extends State<NewsletterWidget> {
           // Subheading
           Text(
             'Join 500+ developers receiving Flutter insights, tutorials, and best practices.',
-            style: fonts.bodySmall.rubik(
-              color: DColors.textPrimary.withAlpha((255 * 0.9).round()),
-              height: 1.5,
-            ),
+            style: fonts.bodySmall.rubik(color: DColors.textPrimary.withAlpha((255 * 0.9).round()), height: 1.5),
           ),
           SizedBox(height: s.paddingMd),
 
