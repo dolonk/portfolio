@@ -63,7 +63,7 @@ class CustomButton extends StatefulWidget {
     this.height = 50,
     this.isPrimary = true,
     this.icon,
-    this.iconRight = false, // Default to false (icon on left)
+    this.iconRight = false,
     this.iconSize,
     this.backgroundColor,
     this.foregroundColor,

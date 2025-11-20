@@ -24,7 +24,7 @@ class BlogDetailHero extends StatelessWidget {
       height: context.responsiveValue(
         mobile: ResponsiveHelper.getHeight(context) * 0.4,
         tablet: ResponsiveHelper.getHeight(context) * 0.28,
-        desktop: ResponsiveHelper.getHeight(context) * 0.5,
+        desktop: ResponsiveHelper.getHeight(context) * 0.53,
       ),
       child: Stack(
         children: [

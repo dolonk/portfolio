@@ -33,7 +33,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          transform: Matrix4.identity()..scale(_isHovered ? 1.03 : 1.0),
+          transform: Matrix4.diagonal3Values(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
           decoration: BoxDecoration(
             color: DColors.cardBackground,
             borderRadius: BorderRadius.circular(s.borderRadiusLg),
@@ -147,7 +147,10 @@ class _BlogPostCardState extends State<BlogPostCard> {
                 ),
                 child: Text(
                   widget.post.category,
-                  style: context.fonts.labelSmall.rubik(color: DColors.textPrimary, fontWeight: FontWeight.bold),
+                  style: context.fonts.labelSmall.rubik(
+                    color: DColors.textPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -263,7 +266,10 @@ class _BlogPostCardState extends State<BlogPostCard> {
             borderRadius: BorderRadius.circular(s.borderRadiusSm),
             border: Border.all(color: DColors.primaryButton.withAlpha((255 * 0.3).round()), width: 1),
           ),
-          child: Text('#$tag', style: context.fonts.labelSmall.rubik(color: DColors.textSecondary, fontSize: 11)),
+          child: Text(
+            '#$tag',
+            style: context.fonts.labelSmall.rubik(color: DColors.textSecondary, fontSize: 11),
+          ),
         );
       }).toList(),
     );
@@ -281,7 +287,11 @@ class _BlogPostCardState extends State<BlogPostCard> {
           ),
         ),
         SizedBox(width: 4),
-        Icon(Icons.arrow_forward_rounded, color: _isHovered ? DColors.primaryButton : DColors.textSecondary, size: 16),
+        Icon(
+          Icons.arrow_forward_rounded,
+          color: _isHovered ? DColors.primaryButton : DColors.textSecondary,
+          size: 16,
+        ),
       ],
     );
   }

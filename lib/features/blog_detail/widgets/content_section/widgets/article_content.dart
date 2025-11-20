@@ -9,11 +9,7 @@ class ArticleContent extends StatelessWidget {
   final String content;
   final Map<int, GlobalKey> headingKeys;
 
-  const ArticleContent({
-    super.key,
-    required this.content,
-    required this.headingKeys, // ✅ Add this
-  });
+  const ArticleContent({super.key, required this.content, required this.headingKeys});
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +142,10 @@ class ArticleContent extends StatelessWidget {
       widgets.add(
         Padding(
           padding: EdgeInsets.only(bottom: s.paddingMd),
-          child: Text(line, style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.7, fontSize: 16)),
+          child: Text(
+            line,
+            style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.7, fontSize: 16),
+          ),
         ),
       );
     }

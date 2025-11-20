@@ -32,7 +32,10 @@ class _ContentSectionState extends State<ContentSection> {
   /// Extract H2 headings from content for TOC
   void _extractHeadings() {
     final lines = widget.post.content.split('\n');
-    _headings = lines.where((line) => line.startsWith('## ')).map((line) => line.replaceAll('## ', '')).toList();
+    _headings = lines
+        .where((line) => line.startsWith('## '))
+        .map((line) => line.replaceAll('## ', ''))
+        .toList();
   }
 
   /// Create GlobalKeys for each heading
@@ -50,7 +53,7 @@ class _ContentSectionState extends State<ContentSection> {
         key!.currentContext!,
         duration: const Duration(milliseconds: 600),
         curve: Curves.easeInOut,
-        alignment: 0.1, // Scroll so heading is near top (10% from top)
+        alignment: 0.1,
       );
     }
   }
@@ -116,7 +119,11 @@ class _ContentSectionState extends State<ContentSection> {
 
         // TOC at top (collapsible)
         if (_headings.isNotEmpty) ...[
-          TableOfContents(headings: _headings, activeIndex: _activeHeadingIndex, onHeadingTap: _scrollToHeading),
+          TableOfContents(
+            headings: _headings,
+            activeIndex: _activeHeadingIndex,
+            onHeadingTap: _scrollToHeading,
+          ),
           SizedBox(height: s.spaceBtwSections),
         ],
 

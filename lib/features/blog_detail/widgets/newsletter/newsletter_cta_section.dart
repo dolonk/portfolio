@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -73,55 +72,51 @@ class _NewsletterCtaSectionState extends State<NewsletterCtaSection> {
 
     return SectionContainer(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
-      child:
-          Center(
-                child: Container(
-                  padding: EdgeInsets.all(
-                    context.responsiveValue(mobile: s.paddingXl, tablet: s.paddingXl, desktop: s.paddingXl),
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [DColors.primaryButton, Color(0xFF8B5CF6), Color(0xFFD4003D)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(s.borderRadiusLg),
-                    boxShadow: [
-                      BoxShadow(
-                        color: DColors.primaryButton.withAlpha((255 * 0.4).round()),
-                        blurRadius: 30,
-                        offset: const Offset(0, 12),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      // Icon
-                      _buildIcon(context, s),
-                      SizedBox(height: s.paddingMd),
+      child: Center(
+        child: Container(
+          padding: EdgeInsets.all(
+            context.responsiveValue(mobile: s.paddingXl, tablet: s.paddingXl, desktop: s.paddingXl),
+          ),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [DColors.primaryButton, Color(0xFF8B5CF6), Color(0xFFD4003D)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(s.borderRadiusLg),
+            boxShadow: [
+              BoxShadow(
+                color: DColors.primaryButton.withAlpha((255 * 0.4).round()),
+                blurRadius: 30,
+                offset: const Offset(0, 12),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              // Icon
+              _buildIcon(context, s),
+              SizedBox(height: s.paddingMd),
 
-                      // Heading
-                      _buildHeading(context, s),
-                      SizedBox(height: s.paddingSm),
+              // Heading
+              _buildHeading(context, s),
+              SizedBox(height: s.paddingSm),
 
-                      // Subheading
-                      _buildSubheading(context, s),
-                      SizedBox(height: s.spaceBtwItems),
+              // Subheading
+              _buildSubheading(context, s),
+              SizedBox(height: s.spaceBtwItems),
 
-                      // Email Input + Subscribe Button
-                      context.isMobile ? _buildMobileForm(context, s) : _buildDesktopForm(context, s),
+              // Email Input + Subscribe Button
+              context.isMobile ? _buildMobileForm(context, s) : _buildDesktopForm(context, s),
 
-                      SizedBox(height: s.paddingMd),
+              SizedBox(height: s.paddingMd),
 
-                      // Social Proof
-                      _buildSocialProof(context, s),
-                    ],
-                  ),
-                ),
-              )
-              .animate()
-              .fadeIn(duration: 600.ms, delay: 1100.ms)
-              .scale(begin: const Offset(0.95, 0.95), duration: 600.ms, delay: 1100.ms),
+              // Social Proof
+              _buildSocialProof(context, s),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -212,12 +207,14 @@ class _NewsletterCtaSectionState extends State<NewsletterCtaSection> {
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
-          style: fonts.bodyMedium.rubik(color: DColors.textPrimary),
+
+          //style: fonts.bodyMedium.rubik(color: DColors.primaryButton),
           decoration: InputDecoration(
             hintText: 'Enter your email address',
             hintStyle: fonts.bodyMedium.rubik(color: DColors.textSecondary),
-            filled: true,
-            fillColor: Colors.white,
+
+            //filled: true,
+            //fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(s.borderRadiusMd),
               borderSide: BorderSide.none,
@@ -248,7 +245,10 @@ class _NewsletterCtaSectionState extends State<NewsletterCtaSection> {
         SizedBox(width: s.paddingSm),
         Text(
           'Join 500+ Flutter developers',
-          style: fonts.bodySmall.rubik(color: Colors.white.withAlpha((255 * 0.9).round()), fontWeight: FontWeight.w600),
+          style: fonts.bodySmall.rubik(
+            color: Colors.white.withAlpha((255 * 0.9).round()),
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -283,7 +283,11 @@ class _SubscribeButtonState extends State<_SubscribeButton> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(
-            horizontal: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
+            horizontal: context.responsiveValue(
+              mobile: s.paddingLg,
+              tablet: s.paddingXl,
+              desktop: s.paddingXl,
+            ),
             vertical: context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingMd, desktop: s.paddingMd),
           ),
           decoration: BoxDecoration(

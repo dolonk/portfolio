@@ -1,6 +1,7 @@
+import 'widgets/comment_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'widgets/submit_comment_button.dart';
+import 'widgets/discussion_on_twitter_button.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/data_layer/model/blog/comment_model.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
@@ -8,7 +9,6 @@ import 'package:responsive_website/data_layer/model/blog/blog_post_model.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/utility/url_launcher_service/url_launcher_service.dart';
 
 enum CommentSort { newest, oldest, mostLiked }
 
@@ -138,7 +138,7 @@ class _CommentsSectionState extends State<CommentsSection> {
               SizedBox(height: s.spaceBtwItems),
 
               // Twitter Discuss Button
-              _buildTwitterDiscussButton(context, s),
+              DiscussOnTwitterButton(post: widget.post),
               SizedBox(height: s.spaceBtwItems),
 
               // Divider
@@ -154,7 +154,7 @@ class _CommentsSectionState extends State<CommentsSection> {
             ],
           ),
         ),
-      ).animate().fadeIn(duration: 600.ms, delay: 1000.ms).slideY(begin: 0.1, duration: 600.ms, delay: 1000.ms),
+      ),
     );
   }
 
@@ -257,11 +257,6 @@ class _CommentsSectionState extends State<CommentsSection> {
     }
   }
 
-  /// Twitter Discuss Button
-  Widget _buildTwitterDiscussButton(BuildContext context, DSizes s) {
-    return _DiscussOnTwitterButton(post: widget.post);
-  }
-
   /// Add Comment Form
   Widget _buildAddCommentForm(BuildContext context, DSizes s) {
     final fonts = context.fonts;
@@ -307,7 +302,7 @@ class _CommentsSectionState extends State<CommentsSection> {
           SizedBox(height: s.paddingMd),
           Align(
             alignment: Alignment.centerRight,
-            child: _SubmitCommentButton(onPressed: _submitComment, isSubmitting: _isSubmitting),
+            child: SubmitCommentButton(onPressed: _submitComment, isSubmitting: _isSubmitting),
           ),
         ],
       ),
@@ -322,7 +317,7 @@ class _CommentsSectionState extends State<CommentsSection> {
 
     return Column(
       children: _comments.map((comment) {
-        return _CommentCard(
+        return CommentCard(
           comment: comment,
           onLike: () => _likeComment(comment.id),
           onReplyLike: (replyId) => _likeComment(replyId),
@@ -346,357 +341,12 @@ class _CommentsSectionState extends State<CommentsSection> {
             style: fonts.titleMedium.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
           ),
           SizedBox(height: s.paddingSm),
-          Text('Be the first to share your thoughts!', style: fonts.bodyMedium.rubik(color: DColors.textSecondary)),
+          Text(
+            'Be the first to share your thoughts!',
+            style: fonts.bodyMedium.rubik(color: DColors.textSecondary),
+          ),
         ],
       ),
     );
-  }
-}
-
-// Comment Card Widget
-class _CommentCard extends StatelessWidget {
-  final CommentModel comment;
-  final VoidCallback onLike;
-  final Function(String) onReplyLike;
-
-  const _CommentCard({required this.comment, required this.onLike, required this.onReplyLike});
-
-  @override
-  Widget build(BuildContext context) {
-    final s = context.sizes;
-
-    return Container(
-      margin: EdgeInsets.only(bottom: s.paddingMd),
-      padding: EdgeInsets.all(s.paddingMd),
-      decoration: BoxDecoration(
-        color: DColors.cardBackground,
-        borderRadius: BorderRadius.circular(s.borderRadiusLg),
-        border: Border.all(color: DColors.cardBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Comment Header
-          _buildCommentHeader(context, s),
-          SizedBox(height: s.paddingSm),
-
-          // Comment Content
-          _buildCommentContent(context, s),
-          SizedBox(height: s.paddingMd),
-
-          // Comment Actions
-          _buildCommentActions(context, s),
-
-          // Replies
-          if (comment.replies.isNotEmpty) ...[SizedBox(height: s.paddingMd), _buildReplies(context, s)],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCommentHeader(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Row(
-      children: [
-        // Avatar
-        CircleAvatar(
-          radius: 20,
-          backgroundColor: DColors.primaryButton.withAlpha((255 * 0.2).round()),
-          backgroundImage: AssetImage(comment.authorImage),
-        ),
-        SizedBox(width: s.paddingSm),
-
-        // Author + Time
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                comment.authorName,
-                style: fonts.bodyMedium.rubik(fontWeight: FontWeight.bold, color: DColors.textPrimary),
-              ),
-              Text(
-                _formatTimestamp(comment.timestamp),
-                style: fonts.labelSmall.rubik(color: DColors.textSecondary, fontSize: 11),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCommentContent(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Text(comment.content, style: fonts.bodyMedium.rubik(color: DColors.textSecondary, height: 1.6));
-  }
-
-  Widget _buildCommentActions(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Row(
-      children: [
-        // Like Button
-        _LikeButton(likes: comment.likes, onTap: onLike),
-        SizedBox(width: s.paddingMd),
-
-        // Reply Button (placeholder)
-        Icon(Icons.reply_rounded, color: DColors.textSecondary, size: 18),
-        SizedBox(width: 4),
-        Text('Reply', style: fonts.labelSmall.rubik(color: DColors.textSecondary)),
-      ],
-    );
-  }
-
-  Widget _buildReplies(BuildContext context, DSizes s) {
-    return Container(
-      margin: EdgeInsets.only(left: s.paddingLg),
-      padding: EdgeInsets.only(left: s.paddingMd),
-      decoration: BoxDecoration(
-        border: Border(left: BorderSide(color: DColors.cardBorder, width: 2)),
-      ),
-      child: Column(
-        children: comment.replies.map((reply) {
-          return Container(
-            margin: EdgeInsets.only(bottom: s.paddingSm),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Reply Header
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 16,
-                      backgroundColor: DColors.primaryButton.withAlpha((255 * 0.2).round()),
-                      backgroundImage: AssetImage(reply.authorImage),
-                    ),
-                    SizedBox(width: s.paddingSm),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            reply.authorName,
-                            style: context.fonts.bodySmall.rubik(
-                              fontWeight: FontWeight.bold,
-                              color: DColors.textPrimary,
-                            ),
-                          ),
-                          Text(
-                            _formatTimestamp(reply.timestamp),
-                            style: context.fonts.labelSmall.rubik(color: DColors.textSecondary, fontSize: 10),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: s.paddingSm),
-
-                // Reply Content
-                Text(reply.content, style: context.fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.6)),
-                SizedBox(height: s.paddingSm),
-
-                // Reply Actions
-                _LikeButton(likes: reply.likes, onTap: () => onReplyLike(reply.id)),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  String _formatTimestamp(DateTime timestamp) {
-    final now = DateTime.now();
-    final difference = now.difference(timestamp);
-
-    if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
-  }
-}
-
-// Like Button Widget
-class _LikeButton extends StatefulWidget {
-  final int likes;
-  final VoidCallback onTap;
-
-  const _LikeButton({required this.likes, required this.onTap});
-
-  @override
-  State<_LikeButton> createState() => _LikeButtonState();
-}
-
-class _LikeButtonState extends State<_LikeButton> {
-  bool _isHovered = false;
-  bool _isLiked = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final fonts = context.fonts;
-
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () {
-          setState(() => _isLiked = !_isLiked);
-          widget.onTap();
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              _isLiked ? Icons.favorite : Icons.favorite_border_rounded,
-              color: _isLiked ? Colors.red : (_isHovered ? DColors.primaryButton : DColors.textSecondary),
-              size: 18,
-            ),
-            SizedBox(width: 4),
-            Text(
-              '${widget.likes}',
-              style: fonts.labelSmall.rubik(
-                color: _isLiked ? Colors.red : (_isHovered ? DColors.primaryButton : DColors.textSecondary),
-                fontWeight: _isLiked ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Submit Comment Button
-class _SubmitCommentButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final bool isSubmitting;
-
-  const _SubmitCommentButton({required this.onPressed, required this.isSubmitting});
-
-  @override
-  State<_SubmitCommentButton> createState() => _SubmitCommentButtonState();
-}
-
-class _SubmitCommentButtonState extends State<_SubmitCommentButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = context.sizes;
-    final fonts = context.fonts;
-
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.isSubmitting ? null : widget.onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: EdgeInsets.symmetric(horizontal: s.paddingLg, vertical: s.paddingMd),
-          decoration: BoxDecoration(
-            gradient: _isHovered ? const LinearGradient(colors: [DColors.primaryButton, Color(0xFFD4003D)]) : null,
-            color: _isHovered ? null : DColors.primaryButton,
-            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-            boxShadow: _isHovered
-                ? [
-                    BoxShadow(
-                      color: DColors.primaryButton.withAlpha((255 * 0.4).round()),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                : null,
-          ),
-          child: widget.isSubmitting
-              ? SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-              : Text(
-                  'Post Comment',
-                  style: fonts.bodyMedium.rubik(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-        ),
-      ),
-    );
-  }
-}
-
-// Discuss on Twitter Button (same as before)
-class _DiscussOnTwitterButton extends StatefulWidget {
-  final BlogPostModel post;
-
-  const _DiscussOnTwitterButton({required this.post});
-
-  @override
-  State<_DiscussOnTwitterButton> createState() => _DiscussOnTwitterButtonState();
-}
-
-class _DiscussOnTwitterButtonState extends State<_DiscussOnTwitterButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = context.sizes;
-    final fonts = context.fonts;
-
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: _openTwitterDiscussion,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: s.paddingLg, vertical: s.paddingMd),
-          decoration: BoxDecoration(
-            gradient: _isHovered ? const LinearGradient(colors: [Color(0xFF1DA1F2), Color(0xFF0C85D0)]) : null,
-            color: _isHovered ? null : const Color(0xFF1DA1F2).withAlpha((255 * 0.1).round()),
-            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-            border: Border.all(color: _isHovered ? const Color(0xFF1DA1F2) : DColors.cardBorder, width: 2),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FontAwesomeIcons.xTwitter, color: _isHovered ? Colors.white : const Color(0xFF1DA1F2), size: 20),
-              SizedBox(width: s.paddingSm),
-              Text(
-                'Discuss on Twitter',
-                style: fonts.bodyMedium.rubik(
-                  color: _isHovered ? Colors.white : const Color(0xFF1DA1F2),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _openTwitterDiscussion() async {
-    final tweetText = 'Just read "${widget.post.title}"\n\nThoughts:';
-    final postUrl = 'https://yourwebsite.com/blog/${widget.post.id}';
-    final twitterUrl =
-        'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(tweetText)}&url=${Uri.encodeComponent(postUrl)}';
-
-    final urlLauncher = UrlLauncherService();
-    await urlLauncher.launchWebsite(twitterUrl);
   }
 }

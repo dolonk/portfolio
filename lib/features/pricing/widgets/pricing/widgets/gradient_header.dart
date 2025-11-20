@@ -21,7 +21,11 @@ class GradientHeader extends StatelessWidget {
         vertical: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
       ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: _getGradientColors()),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: _getGradientColors(),
+        ),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(s.borderRadiusLg),
           topRight: Radius.circular(s.borderRadiusLg),
@@ -53,7 +57,10 @@ class GradientHeader extends StatelessWidget {
           SizedBox(height: s.paddingSm),
 
           // Tagline
-          Text(tier.tagline, style: fonts.bodyMedium.rubik(color: Colors.white.withAlpha((255 * 0.9).round()))),
+          Text(
+            tier.tagline,
+            style: fonts.bodyMedium.rubik(color: Colors.white.withAlpha((255 * 0.9).round())),
+          ),
         ],
       ),
     );

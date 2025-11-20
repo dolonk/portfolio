@@ -91,6 +91,7 @@ class MyServiceSection extends StatelessWidget {
           // Using new CustomButton
           CustomButton(
             width: context.isMobile ? double.infinity : 250,
+            iconRight: true,
             tittleText: 'View All Services',
             icon: Icons.arrow_forward_rounded,
             onPressed: () => context.go(RouteNames.services),

@@ -33,7 +33,7 @@ class ShareButtons extends StatelessWidget {
         // LinkedIn Share
         _ShareButton(
           icon: FontAwesomeIcons.linkedin,
-          label: 'Share',
+          label: 'Linkedin',
           color: const Color(0xFF0077B5),
           onTap: () => _shareOnLinkedIn(),
         ),
@@ -41,7 +41,7 @@ class ShareButtons extends StatelessWidget {
         // Facebook Share
         _ShareButton(
           icon: FontAwesomeIcons.facebook,
-          label: 'Share',
+          label: 'Facebook',
           color: const Color(0xFF1877F2),
           onTap: () => _shareOnFacebook(),
         ),

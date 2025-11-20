@@ -5,7 +5,7 @@ class CommentModel {
   final String content;
   final DateTime timestamp;
   final int likes;
-  final String? parentId; // For replies
+  final String? parentId;
   final List<CommentModel> replies;
 
   CommentModel({

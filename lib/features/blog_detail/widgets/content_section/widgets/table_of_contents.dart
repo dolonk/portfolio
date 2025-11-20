@@ -9,7 +9,12 @@ class TableOfContents extends StatefulWidget {
   final int activeIndex;
   final Function(int) onHeadingTap;
 
-  const TableOfContents({super.key, required this.headings, required this.activeIndex, required this.onHeadingTap});
+  const TableOfContents({
+    super.key,
+    required this.headings,
+    required this.activeIndex,
+    required this.onHeadingTap,
+  });
 
   @override
   State<TableOfContents> createState() => _TableOfContentsState();
