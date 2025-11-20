@@ -28,31 +28,22 @@ class _StatsCardState extends State<StatsCard> {
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
+        transform: Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0),
         padding: EdgeInsets.all(s.paddingMd),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              widget.stat.accentColor.withAlpha((255 * 0.1).round()),
-              widget.stat.accentColor.withAlpha((255 * 0.05).round()),
-            ],
+            colors: [widget.stat.accentColor.withAlpha((25)), widget.stat.accentColor.withAlpha((12))],
           ),
           borderRadius: BorderRadius.circular(s.borderRadiusMd),
           border: Border.all(
-            color: _isHovered
-                ? widget.stat.accentColor
-                : widget.stat.accentColor.withAlpha((255 * 0.3).round()),
+            color: _isHovered ? widget.stat.accentColor : widget.stat.accentColor.withAlpha(76),
             width: 2,
           ),
           boxShadow: [
             if (_isHovered)
-              BoxShadow(
-                color: widget.stat.accentColor.withAlpha((255 * 0.2).round()),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-              ),
+              BoxShadow(color: widget.stat.accentColor.withAlpha((51)), blurRadius: 15, offset: const Offset(0, 5)),
           ],
         ),
         child: Column(

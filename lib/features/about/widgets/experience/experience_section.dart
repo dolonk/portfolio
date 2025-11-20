@@ -6,6 +6,7 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
 import 'package:responsive_website/data_layer/model/about/experience_model.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'widgets/experience_card.dart';
 
 class ExperienceSection extends StatelessWidget {
@@ -26,11 +27,16 @@ class ExperienceSection extends StatelessWidget {
           child: Column(
             children: [
               // Section Heading
-              _buildSectionHeading(context, s),
+              DSectionHeader(
+                label: 'CAREER JOURNEY',
+                title: 'Professional Experience',
+                subtitle: 'My journey in the tech industry',
+                alignment: TextAlign.center,
+              ),
               SizedBox(height: s.spaceBtwItems),
 
               // Experience Timeline
-              _buildExperienceTimeline(context, s),
+              _buildExperienceTimeline(),
             ],
           ),
         ),
@@ -38,38 +44,8 @@ class ExperienceSection extends StatelessWidget {
     );
   }
 
-  /// Section Heading
-  Widget _buildSectionHeading(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Column(
-      children: [
-        Text(
-          'Professional Experience',
-          style: fonts.headlineLarge.rajdhani(
-            fontSize: context.responsiveValue(mobile: 28, tablet: 32, desktop: 36),
-            fontWeight: FontWeight.bold,
-            color: DColors.textPrimary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: s.paddingSm),
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 600, desktop: 700),
-          ),
-          child: Text(
-            'My journey in the tech industry',
-            style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms);
-  }
-
   /// Experience Timeline
-  Widget _buildExperienceTimeline(BuildContext context, DSizes s) {
+  Widget _buildExperienceTimeline() {
     final experiences = ExperienceModel.getAllExperiences();
 
     return Column(

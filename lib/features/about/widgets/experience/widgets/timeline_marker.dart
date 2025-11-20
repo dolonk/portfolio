@@ -7,12 +7,7 @@ class TimelineMarker extends StatelessWidget {
   final bool isCurrent;
   final IconData icon;
 
-  const TimelineMarker({
-    super.key,
-    required this.accentColor,
-    this.isCurrent = false,
-    this.icon = Icons.work_rounded,
-  });
+  const TimelineMarker({super.key, required this.accentColor, this.isCurrent = false, this.icon = Icons.work_rounded});
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +21,9 @@ class TimelineMarker extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [accentColor, accentColor.withAlpha((255 * 0.7).round())],
+          colors: [accentColor, accentColor.withAlpha(178)],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: accentColor.withAlpha((255 * 0.4).round()),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: accentColor.withAlpha(102), blurRadius: 15, offset: const Offset(0, 5))],
       ),
       child: Icon(icon, color: Colors.white, size: size * 0.5),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:responsive_website/route/route_name.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -8,6 +10,7 @@ import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
 import 'package:responsive_website/data_layer/model/about/about_stats_model.dart';
 import 'package:responsive_website/data_layer/model/about/social_link_model.dart';
+import '../../../../common_function/style/custom_button.dart';
 import 'widgets/stats_card.dart';
 import 'widgets/social_link_button.dart';
 
@@ -61,11 +64,7 @@ class AboutHeroSection extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF8B5CF6), // Purple
-            Color(0xFF3B82F6), // Blue
-            Color(0xFF10B981), // Green
-          ],
+          colors: [Color(0xFF8B5CF6), Color(0xFF3B82F6), Color(0xFF10B981)],
         ),
         boxShadow: [
           BoxShadow(
@@ -103,12 +102,8 @@ class AboutHeroSection extends StatelessWidget {
       children: [
         // Name with Wave Emoji
         ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [
-              Color(0xFF8B5CF6), // Purple
-              Color(0xFF3B82F6), // Blue
-            ],
-          ).createShader(bounds),
+          shaderCallback: (bounds) =>
+              const LinearGradient(colors: [Color(0xFF8B5CF6), Color(0xFF3B82F6)]).createShader(bounds),
           child: Text(
             'Hi, I\'m Dolon Kumar 👋',
             style: fonts.displaySmall.rajdhani(
@@ -172,7 +167,6 @@ class AboutHeroSection extends StatelessWidget {
     ).animate().fadeIn(duration: 600.ms, delay: 600.ms).slideY(begin: 0.1, duration: 600.ms, delay: 600.ms);
   }
 
-  /// CTA Buttons
   Widget _buildCTAButtons(BuildContext context, DSizes s) {
     return Wrap(
       spacing: s.paddingMd,
@@ -180,82 +174,42 @@ class AboutHeroSection extends StatelessWidget {
       alignment: WrapAlignment.center,
       children: [
         // Download CV Button
-        _buildPrimaryButton(
-          context: context,
-          label: 'Download CV',
+        CustomButton(
+          width: context.responsiveValue(
+            mobile: (context.screenWidth - s.paddingMd * 3) / 2,
+            tablet: 180,
+            desktop: 200,
+          ),
+          padding: EdgeInsets.all(s.paddingSm),
+          height: 48,
+          tittleText: 'Download CV',
           icon: Icons.download_rounded,
+          isPrimary: true,
+          backgroundColor: DColors.primaryButton,
+          foregroundColor: Colors.white,
           onPressed: () {
-            // TODO: Add CV download functionality
-            debugPrint('Download CV pressed');
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('CV download coming soon!'), backgroundColor: Colors.orange));
           },
         ),
 
         // Let's Connect Button
-        _buildSecondaryButton(
-          context: context,
-          label: 'Let\'s Connect',
+        CustomButton(
+          width: context.responsiveValue(
+            mobile: (context.screenWidth - s.paddingMd * 3) / 2,
+            tablet: 180,
+            desktop: 200,
+          ),
+          padding: EdgeInsets.all(s.paddingSm),
+          height: 48,
+          tittleText: 'Let\'s Connect',
           icon: Icons.chat_rounded,
-          onPressed: () {
-            // TODO: Navigate to Contact page
-            debugPrint('Let\'s Connect pressed');
-          },
+          isPrimary: false,
+          foregroundColor: DColors.primaryButton,
+          onPressed: () => context.go(RouteNames.contact),
         ),
       ],
-    ).animate().fadeIn(duration: 600.ms, delay: 800.ms).slideY(begin: 0.1, duration: 600.ms, delay: 800.ms);
-  }
-
-  /// Primary Button
-  Widget _buildPrimaryButton({
-    required BuildContext context,
-    required String label,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    final s = context.sizes;
-    final fonts = context.fonts;
-
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 20),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: DColors.primaryButton,
-        foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(
-          horizontal: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-          vertical: s.paddingMd,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(s.borderRadiusSm)),
-        textStyle: fonts.bodyLarge.rubik(fontWeight: FontWeight.w600),
-        elevation: 4,
-      ),
-    );
-  }
-
-  /// Secondary Button
-  Widget _buildSecondaryButton({
-    required BuildContext context,
-    required String label,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    final s = context.sizes;
-    final fonts = context.fonts;
-
-    return OutlinedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 20),
-      label: Text(label),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: DColors.primaryButton,
-        padding: EdgeInsets.symmetric(
-          horizontal: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-          vertical: s.paddingMd,
-        ),
-        side: BorderSide(color: DColors.primaryButton, width: 2),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(s.borderRadiusSm)),
-        textStyle: fonts.bodyLarge.rubik(fontWeight: FontWeight.w600),
-      ),
     );
   }
 

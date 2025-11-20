@@ -53,8 +53,8 @@ class _ExperienceCardState extends State<ExperienceCard> {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                widget.experience.accentColor.withAlpha((255 * 0.6).round()),
-                                widget.experience.accentColor.withAlpha((255 * 0.2).round()),
+                                widget.experience.accentColor.withAlpha(153),
+                                widget.experience.accentColor.withAlpha(51),
                               ],
                             ),
                           ),
@@ -62,24 +62,16 @@ class _ExperienceCardState extends State<ExperienceCard> {
                     ],
                   ),
                   SizedBox(
-                    width: context.responsiveValue(
-                      mobile: s.paddingMd,
-                      tablet: s.paddingLg,
-                      desktop: s.paddingXl,
-                    ),
+                    width: context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingXl),
                   ),
 
                   // Right: Content
                   Expanded(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+                      transform: Matrix4.diagonal3Values(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
                       padding: EdgeInsets.all(
-                        context.responsiveValue(
-                          mobile: s.paddingMd,
-                          tablet: s.paddingLg,
-                          desktop: s.paddingLg,
-                        ),
+                        context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
                       ),
                       margin: EdgeInsets.only(bottom: widget.isLast ? 0 : s.spaceBtwItems),
                       decoration: BoxDecoration(
@@ -88,14 +80,14 @@ class _ExperienceCardState extends State<ExperienceCard> {
                         border: Border.all(
                           color: _isHovered
                               ? widget.experience.accentColor
-                              : widget.experience.accentColor.withAlpha((255 * 0.3).round()),
+                              : widget.experience.accentColor.withAlpha(76),
                           width: 2,
                         ),
                         boxShadow: [
                           BoxShadow(
                             color: _isHovered
-                                ? widget.experience.accentColor.withAlpha((255 * 0.15).round())
-                                : Colors.black.withAlpha((255 * 0.05).round()),
+                                ? widget.experience.accentColor.withAlpha(38)
+                                : Colors.black.withAlpha(12),
                             blurRadius: _isHovered ? 20 : 10,
                             offset: Offset(0, _isHovered ? 8 : 4),
                           ),
@@ -161,7 +153,7 @@ class _ExperienceCardState extends State<ExperienceCard> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: s.paddingSm, vertical: s.paddingSm * 0.3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF10B981).withAlpha((255 * 0.15).round()),
+                  color: const Color(0xFF10B981).withAlpha(38),
                   borderRadius: BorderRadius.circular(s.borderRadiusSm),
                   border: Border.all(color: const Color(0xFF10B981), width: 1),
                 ),

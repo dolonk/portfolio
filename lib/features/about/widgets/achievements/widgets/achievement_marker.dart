@@ -22,11 +22,7 @@ class AchievementMarker extends StatelessWidget {
           colors: [accentColor, accentColor.withAlpha((255 * 0.7).round())],
         ),
         boxShadow: [
-          BoxShadow(
-            color: accentColor.withAlpha((255 * 0.4).round()),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
+          BoxShadow(color: accentColor.withAlpha((255 * 0.4).round()), blurRadius: 12, offset: const Offset(0, 4)),
         ],
       ),
       child: Icon(icon, color: Colors.white, size: size * 0.5),

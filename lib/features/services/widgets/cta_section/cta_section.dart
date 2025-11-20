@@ -74,10 +74,7 @@ class CtaSection extends StatelessWidget {
         // Subheading
         Text(
           'Let\'s discuss your ideas and turn them into reality',
-          style: fonts.bodyLarge.rubik(
-            color: Colors.white.withAlpha((255 * 0.9).round()),
-            height: 1.6,
-          ),
+          style: fonts.bodyLarge.rubik(color: Colors.white.withAlpha((255 * 0.9).round()), height: 1.6),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: s.spaceBtwItems),

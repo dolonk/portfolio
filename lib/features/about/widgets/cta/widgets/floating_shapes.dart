@@ -20,33 +20,21 @@ class FloatingShapes extends StatelessWidget {
         Positioned(
           top: 80,
           right: 50,
-          child: _buildShape(
-            size: 60,
-            color: const Color(0xFF8B5CF6).withAlpha((255 * 0.1).round()),
-            delay: 500,
-          ),
+          child: _buildShape(size: 60, color: const Color(0xFF8B5CF6).withAlpha((255 * 0.1).round()), delay: 500),
         ),
 
         // Shape 3 - Bottom Left
         Positioned(
           bottom: 60,
           left: 80,
-          child: _buildShape(
-            size: 50,
-            color: const Color(0xFF3B82F6).withAlpha((255 * 0.1).round()),
-            delay: 1000,
-          ),
+          child: _buildShape(size: 50, color: const Color(0xFF3B82F6).withAlpha((255 * 0.1).round()), delay: 1000),
         ),
 
         // Shape 4 - Bottom Right
         Positioned(
           bottom: 100,
           right: 100,
-          child: _buildShape(
-            size: 70,
-            color: const Color(0xFFF59E0B).withAlpha((255 * 0.1).round()),
-            delay: 1500,
-          ),
+          child: _buildShape(size: 70, color: const Color(0xFFF59E0B).withAlpha((255 * 0.1).round()), delay: 1500),
         ),
       ],
     );

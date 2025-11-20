@@ -16,9 +16,9 @@ class CourseworkBadge extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm * 0.7),
       decoration: BoxDecoration(
-        color: accentColor.withAlpha((255 * 0.1).round()),
+        color: accentColor.withAlpha(25),
         borderRadius: BorderRadius.circular(s.borderRadiusSm),
-        border: Border.all(color: accentColor.withAlpha((255 * 0.3).round()), width: 1),
+        border: Border.all(color: accentColor.withAlpha(76), width: 1),
       ),
       child: Text(
         course,

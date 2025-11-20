@@ -197,7 +197,7 @@ class _CustomButtonState extends State<CustomButton> {
               : (_isHovered ? DColors.primaryButton : DColors.buttonBorder),
           width: widget.borderWidth,
         ),
-        padding: widget.padding ?? EdgeInsets.symmetric(horizontal: s.paddingLg),
+        padding: widget.padding ?? EdgeInsets.symmetric(horizontal: s.paddingMd),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(widget.borderRadius ?? s.borderRadiusSm)),
       ),
       child: content,

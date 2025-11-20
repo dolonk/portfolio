@@ -18,23 +18,13 @@ class ToolCategoryCard extends StatelessWidget {
     final fonts = context.fonts;
 
     return Container(
-      padding: EdgeInsets.all(
-        context.responsiveValue(
-            mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
-      ),
+      padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg)),
       decoration: BoxDecoration(
         color: DColors.cardBackground,
         borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        border: Border.all(
-          color: category.accentColor.withAlpha((255 * 0.3).round()),
-          width: 2,
-        ),
+        border: Border.all(color: category.accentColor.withAlpha((255 * 0.3).round()), width: 2),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha((255 * 0.05).round()),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+          BoxShadow(color: Colors.black.withAlpha((255 * 0.05).round()), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Column(
@@ -48,15 +38,13 @@ class ToolCategoryCard extends StatelessWidget {
           Container(
             height: 2,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [category.accentColor, category.accentColor.withAlpha(0)],
-              ),
+              gradient: LinearGradient(colors: [category.accentColor, category.accentColor.withAlpha(0)]),
             ),
           ),
           SizedBox(height: s.spaceBtwItems),
 
           // Tool Icons Grid
-          _buildToolsGrid(context, s),
+          _buildToolsGrid(s),
         ],
       ),
     );
@@ -83,8 +71,7 @@ class ToolCategoryCard extends StatelessWidget {
           child: Text(
             category.categoryName,
             style: fonts.headlineSmall.rajdhani(
-              fontSize: context.responsiveValue(
-                  mobile: 18.0, tablet: 20.0, desktop: 22.0),
+              fontSize: context.responsiveValue(mobile: 18.0, tablet: 20.0, desktop: 22.0),
               fontWeight: FontWeight.bold,
               color: DColors.textPrimary,
             ),
@@ -95,14 +82,11 @@ class ToolCategoryCard extends StatelessWidget {
   }
 
   /// Tools Grid
-  Widget _buildToolsGrid(BuildContext context, DSizes s) {
+  Widget _buildToolsGrid(DSizes s) {
     return Wrap(
       spacing: s.paddingMd,
       runSpacing: s.paddingMd,
-      children: List.generate(
-        category.tools.length,
-        (index) => ToolIcon(tool: category.tools[index]),
-      ),
+      children: List.generate(category.tools.length, (index) => ToolIcon(tool: category.tools[index])),
     );
   }
 }

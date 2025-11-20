@@ -18,20 +18,15 @@ class QuoteBox extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: s.spaceBtwItems),
-      padding: EdgeInsets.all(
-        context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-      ),
+      padding: EdgeInsets.all(s.paddingLg),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            DColors.primaryButton.withAlpha((255 * 0.08).round()),
-            DColors.primaryButton.withAlpha((255 * 0.03).round()),
-          ],
+          colors: [DColors.primaryButton.withAlpha((20)), DColors.primaryButton.withAlpha((7))],
         ),
         borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        border: Border.all(color: DColors.primaryButton.withAlpha((255 * 0.3).round()), width: 2),
+        border: Border.all(color: DColors.primaryButton.withAlpha((76)), width: 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +35,7 @@ class QuoteBox extends StatelessWidget {
           Icon(
             Icons.format_quote_rounded,
             size: context.responsiveValue(mobile: 32.0, tablet: 40.0, desktop: 48.0),
-            color: DColors.primaryButton.withAlpha((255 * 0.5).round()),
+            color: DColors.primaryButton.withAlpha((127)),
           ),
           SizedBox(height: s.paddingSm),
 
@@ -48,7 +43,6 @@ class QuoteBox extends StatelessWidget {
           Text(
             quote,
             style: fonts.bodyLarge.rubik(
-              fontSize: context.responsiveValue(mobile: 16.0, tablet: 18.0, desktop: 20.0),
               color: DColors.textPrimary,
               height: 1.7,
               fontStyle: FontStyle.italic,

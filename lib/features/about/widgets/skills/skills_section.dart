@@ -1,8 +1,6 @@
 import 'widgets/skill_category.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
@@ -25,7 +23,12 @@ class SkillsSection extends StatelessWidget {
           child: Column(
             children: [
               // Section Heading
-              _buildSectionHeading(context, s),
+              DSectionHeader(
+                label: 'EXPERTISE',
+                title: 'Skills & Expertise',
+                subtitle: 'Technologies I\'ve mastered over the years',
+                alignment: TextAlign.center,
+              ),
               SizedBox(height: s.spaceBtwItems),
 
               // Skills Categories Grid for language
@@ -39,36 +42,6 @@ class SkillsSection extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// Section Heading
-  Widget _buildSectionHeading(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Column(
-      children: [
-        Text(
-          'Skills & Expertise',
-          style: fonts.headlineLarge.rajdhani(
-            fontSize: context.responsiveValue(mobile: 28, tablet: 32, desktop: 36),
-            fontWeight: FontWeight.bold,
-            color: DColors.textPrimary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: s.paddingSm),
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 600, desktop: 700),
-          ),
-          child: Text(
-            'Technologies I\'ve mastered over the years',
-            style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms);
   }
 
   /// Skills Categories Grid (Two Columns on Desktop)

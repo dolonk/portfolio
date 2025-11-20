@@ -30,38 +30,30 @@ class _EducationCardState extends State<EducationCard> {
       child:
           AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+                transform: Matrix4.diagonal3Values(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
                 constraints: BoxConstraints(
                   maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 650, desktop: 700),
                 ),
                 padding: EdgeInsets.all(
-                  context.responsiveValue(
-                    mobile: s.paddingLg,
-                    tablet: s.paddingXl,
-                    desktop: s.paddingXl * 1.2,
-                  ),
+                  context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl * 1.2),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      widget.education.accentColor.withAlpha((255 * 0.08).round()),
-                      widget.education.accentColor.withAlpha((255 * 0.03).round()),
-                    ],
+                    colors: [widget.education.accentColor.withAlpha(20), widget.education.accentColor.withAlpha(40)],
                   ),
+
                   borderRadius: BorderRadius.circular(s.borderRadiusLg),
                   border: Border.all(
                     color: _isHovered
                         ? widget.education.accentColor
-                        : widget.education.accentColor.withAlpha((255 * 0.3).round()),
+                        : widget.education.accentColor.withAlpha(127),
                     width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: _isHovered
-                          ? widget.education.accentColor.withAlpha((255 * 0.2).round())
-                          : Colors.black.withAlpha((255 * 0.08).round()),
+                      color: _isHovered ? widget.education.accentColor.withAlpha(51) : Colors.black.withAlpha(20),
                       blurRadius: _isHovered ? 25 : 15,
                       offset: Offset(0, _isHovered ? 10 : 6),
                     ),
@@ -112,14 +104,10 @@ class _EducationCardState extends State<EducationCard> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [widget.education.accentColor, widget.education.accentColor.withAlpha((255 * 0.7).round())],
+          colors: [widget.education.accentColor, widget.education.accentColor.withAlpha(178)],
         ),
         boxShadow: [
-          BoxShadow(
-            color: widget.education.accentColor.withAlpha((255 * 0.4).round()),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
+          BoxShadow(color: widget.education.accentColor.withAlpha(102), blurRadius: 20, offset: const Offset(0, 8)),
         ],
       ),
       child: Icon(
@@ -216,7 +204,7 @@ class _EducationCardState extends State<EducationCard> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
           decoration: BoxDecoration(
-            color: widget.education.accentColor.withAlpha((255 * 0.15).round()),
+            color: widget.education.accentColor.withAlpha(38),
             borderRadius: BorderRadius.circular(s.borderRadiusSm),
             border: Border.all(color: widget.education.accentColor, width: 1.5),
           ),
@@ -231,7 +219,7 @@ class _EducationCardState extends State<EducationCard> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
             decoration: BoxDecoration(
-              color: const Color(0xFF10B981).withAlpha((255 * 0.15).round()),
+              color: const Color(0xFF10B981).withAlpha(38),
               borderRadius: BorderRadius.circular(s.borderRadiusSm),
               border: Border.all(color: const Color(0xFF10B981), width: 1.5),
             ),

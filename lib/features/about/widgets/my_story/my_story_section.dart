@@ -3,6 +3,7 @@ import 'widgets/quote_box.dart';
 import 'widgets/story_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -25,11 +26,12 @@ class MyStorySection extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Section Heading
-              _buildSectionHeading(context, s),
+              const DSectionHeader(
+                title: 'My Story',
+                subtitle: 'How I became a Flutter developer',
+                alignment: TextAlign.center,
+              ),
               SizedBox(height: s.spaceBtwItems),
-
-              // Story Content (Two-Column on Desktop)
               _buildStoryContent(context, s),
             ],
           ),
@@ -38,144 +40,62 @@ class MyStorySection extends StatelessWidget {
     );
   }
 
-  /// Section Heading
-  Widget _buildSectionHeading(BuildContext context, DSizes s) {
-    final fonts = context.fonts;
-
-    return Column(
-      children: [
-        Text(
-          'My Story',
-          style: fonts.headlineLarge.rajdhani(
-            fontSize: context.responsiveValue(mobile: 28, tablet: 32, desktop: 36),
-            fontWeight: FontWeight.bold,
-            color: DColors.textPrimary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: s.paddingSm),
-        Text(
-          'How I became a Flutter developer',
-          style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms);
-  }
-
-  /// Story Content
   Widget _buildStoryContent(BuildContext context, DSizes s) {
-    // Desktop: Two columns, Mobile: Single column
-    if (context.isMobile) {
+    final isMobile = context.isMobile;
+    final storyText = _buildStoryText(context, s);
+    final illustration = _buildIllustration(context, s);
+
+    if (isMobile) {
       return Column(
         children: [
-          _buildIllustration(context, s),
+          illustration,
           SizedBox(height: s.spaceBtwItems),
-
-          // Story Text
-          _buildStoryText(context, s),
-
-          // Quote Box
-          const QuoteBox(
-            quote:
-                'I don\'t just write code – I architect solutions that balance modern design, optimal performance, and exceptional user experience.',
-            author: 'Dolon Kumar Mondol',
-          ),
-
-          // Current Focus & Mission
-          const StoryParagraph(
-            delay: 500,
-            text:
-                'Today, I specialize in advanced Flutter techniques that go beyond the basics. Multi-threading with Isolates, native code integration through FFI, custom animations and painting, CI/CD automation – these aren\'t just buzzwords in my CV; they\'re tools I use daily to solve real-world problems.\n\n'
-                'With over 2 years of hands-on Flutter experience and 10+ projects under my belt, including 2 live applications on App Store and Play Store, I\'ve learned that great development is about more than technical skills. It\'s about understanding user needs, writing clean maintainable code, and delivering solutions that drive business value.\n\n'
-                'My mission is clear: leverage cutting-edge technology to create innovative, efficient, and scalable applications that not only meet business goals but exceed user expectations. Whether it\'s implementing state-of-the-art state management, optimizing performance, or creating pixel-perfect UIs, I approach every project with dedication and a problem-solving mindset.',
-          ),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Left: Illustration (40%)
-              Expanded(flex: 4, child: _buildIllustration(context, s)),
-              SizedBox(width: s.spaceBtwSections),
-
-              // Right: Story Text (60%)
-              Expanded(flex: 6, child: _buildStoryText(context, s)),
-            ],
-          ),
-          // Quote Box
-          const QuoteBox(
-            quote:
-                'I don\'t just write code – I architect solutions that balance modern design, optimal performance, and exceptional user experience.',
-            author: 'Dolon Kumar Mondol',
-          ),
-
-          // Current Focus & Mission
-          const StoryParagraph(
-            delay: 500,
-            text:
-                'Today, I specialize in advanced Flutter techniques that go beyond the basics. Multi-threading with Isolates, native code integration through FFI, custom animations and painting, CI/CD automation – these aren\'t just buzzwords in my CV; they\'re tools I use daily to solve real-world problems.\n\n'
-                'With over 2 years of hands-on Flutter experience and 10+ projects under my belt, including 2 live applications on App Store and Play Store, I\'ve learned that great development is about more than technical skills. It\'s about understanding user needs, writing clean maintainable code, and delivering solutions that drive business value.\n\n'
-                'My mission is clear: leverage cutting-edge technology to create innovative, efficient, and scalable applications that not only meet business goals but exceed user expectations. Whether it\'s implementing state-of-the-art state management, optimizing performance, or creating pixel-perfect UIs, I approach every project with dedication and a problem-solving mindset.',
-          ),
+          storyText,
+          const _QuoteAndMission(),
         ],
       );
     }
+
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(flex: 4, child: illustration),
+            SizedBox(width: s.spaceBtwSections),
+            Expanded(flex: 6, child: storyText),
+          ],
+        ),
+        const _QuoteAndMission(),
+      ],
+    );
   }
 
-  /// Illustration/Visual Element
   Widget _buildIllustration(BuildContext context, DSizes s) {
+    final gradientColors = [
+      DColors.primaryButton.withAlpha(38),
+      const Color(0xFF8B5CF6).withAlpha(38),
+      const Color(0xFF10B981).withAlpha(38),
+    ];
+
     return Container(
           width: double.infinity,
           height: context.responsiveValue(mobile: 250.0, tablet: 400.0, desktop: 460.0),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                DColors.primaryButton.withAlpha((255 * 0.15).round()),
-                const Color(0xFF8B5CF6).withAlpha((255 * 0.15).round()),
-                const Color(0xFF10B981).withAlpha((255 * 0.15).round()),
-              ],
-            ),
+            gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: gradientColors),
             borderRadius: BorderRadius.circular(s.borderRadiusLg),
-            border: Border.all(color: DColors.primaryButton.withAlpha((255 * 0.3).round()), width: 2),
+            border: Border.all(color: DColors.primaryButton.withAlpha(76), width: 2),
           ),
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Code Pattern Background
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(s.borderRadiusLg - 2),
                   child: CustomPaint(painter: _CodePatternPainter()),
                 ),
               ),
-
-              // Center Icon/Text
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.code_rounded,
-                    size: context.responsiveValue(mobile: 60.0, tablet: 80.0, desktop: 100.0),
-                    color: DColors.primaryButton.withAlpha((255 * 0.8).round()),
-                  ),
-                  SizedBox(height: s.paddingMd),
-                  Text(
-                    'From Code\nTo Creation',
-                    style: context.fonts.headlineSmall.rajdhani(
-                      fontWeight: FontWeight.bold,
-                      color: DColors.textPrimary,
-                      fontSize: context.responsiveValue(mobile: 20.0, tablet: 24.0, desktop: 28.0),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+              _buildIllustrationContent(context, s),
             ],
           ),
         )
@@ -184,31 +104,75 @@ class MyStorySection extends StatelessWidget {
         .scale(begin: const Offset(0.95, 0.95), duration: 800.ms, delay: 200.ms);
   }
 
-  /// Story Text Content
-  Widget _buildStoryText(BuildContext context, DSizes s) {
+  Widget _buildIllustrationContent(BuildContext context, DSizes s) {
+    final iconSize = context.responsiveValue(mobile: 60.0, tablet: 80.0, desktop: 100.0);
+    final fontSize = context.responsiveValue(mobile: 20.0, tablet: 24.0, desktop: 28.0);
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.code_rounded,
+          size: iconSize,
+          color: DColors.primaryButton.withAlpha(204), // ~0.8 * 255
+        ),
+        SizedBox(height: s.paddingMd),
+        Text(
+          'From Code\nTo Creation',
+          style: context.fonts.headlineSmall.rajdhani(
+            fontWeight: FontWeight.bold,
+            color: DColors.textPrimary,
+            fontSize: fontSize,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStoryText(BuildContext context, DSizes s) {
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // The Beginning
-        const StoryParagraph(
-          delay: 300,
-          text:
-              'My journey in software development began with a passion for creating solutions that make a difference. After graduating from Bangladesh University of Business and Technology (BUBT) in 2022 with a degree in Computer Science & Engineering, I dove deep into the world of mobile application development.\n\n'
-              'I started exploring both native Android (Java, Kotlin) and iOS (Swift) development, gaining valuable insights into platform-specific nuances. This foundation of understanding both ecosystems would later become instrumental in my Flutter journey.',
-        ),
-
-        // The Flutter Revelation
-        const StoryParagraph(
-          delay: 400,
-          text:
-              'What started as curiosity about cross-platform development quickly evolved into a love affair with Flutter. The ability to create beautiful, performant applications for mobile, web, and desktop from a single codebase fascinated me. In April 2023, I joined THT Space Electrical Company LTD as a Software Engineer, where I\'ve been architecting scalable solutions ever since.',
-        ),
+        StoryParagraph(delay: 300, text: _StoryTexts.beginning),
+        StoryParagraph(delay: 400, text: _StoryTexts.flutterRevelation),
       ],
     );
   }
 }
 
-/// Custom Painter for Code Pattern Background (Upgraded Version)
+class _QuoteAndMission extends StatelessWidget {
+  const _QuoteAndMission();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        QuoteBox(quote: _StoryTexts.quote, author: 'Dolon Kumar Mondol'),
+        StoryParagraph(delay: 500, text: _StoryTexts.mission),
+      ],
+    );
+  }
+}
+
+class _StoryTexts {
+  static const String beginning =
+      'My journey in software development began with a passion for creating solutions that make a difference. After graduating from Bangladesh University of Business and Technology (BUBT) in 2022 with a degree in Computer Science & Engineering, I dove deep into the world of mobile application development.\n\n'
+      'I started exploring both native Android (Java, Kotlin) and iOS (Swift) development, gaining valuable insights into platform-specific nuances. This foundation of understanding both ecosystems would later become instrumental in my Flutter journey.';
+
+  static const String flutterRevelation =
+      'What started as curiosity about cross-platform development quickly evolved into a love affair with Flutter. The ability to create beautiful, performant applications for mobile, web, and desktop from a single codebase fascinated me. In April 2023, I joined THT Space Electrical Company LTD as a Software Engineer, where I\'ve been architecting scalable solutions ever since.';
+
+  static const String quote =
+      'I don\'t just write code – I architect solutions that balance modern design, optimal performance, and exceptional user experience.';
+
+  static const String mission =
+      'Today, I specialize in advanced Flutter techniques that go beyond the basics. Multi-threading with Isolates, native code integration through FFI, custom animations and painting, CI/CD automation – these aren\'t just buzzwords in my CV; they\'re tools I use daily to solve real-world problems.\n\n'
+      'With over 2 years of hands-on Flutter experience and 10+ projects under my belt, including 2 live applications on App Store and Play Store, I\'ve learned that great development is about more than technical skills. It\'s about understanding user needs, writing clean maintainable code, and delivering solutions that drive business value.\n\n'
+      'My mission is clear: leverage cutting-edge technology to create innovative, efficient, and scalable applications that not only meet business goals but exceed user expectations. Whether it\'s implementing state-of-the-art state management, optimizing performance, or creating pixel-perfect UIs, I approach every project with dedication and a problem-solving mindset.';
+}
+
+/// Custom Painter for Code Pattern Background
 class _CodePatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

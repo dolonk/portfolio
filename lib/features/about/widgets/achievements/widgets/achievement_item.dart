@@ -35,10 +35,7 @@ class _AchievementItemState extends State<AchievementItem> {
                   // Left: Timeline Marker + Line
                   Column(
                     children: [
-                      AchievementMarker(
-                        accentColor: widget.achievement.accentColor,
-                        icon: widget.achievement.icon,
-                      ),
+                      AchievementMarker(accentColor: widget.achievement.accentColor, icon: widget.achievement.icon),
 
                       // Connecting Line (if not last)
                       if (!widget.isLast)
@@ -59,24 +56,16 @@ class _AchievementItemState extends State<AchievementItem> {
                     ],
                   ),
                   SizedBox(
-                    width: context.responsiveValue(
-                      mobile: s.paddingMd,
-                      tablet: s.paddingLg,
-                      desktop: s.paddingLg,
-                    ),
+                    width: context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
                   ),
 
                   // Right: Content
                   Expanded(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+                      transform: Matrix4.diagonal3Values(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
                       padding: EdgeInsets.all(
-                        context.responsiveValue(
-                          mobile: s.paddingMd,
-                          tablet: s.paddingLg,
-                          desktop: s.paddingLg,
-                        ),
+                        context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
                       ),
                       margin: EdgeInsets.only(bottom: widget.isLast ? 0 : s.spaceBtwItems),
                       decoration: BoxDecoration(
@@ -140,10 +129,7 @@ class _AchievementItemState extends State<AchievementItem> {
           decoration: BoxDecoration(
             color: widget.achievement.accentColor.withAlpha((255 * 0.15).round()),
             borderRadius: BorderRadius.circular(s.borderRadiusSm),
-            border: Border.all(
-              color: widget.achievement.accentColor.withAlpha((255 * 0.5).round()),
-              width: 1,
-            ),
+            border: Border.all(color: widget.achievement.accentColor.withAlpha((255 * 0.5).round()), width: 1),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
