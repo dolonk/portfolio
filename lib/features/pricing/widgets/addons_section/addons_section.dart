@@ -1,7 +1,6 @@
 import 'widgets/addon_card.dart';
 import 'package:flutter/material.dart';
 import 'widgets/bundle_discount_banner.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -53,13 +52,13 @@ class PriceAddonsSection extends StatelessWidget {
           'Enhance Your Package',
           style: fonts.headlineLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
           textAlign: TextAlign.center,
-        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms),
+        ),
         SizedBox(height: s.paddingSm),
         Text(
           'Additional services available for all tiers',
           style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
           textAlign: TextAlign.center,
-        ).animate(delay: 200.ms).fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms),
+        ),
       ],
     );
   }
@@ -73,8 +72,8 @@ class PriceAddonsSection extends StatelessWidget {
       desktop: s.spaceBtwSections,
     );
 
+    // Mobile: Vertical list with stagger
     if (context.isMobile) {
-      // Mobile: Vertical list with stagger
       return AnimationLimiter(
         child: Column(
           children: AnimationConfiguration.toStaggeredList(

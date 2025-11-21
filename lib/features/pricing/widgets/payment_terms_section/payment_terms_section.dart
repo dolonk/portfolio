@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/payment_timeline.dart';
 import 'widgets/payment_methods_card.dart';
 import 'widgets/payment_policies_card.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
@@ -52,17 +52,13 @@ class PaymentTermsSection extends StatelessWidget {
   Widget _buildSectionHeading(AppFonts fonts, DSizes s) {
     return Column(
       children: [
-        Text(
-          'How Payment Works',
-          style: fonts.headlineLarge,
-          textAlign: TextAlign.center,
-        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms),
+        Text('How Payment Works', style: fonts.headlineLarge, textAlign: TextAlign.center),
         SizedBox(height: s.paddingSm),
         Text(
           'Transparent, milestone-based payment structure',
           style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
           textAlign: TextAlign.center,
-        ).animate(delay: 200.ms).fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms),
+        ),
       ],
     );
   }

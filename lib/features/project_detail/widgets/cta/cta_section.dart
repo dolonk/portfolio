@@ -5,7 +5,7 @@ import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 
-import '../../../../common_function/style/custom_button.dart';
+import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../route/route_name.dart';
 
 class CtaSection extends StatelessWidget {

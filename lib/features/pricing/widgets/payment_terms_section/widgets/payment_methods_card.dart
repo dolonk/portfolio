@@ -21,7 +21,7 @@ class PaymentMethodsCard extends StatelessWidget {
         color: DColors.cardBackground,
         borderRadius: BorderRadius.circular(s.borderRadiusLg),
         border: Border.all(color: DColors.cardBorder, width: 1.5),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20, offset: Offset(0, 8))],
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(20), blurRadius: 20, offset: Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,14 +88,14 @@ class _PaymentMethodItemState extends State<_PaymentMethodItem> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
-            transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
+            transform: Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: s.paddingLg, vertical: s.paddingMd),
               decoration: BoxDecoration(
-                color: widget.method.accentColor.withOpacity(0.08),
+                color: widget.method.accentColor.withAlpha(20),
                 borderRadius: BorderRadius.circular(s.borderRadiusMd),
                 border: Border.all(
-                  color: _isHovered ? widget.method.accentColor : widget.method.accentColor.withOpacity(0.3),
+                  color: _isHovered ? widget.method.accentColor : widget.method.accentColor.withAlpha(76),
                   width: _isHovered ? 2 : 1,
                 ),
               ),

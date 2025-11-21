@@ -225,13 +225,4 @@ class ComparisonCategory {
       ),
     ];
   }
-
-  /// Get category by ID
-  static ComparisonCategory? getCategoryById(String id) {
-    try {
-      return getAllCategories().firstWhere((category) => category.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
 }

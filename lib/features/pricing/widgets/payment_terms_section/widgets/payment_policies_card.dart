@@ -21,7 +21,7 @@ class PaymentPoliciesCard extends StatelessWidget {
         color: DColors.cardBackground,
         borderRadius: BorderRadius.circular(s.borderRadiusLg),
         border: Border.all(color: DColors.cardBorder, width: 1.5),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20, offset: Offset(0, 8))],
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(20), blurRadius: 20, offset: Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,14 +110,14 @@ class _PolicyCardState extends State<_PolicyCard> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
-            transform: Matrix4.identity()..translate(0.0, _isHovered ? -4.0 : 0.0),
+            transform: Matrix4.translationValues(0.0, _isHovered ? -4.0 : 0.0, 0.0),
             child: Container(
               padding: EdgeInsets.all(s.paddingLg),
               decoration: BoxDecoration(
-                color: widget.policy.accentColor.withOpacity(0.05),
+                color: widget.policy.accentColor.withAlpha(12),
                 borderRadius: BorderRadius.circular(s.borderRadiusMd),
                 border: Border.all(
-                  color: _isHovered ? widget.policy.accentColor : widget.policy.accentColor.withOpacity(0.2),
+                  color: _isHovered ? widget.policy.accentColor : widget.policy.accentColor.withAlpha(51),
                   width: _isHovered ? 2 : 1,
                 ),
               ),

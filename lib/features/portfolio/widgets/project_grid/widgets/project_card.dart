@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/common_function/style/custom_button.dart';
+import 'package:responsive_website/common_function/widgets/custom_button.dart';
 
 import '../../../../../route/route_name.dart';
 import 'tech_badge.dart';

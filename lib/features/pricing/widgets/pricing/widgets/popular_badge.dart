@@ -14,22 +14,14 @@ class PopularBadge extends StatelessWidget {
 
     return Container(
           padding: EdgeInsets.symmetric(
-            horizontal: context.responsiveValue(
-              mobile: s.paddingMd,
-              tablet: s.paddingLg,
-              desktop: s.paddingLg,
-            ),
+            horizontal: context.responsiveValue(mobile: s.paddingMd, desktop: s.paddingLg),
             vertical: s.paddingSm,
           ),
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFFBBF24)]),
             borderRadius: BorderRadius.circular(s.borderRadiusLg),
             boxShadow: [
-              BoxShadow(
-                color: Color(0xFFFBBF24).withAlpha((255 * 0.6).round()),
-                blurRadius: 20,
-                offset: Offset(0, 5),
-              ),
+              BoxShadow(color: Color(0xFFFBBF24).withAlpha((255 * 0.6).round()), blurRadius: 20, offset: Offset(0, 5)),
             ],
           ),
           child: Row(
@@ -39,11 +31,7 @@ class PopularBadge extends StatelessWidget {
               SizedBox(width: 6),
               Text(
                 'MOST POPULAR',
-                style: fonts.labelSmall.rubik(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 1,
-                ),
+                style: fonts.labelSmall.rubik(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1),
               ),
             ],
           ),

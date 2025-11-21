@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../common_function/style/custom_button.dart';
+import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../route/route_name.dart';
 import 'widgets/faq_item.dart';
 import 'widgets/faq_search_bar.dart';
@@ -86,10 +86,7 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
 
               // Category Tabs
               if (_searchQuery.isEmpty) ...[
-                FaqCategoryTabs(
-                  selectedCategory: _selectedCategory,
-                  onCategoryChanged: _handleCategoryChange,
-                ),
+                FaqCategoryTabs(selectedCategory: _selectedCategory, onCategoryChanged: _handleCategoryChange),
                 SizedBox(height: s.spaceBtwSections),
               ],
 
@@ -113,17 +110,13 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
   Widget _buildSectionHeading(AppFonts fonts, DSizes s) {
     return Column(
       children: [
-        Text(
-          'Common Questions About Pricing',
-          style: fonts.headlineLarge,
-          textAlign: TextAlign.center,
-        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms),
+        Text('Common Questions About Pricing', style: fonts.headlineLarge, textAlign: TextAlign.center),
         SizedBox(height: s.paddingSm),
         Text(
           'Find answers to frequently asked questions',
           style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.6),
           textAlign: TextAlign.center,
-        ).animate(delay: 200.ms).fadeIn(duration: 600.ms).slideY(begin: 0.1, duration: 600.ms),
+        ),
       ],
     );
   }
@@ -142,11 +135,7 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
 
             return Padding(
               padding: EdgeInsets.only(bottom: s.paddingMd),
-              child: FaqItem(
-                faq: faq,
-                isExpanded: _expandedIndex == index,
-                onToggle: () => _handleFaqToggle(index),
-              ),
+              child: FaqItem(faq: faq, isExpanded: _expandedIndex == index, onToggle: () => _handleFaqToggle(index)),
             );
           }).toList(),
         ),
@@ -182,10 +171,10 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [DColors.primaryButton.withOpacity(0.1), DColors.primaryButton.withOpacity(0.05)],
+          colors: [DColors.primaryButton.withAlpha(25), DColors.primaryButton.withAlpha(12)],
         ),
         borderRadius: BorderRadius.circular(s.borderRadiusLg),
-        border: Border.all(color: DColors.primaryButton.withOpacity(0.3), width: 1),
+        border: Border.all(color: DColors.primaryButton.withAlpha(76), width: 1),
       ),
       child: Column(
         children: [
@@ -203,12 +192,10 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
             width: context.responsiveValue(mobile: double.infinity, tablet: 200, desktop: 220),
             height: 50,
             tittleText: '💬 Contact Us',
-            onPressed: () {
-              context.go(RouteNames.contact);
-            },
+            onPressed: () => context.go(RouteNames.contact),
           ),
         ],
       ),
-    ).animate().fadeIn(duration: 600.ms, delay: 800.ms);
+    );
   }
 }

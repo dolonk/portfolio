@@ -11,12 +11,7 @@ class ComparisonCategoryCard extends StatefulWidget {
   final bool isExpanded;
   final VoidCallback onToggle;
 
-  const ComparisonCategoryCard({
-    super.key,
-    required this.category,
-    required this.isExpanded,
-    required this.onToggle,
-  });
+  const ComparisonCategoryCard({super.key, required this.category, required this.isExpanded, required this.onToggle});
 
   @override
   State<ComparisonCategoryCard> createState() => _ComparisonCategoryCardState();
@@ -60,10 +55,7 @@ class _ComparisonCategoryCardState extends State<ComparisonCategoryCard> {
             _buildHeader(fonts, s),
 
             // Expanded Content
-            if (widget.isExpanded) ...[
-              Divider(color: DColors.cardBorder, height: 1),
-              _buildExpandedContent(s),
-            ],
+            if (widget.isExpanded) ...[Divider(color: DColors.cardBorder, height: 1), _buildExpandedContent(s)],
           ],
         ),
       ),
@@ -119,9 +111,7 @@ class _ComparisonCategoryCardState extends State<ComparisonCategoryCard> {
   /// Expanded Content (Comparison Table)
   Widget _buildExpandedContent(DSizes s) {
     return Padding(
-      padding: EdgeInsets.all(
-        context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
-      ),
+      padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg)),
       child: Column(
         children: [
           // Table Header

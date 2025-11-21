@@ -10,7 +10,7 @@ import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';
 import 'package:responsive_website/data_layer/model/about/about_stats_model.dart';
 import 'package:responsive_website/data_layer/model/about/social_link_model.dart';
-import '../../../../common_function/style/custom_button.dart';
+import '../../../../common_function/widgets/custom_button.dart';
 import 'widgets/stats_card.dart';
 import 'widgets/social_link_button.dart';
 

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_website/route/route_name.dart';
-import '../../../../../common_function/style/animated_custom_button.dart';
+import '../../../../../common_function/widgets/animated_custom_button.dart';
 import '../../../../../utility/constants/colors.dart';
 import '../../../../../data_layer/model/portfolio/project_model.dart';
-import '../../../../../common_function/style/hoverable_card.dart';
+import '../../../../../common_function/widgets/hoverable_card.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 

@@ -4,7 +4,7 @@ import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../../utility/responsive/responsive_helper.dart';
-import '../../../../../common_function/style/hoverable_card.dart';
+import '../../../../../common_function/widgets/hoverable_card.dart';
 import '../../../../../data_layer/model/home/tech_stack_model.dart';
 
 class TechIconCard extends StatefulWidget {

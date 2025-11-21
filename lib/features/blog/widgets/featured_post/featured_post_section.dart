@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../../common_function/style/custom_button.dart';
+import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../route/route_name.dart';
 import 'widgets/post_tags.dart';
 import 'widgets/featured_badge.dart';

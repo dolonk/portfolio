@@ -44,12 +44,7 @@ class _CategoryChip extends StatefulWidget {
   final VoidCallback onTap;
   final int delay;
 
-  const _CategoryChip({
-    required this.category,
-    required this.isSelected,
-    required this.onTap,
-    this.delay = 0,
-  });
+  const _CategoryChip({required this.category, required this.isSelected, required this.onTap, this.delay = 0});
 
   @override
   State<_CategoryChip> createState() => _CategoryChipState();
@@ -72,17 +67,13 @@ class _CategoryChipState extends State<_CategoryChip> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
               padding: EdgeInsets.symmetric(
-                horizontal: context.responsiveValue(
-                  mobile: s.paddingMd,
-                  tablet: s.paddingLg,
-                  desktop: s.paddingLg,
-                ),
+                horizontal: context.responsiveValue(mobile: s.paddingMd, desktop: s.paddingLg),
                 vertical: s.paddingSm,
               ),
               decoration: BoxDecoration(
                 color: widget.isSelected
                     ? DColors.primaryButton
-                    : (_isHovered ? DColors.primaryButton.withOpacity(0.1) : DColors.cardBackground),
+                    : (_isHovered ? DColors.primaryButton.withAlpha(25) : DColors.cardBackground),
                 borderRadius: BorderRadius.circular(s.borderRadiusLg),
                 border: Border.all(
                   color: widget.isSelected
@@ -91,13 +82,7 @@ class _CategoryChipState extends State<_CategoryChip> {
                   width: widget.isSelected ? 2 : 1,
                 ),
                 boxShadow: widget.isSelected
-                    ? [
-                        BoxShadow(
-                          color: DColors.primaryButton.withOpacity(0.3),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ]
+                    ? [BoxShadow(color: DColors.primaryButton.withAlpha(76), blurRadius: 12, offset: Offset(0, 4))]
                     : null,
               ),
               child: Text(

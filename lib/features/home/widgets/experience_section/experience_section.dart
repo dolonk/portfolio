@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../route/route_name.dart';
-import '../../../../common_function/style/custom_button.dart';
+import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/constants/colors.dart';

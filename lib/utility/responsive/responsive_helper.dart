@@ -7,7 +7,7 @@ class ResponsiveHelper {
   static const double mobileBreakpoint = 650;
   static const double tabletBreakpoint = 1100;
 
-  // ✅ Context-based device type checks (RECOMMENDED)
+  // Context-based device type checks (RECOMMENDED)
   static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < mobileBreakpoint;
 
   static bool isTablet(BuildContext context) =>
@@ -15,13 +15,12 @@ class ResponsiveHelper {
 
   static bool isDesktop(BuildContext context) => MediaQuery.of(context).size.width >= tabletBreakpoint;
 
-  // ✅ Get screen dimensions
+  // Get screen dimensions
   static double getWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   static double getHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
-  // ✅ Responsive value picker
-  /// Example: ResponsiveHelper.value(context, mobile: 16, tablet: 20, desktop: 24)
+  // Responsive value picker
   static T value<T>(BuildContext context, {required T mobile, T? tablet, required T desktop}) {
     if (isDesktop(context)) return desktop;
     if (isTablet(context)) return tablet ?? desktop;

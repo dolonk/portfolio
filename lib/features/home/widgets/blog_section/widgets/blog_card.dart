@@ -5,9 +5,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../../utility/constants/colors.dart';
 import '../../../../../data_layer/model/home/blog_model.dart';
 import '../../../../../../utility/default_sizes/font_size.dart';
-import '../../../../../common_function/style/hoverable_card.dart';
+import '../../../../../common_function/widgets/hoverable_card.dart';
 import '../../../../../../utility/default_sizes/default_sizes.dart';
-import '../../../../../common_function/style/animated_custom_button.dart';
+import '../../../../../common_function/widgets/animated_custom_button.dart';
 
 class BlogCard extends StatefulWidget {
   final BlogModel blog;

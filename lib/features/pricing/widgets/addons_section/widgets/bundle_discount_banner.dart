@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_website/route/route_name.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/common_function/style/custom_button.dart';
+import 'package:responsive_website/common_function/widgets/custom_button.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 
@@ -29,7 +29,6 @@ class _BundleDiscountBannerState extends State<BundleDiscountBanner> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        //transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
         padding: EdgeInsets.all(
           context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
         ),
@@ -37,12 +36,15 @@ class _BundleDiscountBannerState extends State<BundleDiscountBanner> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFF59E0B).withOpacity(0.15), Color(0xFFFBBF24).withOpacity(0.15)],
+            colors: [const Color(0xFFF59E0B).withAlpha(38), const Color(0xFFFBBF24).withAlpha(38)],
           ),
           borderRadius: BorderRadius.circular(s.borderRadiusLg),
-          border: Border.all(color: _isHovered ? Color(0xFFF59E0B) : Color(0xFFF59E0B).withOpacity(0.5), width: 2),
+          border: Border.all(
+            color: _isHovered ? const Color(0xFFF59E0B) : const Color(0xFFF59E0B).withAlpha(128),
+            width: 2,
+          ),
           boxShadow: _isHovered
-              ? [BoxShadow(color: Color(0xFFF59E0B).withOpacity(0.3), blurRadius: 25, offset: Offset(0, 10))]
+              ? [BoxShadow(color: const Color(0xFFF59E0B).withAlpha(77), blurRadius: 25, offset: Offset(0, 10))]
               : null,
         ),
         child: Column(
@@ -50,7 +52,7 @@ class _BundleDiscountBannerState extends State<BundleDiscountBanner> {
             // Icon
             Text('💡', style: TextStyle(fontSize: context.responsiveValue(mobile: 40, tablet: 48, desktop: 52)))
                 .animate(onPlay: (controller) => controller.repeat())
-                .shimmer(duration: 2000.ms, color: Colors.white.withOpacity(0.3)),
+                .shimmer(duration: 2000.ms, color: Colors.white.withAlpha(77)),
             SizedBox(height: s.paddingMd),
 
             // Heading

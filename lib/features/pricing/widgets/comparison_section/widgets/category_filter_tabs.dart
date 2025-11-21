@@ -81,7 +81,7 @@ class _FilterChipState extends State<_FilterChip> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
               padding: EdgeInsets.symmetric(
-                horizontal: context.responsiveValue(mobile: s.paddingMd, tablet: s.paddingLg, desktop: s.paddingLg),
+                horizontal: context.responsiveValue(mobile: s.paddingMd, desktop: s.paddingLg),
                 vertical: s.paddingSm,
               ),
               decoration: BoxDecoration(

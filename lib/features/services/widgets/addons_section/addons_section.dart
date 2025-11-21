@@ -6,7 +6,7 @@ import '../../../../common_function/widgets/section_header.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import '../../../../common_function/widgets/responsive_grid.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/common_function/style/custom_button.dart';
+import 'package:responsive_website/common_function/widgets/custom_button.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
 import 'package:responsive_website/utility/responsive/section_container.dart';

@@ -1,14 +1,12 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_website/common_function/widgets/section_header.dart';
 import 'widgets/process_step_card.dart';
 import '../../../../utility/constants/colors.dart';
-import '../../../../data_layer/model/services/process_step_model.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_helper.dart';
 import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../utility/responsive/section_container.dart';
-import 'package:responsive_website/common_function/style/section_header.dart';
+import '../../../../data_layer/model/services/process_step_model.dart';
+import 'package:responsive_website/common_function/widgets/section_header.dart';
 
 class ProcessTimelineSection extends StatelessWidget {
   const ProcessTimelineSection({super.key});

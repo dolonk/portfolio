@@ -5,8 +5,8 @@ import 'package:responsive_website/route/route_name.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/common_function/style/custom_button.dart';
-import 'package:responsive_website/common_function/style/hoverable_card.dart';
+import 'package:responsive_website/common_function/widgets/custom_button.dart';
+import 'package:responsive_website/common_function/widgets/hoverable_card.dart';
 import 'package:responsive_website/data_layer/model/services/service_detail_model.dart';
 
 class ServiceCardDetailed extends StatefulWidget {

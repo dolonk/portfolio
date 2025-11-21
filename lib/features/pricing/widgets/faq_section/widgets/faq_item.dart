@@ -35,11 +35,11 @@ class _FaqItemState extends State<FaqItem> {
           border: Border.all(
             color: widget.isExpanded
                 ? DColors.primaryButton
-                : (_isHovered ? DColors.primaryButton.withOpacity(0.3) : DColors.cardBorder),
+                : (_isHovered ? DColors.primaryButton.withAlpha(76) : DColors.cardBorder),
             width: widget.isExpanded ? 2 : 1.5,
           ),
           boxShadow: widget.isExpanded
-              ? [BoxShadow(color: DColors.primaryButton.withOpacity(0.15), blurRadius: 15, offset: Offset(0, 5))]
+              ? [BoxShadow(color: DColors.primaryButton.withAlpha(38), blurRadius: 15, offset: Offset(0, 5))]
               : null,
         ),
         child: Column(
@@ -49,16 +49,14 @@ class _FaqItemState extends State<FaqItem> {
               onTap: widget.onToggle,
               borderRadius: BorderRadius.circular(s.borderRadiusLg),
               child: Padding(
-                padding: EdgeInsets.all(
-                  context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-                ),
+                padding: EdgeInsets.all(s.paddingLg),
                 child: Row(
                   children: [
                     // Question Icon
                     Container(
                       padding: EdgeInsets.all(s.paddingSm),
                       decoration: BoxDecoration(
-                        color: DColors.primaryButton.withOpacity(0.1),
+                        color: DColors.primaryButton.withAlpha(25),
                         borderRadius: BorderRadius.circular(s.borderRadiusMd),
                       ),
                       child: Icon(
@@ -98,9 +96,9 @@ class _FaqItemState extends State<FaqItem> {
               secondChild: Container(
                 width: double.infinity,
                 padding: EdgeInsets.only(
-                  left: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-                  right: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
-                  bottom: context.responsiveValue(mobile: s.paddingLg, tablet: s.paddingXl, desktop: s.paddingXl),
+                  left: context.responsiveValue(mobile: s.paddingLg, desktop: s.paddingXl),
+                  right: context.responsiveValue(mobile: s.paddingLg, desktop: s.paddingXl),
+                  bottom: context.responsiveValue(mobile: s.paddingLg, desktop: s.paddingXl),
                   top: 0,
                 ),
                 child: Column(
@@ -113,7 +111,7 @@ class _FaqItemState extends State<FaqItem> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm / 2),
                       decoration: BoxDecoration(
-                        color: DColors.primaryButton.withOpacity(0.1),
+                        color: DColors.primaryButton.withAlpha(25),
                         borderRadius: BorderRadius.circular(s.borderRadiusSm),
                       ),
                       child: Text(

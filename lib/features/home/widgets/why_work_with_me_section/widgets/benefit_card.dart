@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../common_function/style/hoverable_card.dart';
+import '../../../../../common_function/widgets/hoverable_card.dart';
 import '../../../../../utility/constants/colors.dart';
 import '../../../../../data_layer/model/home/benefit_model.dart';
 import '../../../../../utility/default_sizes/font_size.dart';

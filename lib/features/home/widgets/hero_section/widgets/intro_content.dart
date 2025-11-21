@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../../route/route_name.dart';
 import '../../../../../utility/constants/colors.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import '../../../../../common_function/style/custom_button.dart';
+import '../../../../../common_function/widgets/custom_button.dart';
 import 'package:responsive_website/utility/default_sizes/font_size.dart';
 import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
 import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/common_function/style/animation_social_icon.dart';
+import 'package:responsive_website/common_function/widgets/animation_social_icon.dart';
 
 class IntroContent extends StatelessWidget {
   const IntroContent({super.key});
