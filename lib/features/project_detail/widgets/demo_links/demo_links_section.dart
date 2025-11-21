@@ -56,28 +56,30 @@ class DemoLinksSection extends StatelessWidget {
   Widget _buildLinksGrid(BuildContext context, DSizes s) {
     final links = _getAvailableLinks(context);
 
-    // Calculate card width
-    final cardWidth = context.responsiveValue(
-      mobile: (MediaQuery.of(context).size.width - (s.paddingMd * 2) - s.spaceBtwItems) / 2,
-      tablet: (900 - s.spaceBtwItems * 2) / 3,
-      desktop: (1000 - s.spaceBtwItems * 3) / 4,
-    );
-
-    return Wrap(
-      spacing: s.spaceBtwItems,
-      runSpacing: s.spaceBtwItems,
-      children: links.map((link) {
-        return SizedBox(
-          width: cardWidth,
-          child: LinkButton(
-            icon: link['icon'] as IconData,
-            label: link['label'] as String,
-            url: link['url'] as String?,
-            color: link['color'] as Color,
-            onPressed: link['onPressed'] as VoidCallback?,
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = context.responsiveValue(
+          mobile: (constraints.maxWidth - s.spaceBtwItems) / 2,
+          tablet: (1000 - s.spaceBtwItems * 3) / 4,
+          desktop: (1100 - s.spaceBtwItems * 4) / 5,
         );
-      }).toList(),
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: links.map((link) {
+            return SizedBox(
+              width: cardWidth,
+              child: LinkButton(
+                icon: link['icon'] as IconData,
+                label: link['label'] as String,
+                url: link['url'] as String?,
+                color: link['color'] as Color,
+                onPressed: link['onPressed'] as VoidCallback?,
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 
@@ -216,7 +218,6 @@ void _showRequestSourceCodeDialog(BuildContext context, ProjectModel project) {
           ),
           onPressed: () {
             if (formKey.currentState!.validate()) {
-              ///TODO: Connect to the the database Firebase
               Navigator.pop(context);
 
               // --- Centered Toast (SnackBar) ---

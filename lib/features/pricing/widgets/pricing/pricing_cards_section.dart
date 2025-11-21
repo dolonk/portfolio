@@ -35,7 +35,7 @@ class PricingCardsSection extends StatelessWidget {
   Widget _buildPricingCards(BuildContext context, List<PricingTierModel> tiers, DSizes s) {
     final crossAxisCount = context.responsiveValue(mobile: 1, tablet: 2, desktop: 3);
     final spacing = context.responsiveValue(
-      mobile: s.spaceBtwItems,
+      mobile: s.spaceBtwSections,
       tablet: s.spaceBtwSections * 0.75,
       desktop: s.spaceBtwSections,
     );

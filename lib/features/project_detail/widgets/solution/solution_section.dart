@@ -1,3 +1,5 @@
+import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+
 import 'widgets/timeline_step.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_website/utility/constants/colors.dart';
@@ -27,7 +29,7 @@ class SolutionSection extends StatelessWidget {
 
             // Timeline Steps
             Padding(
-              padding: EdgeInsets.only(left: s.spaceBtwSections),
+              padding: EdgeInsets.only(left: context.isMobile ? 0 : s.spaceBtwSections),
               child: _buildTimelineSteps(context),
             ),
           ],

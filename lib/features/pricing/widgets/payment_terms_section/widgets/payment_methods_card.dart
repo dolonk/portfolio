@@ -34,7 +34,7 @@ class PaymentMethodsCard extends StatelessWidget {
               Text(
                 'Payment Methods Accepted',
                 style: fonts.titleLarge.rajdhani(
-                  fontSize: context.responsiveValue(mobile: 22, tablet: 26, desktop: 28),
+                  fontSize: context.responsiveValue(mobile: 20, tablet: 26, desktop: 28),
                   fontWeight: FontWeight.bold,
                   color: DColors.textPrimary,
                 ),

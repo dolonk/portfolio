@@ -53,28 +53,30 @@ class GallerySection extends StatelessWidget {
   Widget _buildGalleryGrid(BuildContext context, DSizes s) {
     final images = imagesGallery;
     final captions = _getImageCaptions();
-
-    final cardWidth = context.responsiveValue(
-      mobile: double.infinity, // 1 column
-      tablet: (900 - s.spaceBtwItems) / 2,
-      desktop: (1100 - s.spaceBtwItems * 2) / 3,
-    );
-
-    return Wrap(
-      spacing: s.spaceBtwItems,
-      runSpacing: s.spaceBtwItems,
-      children: List.generate(images.length, (index) {
-        return SizedBox(
-          width: context.isMobile ? double.infinity : cardWidth,
-          child: GalleryImage(
-            imagePath: images[index],
-            caption: captions.length > index ? captions[index] : null,
-            onTap: () {
-              _openLightbox(context, index, captions);
-            },
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = context.responsiveValue(
+          mobile: double.infinity,
+          tablet:  (constraints.maxWidth - s.spaceBtwItems) / 2,
+          desktop: (1100 - s.spaceBtwItems * 2) / 3,
         );
-      }),
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: List.generate(images.length, (index) {
+            return SizedBox(
+              width: context.isMobile ? double.infinity : cardWidth,
+              child: GalleryImage(
+                imagePath: images[index],
+                caption: captions.length > index ? captions[index] : null,
+                onTap: () {
+                  _openLightbox(context, index, captions);
+                },
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 

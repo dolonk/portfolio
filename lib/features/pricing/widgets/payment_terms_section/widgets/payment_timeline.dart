@@ -178,27 +178,30 @@ class PaymentTimeline extends StatelessWidget {
     final s = context.sizes;
     final fonts = context.fonts;
 
-    return Container(
-      padding: EdgeInsets.all(s.paddingLg),
-      decoration: BoxDecoration(
-        color: milestone.accentColor.withAlpha(13),
-        borderRadius: BorderRadius.circular(s.borderRadiusMd),
-        border: Border.all(color: milestone.accentColor.withAlpha(51), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            milestone.name,
-            style: fonts.titleMedium.rajdhani(fontWeight: FontWeight.bold, color: milestone.accentColor),
-          ),
-          SizedBox(height: s.paddingSm),
-          _buildDueDate(milestone, fonts),
-          SizedBox(height: s.paddingMd),
-          ..._buildDeliverables(milestone, fonts, s),
-        ],
-      ),
-    ).animate(delay: (400 + (index * 200)).ms).fadeIn(duration: 600.ms).slideX(begin: 0.2, duration: 600.ms);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Container(
+        padding: EdgeInsets.all(s.paddingLg),
+        decoration: BoxDecoration(
+          color: milestone.accentColor.withAlpha(13),
+          borderRadius: BorderRadius.circular(s.borderRadiusMd),
+          border: Border.all(color: milestone.accentColor.withAlpha(51), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              milestone.name,
+              style: fonts.titleMedium.rajdhani(fontWeight: FontWeight.bold, color: milestone.accentColor),
+            ),
+            SizedBox(height: s.paddingSm),
+            _buildDueDate(milestone, fonts),
+            SizedBox(height: s.paddingMd),
+            ..._buildDeliverables(milestone, fonts, s),
+          ],
+        ),
+      ).animate(delay: (400 + (index * 200)).ms).fadeIn(duration: 600.ms).slideX(begin: 0.2, duration: 600.ms),
+    );
   }
 
   Widget _buildDueDate(PaymentMilestone milestone, AppFonts fonts) {

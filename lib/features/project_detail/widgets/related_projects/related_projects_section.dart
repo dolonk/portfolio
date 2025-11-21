@@ -58,22 +58,24 @@ class RelatedProjectsSection extends StatelessWidget {
   /// Related Projects Grid with Wrap Layout
   Widget _buildProjectsGrid(BuildContext context, DSizes s) {
     final relatedProjects = _getRelatedProjects();
-
-    final cardWidth = context.responsiveValue(
-      mobile: double.infinity,
-      tablet: (900 - s.spaceBtwItems) / 2,
-      desktop: (1000 - s.spaceBtwItems * 2) / 3,
-    );
-
-    return Wrap(
-      spacing: s.spaceBtwItems,
-      runSpacing: s.spaceBtwItems,
-      children: relatedProjects.map((relatedProject) {
-        return SizedBox(
-          width: context.isMobile ? double.infinity : cardWidth,
-          child: RelatedProjectCard(project: relatedProject),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = context.responsiveValue(
+          mobile: double.infinity,
+          tablet: (constraints.maxWidth - s.spaceBtwItems) / 2,
+          desktop: (1100 - s.spaceBtwItems * 2) / 3,
         );
-      }).toList(),
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: relatedProjects.map((relatedProject) {
+            return SizedBox(
+              width: context.isMobile ? double.infinity : cardWidth,
+              child: RelatedProjectCard(project: relatedProject),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 

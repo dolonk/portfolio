@@ -10,13 +10,7 @@ class TechCard extends StatefulWidget {
   final String category;
   final Color iconColor;
 
-  const TechCard({
-    super.key,
-    required this.icon,
-    required this.name,
-    required this.category,
-    required this.iconColor,
-  });
+  const TechCard({super.key, required this.icon, required this.name, required this.category, required this.iconColor});
 
   @override
   State<TechCard> createState() => _TechCardState();
@@ -36,7 +30,7 @@ class _TechCardState extends State<TechCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
+        transform: Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0),
         decoration: BoxDecoration(
           color: DColors.cardBackground,
           borderRadius: BorderRadius.circular(16),

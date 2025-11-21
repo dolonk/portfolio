@@ -80,15 +80,20 @@ class ProcessSection extends StatelessWidget {
 
   /// 📱 Tablet Layout - 2 columns grid
   Widget _buildTabletLayout(BuildContext context, List<ProcessStepModel> steps, DSizes s) {
-    return Wrap(
-      spacing: s.spaceBtwItems,
-      runSpacing: s.spaceBtwItems,
-      children: steps.map((step) {
-        return SizedBox(
-          width: (context.screenWidth - s.paddingMd * 2 - s.spaceBtwItems) / 2,
-          child: ProcessStepCard(step: step),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth =  (constraints.maxWidth - s.spaceBtwItems) / 2;
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: steps.map((step) {
+            return SizedBox(
+              width: cardWidth,
+              child: ProcessStepCard(step: step),
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 

@@ -92,8 +92,7 @@ class _BlogGridSectionState extends State<BlogGridSection> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double desiredHeight = context.isMobile ? 424 : 530;
-        final double itemWidth =
-            (constraints.maxWidth - (crossAxisCount - 1) * s.spaceBtwItems) / crossAxisCount;
+        final double itemWidth = (constraints.maxWidth - (crossAxisCount - 1) * s.spaceBtwItems) / crossAxisCount;
         final double finalAspectRatio = itemWidth / desiredHeight;
 
         return Column(
@@ -125,7 +124,7 @@ class _BlogGridSectionState extends State<BlogGridSection> {
                 currentCount: _displayedPosts.length,
                 totalCount: _allPosts.length,
                 isLoading: _isLoading,
-              ),
+              ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.1, duration: 600.ms, delay: 200.ms),
             ],
           ],
         );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'widgets/process_step_card.dart';
 import '../../../../utility/constants/colors.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
-import '../../../../utility/responsive/responsive_helper.dart';
 import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../utility/responsive/section_container.dart';
 import '../../../../data_layer/model/services/process_step_model.dart';
@@ -46,29 +45,32 @@ class ProcessTimelineSection extends StatelessWidget {
     return Column(
       children: List.generate(
         steps.length,
-        (index) => ProcessStepCard(step: steps[index], isLast: index == steps.length - 1),
+        (index) => Padding(
+          padding: EdgeInsets.only(bottom: index == steps.length - 1 ? 0 : 16.0),
+          child: ProcessStepCard(step: steps[index], isLast: index == steps.length - 1),
+        ),
       ),
     );
   }
 
   // 📱 Tablet Layout - 2 Column Grid
   Widget _buildTabletLayout(BuildContext context) {
-    final s = context.sizes;
     final steps = _getProcessSteps();
-
-    return Wrap(
-      spacing: s.spaceBtwSections,
-      runSpacing: s.spaceBtwSections,
-      alignment: WrapAlignment.center,
-      children: List.generate(steps.length, (index) {
-        return SizedBox(
-          width: (context.screenWidth - s.paddingMd * 2 - s.spaceBtwSections) / 2,
-          child: ProcessStepCard(
-            step: steps[index],
-            isLast: true, // No connectors in grid
-          ),
+    final s = context.sizes;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = (constraints.maxWidth - s.spaceBtwItems) / 2;
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: steps.map((step) {
+            return SizedBox(
+              width: cardWidth,
+              child: ProcessStepCard(step: step),
+            );
+          }).toList(),
         );
-      }),
+      },
     );
   }
 

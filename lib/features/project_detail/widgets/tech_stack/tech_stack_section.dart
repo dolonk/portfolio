@@ -54,27 +54,30 @@ class TechStackSection extends StatelessWidget {
   Widget _buildTechStackGrid(BuildContext context, DSizes s) {
     final techStackItems = _getTechStackItems();
 
-    // Calculate card width based on screen size
-    final cardWidth = context.responsiveValue(
-      mobile: (MediaQuery.of(context).size.width - (s.paddingMd * 2) - s.spaceBtwItems) / 2,
-      tablet: (1000 - s.spaceBtwItems * 3) / 4,
-      desktop: (1100 - s.spaceBtwItems * 4) / 5,
-    );
-
-    return Wrap(
-      spacing: s.spaceBtwItems,
-      runSpacing: s.spaceBtwItems,
-      children: techStackItems.map((tech) {
-        return SizedBox(
-          width: cardWidth,
-          child: TechCard(
-            icon: tech['icon'] as IconData,
-            name: tech['name'] as String,
-            category: tech['category'] as String,
-            iconColor: tech['color'] as Color,
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = context.responsiveValue(
+          mobile: (constraints.maxWidth - s.spaceBtwItems) / 2,
+          tablet: (1000 - s.spaceBtwItems * 3) / 4,
+          desktop: (1100 - s.spaceBtwItems * 4) / 5,
         );
-      }).toList(),
+
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: techStackItems.map((tech) {
+            return SizedBox(
+              width: cardWidth,
+              child: TechCard(
+                icon: tech['icon'] as IconData,
+                name: tech['name'] as String,
+                category: tech['category'] as String,
+                iconColor: tech['color'] as Color,
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 

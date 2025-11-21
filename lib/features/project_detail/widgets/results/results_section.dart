@@ -55,27 +55,29 @@ class ResultsSection extends StatelessWidget {
   Widget _buildMetricsGrid(BuildContext context, DSizes s) {
     final metrics = _getMetricsData();
 
-    // Calculate card width
-    final cardWidth = context.responsiveValue(
-      mobile: (MediaQuery.of(context).size.width - (s.paddingMd * 2) - s.spaceBtwItems) / 2,
-      tablet: (900 - s.spaceBtwItems * 2) / 3,
-      desktop: (1100 - s.spaceBtwItems * 3) / 4,
-    );
-
-    return Wrap(
-      spacing: s.spaceBtwItems,
-      runSpacing: s.spaceBtwItems,
-      children: metrics.map((metric) {
-        return SizedBox(
-          width: cardWidth,
-          child: MetricCard(
-            icon: metric['icon'] as IconData,
-            value: metric['value'] as String,
-            label: metric['label'] as String,
-            iconColor: metric['color'] as Color,
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = context.responsiveValue(
+          mobile: (constraints.maxWidth - s.spaceBtwItems) / 2,
+          tablet: (900 - s.spaceBtwItems * 2) / 3,
+          desktop: (1100 - s.spaceBtwItems * 3) / 4,
         );
-      }).toList(),
+        return Wrap(
+          spacing: s.spaceBtwItems,
+          runSpacing: s.spaceBtwItems,
+          children: metrics.map((metric) {
+            return SizedBox(
+              width: cardWidth,
+              child: MetricCard(
+                icon: metric['icon'] as IconData,
+                value: metric['value'] as String,
+                label: metric['label'] as String,
+                iconColor: metric['color'] as Color,
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 

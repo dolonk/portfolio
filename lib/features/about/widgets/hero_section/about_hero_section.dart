@@ -210,7 +210,7 @@ class AboutHeroSection extends StatelessWidget {
           onPressed: () => context.go(RouteNames.contact),
         ),
       ],
-    );
+    ).animate().fadeIn(duration: 600.ms, delay: 1000.ms).slideY(begin: 0.1, duration: 600.ms, delay: 1000.ms);
   }
 
   /// Social Links

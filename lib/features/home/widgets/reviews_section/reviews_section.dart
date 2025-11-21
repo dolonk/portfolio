@@ -40,7 +40,7 @@ class ReviewsSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      padding: EdgeInsets.only(top: s.spaceBtwSections, left: s.paddingMd, right: s.paddingMd, bottom: s.paddingLg),
+      padding: EdgeInsets.only( left: s.paddingMd, right: s.paddingMd,),
       child: Container(
         decoration: BoxDecoration(gradient: DColors.reviewsSectionGradient),
         child: ResponsiveWidget(
@@ -119,7 +119,7 @@ class ReviewsSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: context.sizes.paddingMd * 2.5),
+        SizedBox(height: context.sizes.spaceBtwSections * 2),
       ],
     );
   }
