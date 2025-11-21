@@ -57,7 +57,13 @@ class _BaseScreenState extends State<BaseScreen> {
                 controller: _scrollController,
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  child: Column(children: [widget.child, const FooterSection()]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      widget.child,
+                      const FooterSection(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -158,10 +164,7 @@ class _BaseScreenState extends State<BaseScreen> {
           // Social Links Section
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Connect with us',
-              style: context.fonts.labelMedium.copyWith(color: DColors.textSecondary),
-            ),
+            child: Text('Connect with us', style: context.fonts.labelMedium.copyWith(color: DColors.textSecondary)),
           ),
         ],
       ),

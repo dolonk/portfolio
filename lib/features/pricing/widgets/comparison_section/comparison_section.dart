@@ -77,30 +77,23 @@ class _ComparisonSectionState extends State<ComparisonSection> {
 
     return SectionContainer(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 1000, desktop: 1400),
-          ),
-          child: Column(
-            children: [
-              // Section Heading
-              _buildSectionHeading(fonts, s),
-              SizedBox(height: s.spaceBtwItems),
+      child: Column(
+        children: [
+          // Section Heading
+          _buildSectionHeading(fonts, s),
+          SizedBox(height: s.spaceBtwItems),
 
-              // Filter Tabs
-              CategoryFilterTabs(selectedFilter: _selectedFilter, onFilterChanged: _handleFilterChange),
-              SizedBox(height: s.spaceBtwItems),
+          // Filter Tabs
+          CategoryFilterTabs(selectedFilter: _selectedFilter, onFilterChanged: _handleFilterChange),
+          SizedBox(height: s.spaceBtwItems),
 
-              // Expand/Collapse All Button
-              if (!context.isMobile) _buildExpandCollapseButton(fonts, s),
-              if (!context.isMobile) SizedBox(height: s.spaceBtwItems),
+          // Expand/Collapse All Button
+          if (!context.isMobile) _buildExpandCollapseButton(fonts, s),
+          if (!context.isMobile) SizedBox(height: s.spaceBtwItems),
 
-              // Category Cards
-              _buildCategoryCards(displayedCategories, s),
-            ],
-          ),
-        ),
+          // Category Cards
+          _buildCategoryCards(displayedCategories, s),
+        ],
       ),
     );
   }

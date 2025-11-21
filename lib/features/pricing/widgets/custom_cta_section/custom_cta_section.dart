@@ -26,62 +26,55 @@ class _PriceCustomCtaSectionState extends State<PriceCustomCtaSection> {
 
     return SectionContainer(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1000),
-          ),
-          child: MouseRegion(
-            onEnter: (_) => setState(() => _isHovered = true),
-            onExit: (_) => setState(() => _isHovered = false),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-              transform: Matrix4.translationValues(0.0, _isHovered ? -5.0 : 0.0, 0.0),
-              padding: EdgeInsets.all(s.paddingXl),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [DColors.cardBackground, DColors.cardBackground],
-                ),
-                borderRadius: BorderRadius.circular(s.borderRadiusLg),
-                border: Border.all(
-                  color: _isHovered
-                      ? DColors.primaryButton
-                      : DColors.primaryButton.withAlpha((255 * 0.5).round()),
-                  width: 2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: DColors.primaryButton.withAlpha((_isHovered ? 255 * 0.3 : 255 * 0.15).round()),
-                    blurRadius: _isHovered ? 30 : 20,
-                    offset: Offset(0, _isHovered ? 15 : 10),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  // Icon
-                  _buildIcon(s),
-                  SizedBox(height: s.spaceBtwItems),
-
-                  // Heading
-                  _buildHeading(fonts, s),
-                  SizedBox(height: s.paddingMd),
-
-                  // Description
-                  _buildDescription(fonts, s),
-                  SizedBox(height: s.spaceBtwItems),
-
-                  // CTA Buttons
-                  _buildCTAButtons(s),
-                ],
-              ),
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+          transform: Matrix4.translationValues(0.0, _isHovered ? -5.0 : 0.0, 0.0),
+          padding: EdgeInsets.all(s.paddingXl),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [DColors.cardBackground, DColors.cardBackground],
             ),
-          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, duration: 600.ms),
+            borderRadius: BorderRadius.circular(s.borderRadiusLg),
+            border: Border.all(
+              color: _isHovered
+                  ? DColors.primaryButton
+                  : DColors.primaryButton.withAlpha((255 * 0.5).round()),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: DColors.primaryButton.withAlpha((_isHovered ? 255 * 0.3 : 255 * 0.15).round()),
+                blurRadius: _isHovered ? 30 : 20,
+                offset: Offset(0, _isHovered ? 15 : 10),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              // Icon
+              _buildIcon(s),
+              SizedBox(height: s.spaceBtwItems),
+
+              // Heading
+              _buildHeading(fonts, s),
+              SizedBox(height: s.paddingMd),
+
+              // Description
+              _buildDescription(fonts, s),
+              SizedBox(height: s.spaceBtwItems),
+
+              // CTA Buttons
+              _buildCTAButtons(s),
+            ],
+          ),
         ),
-      ),
+      ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, duration: 600.ms),
     );
   }
 

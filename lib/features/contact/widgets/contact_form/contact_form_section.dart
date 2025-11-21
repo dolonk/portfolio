@@ -60,28 +60,21 @@ class _ContactFormSectionState extends State<ContactFormSection> {
 
     return SectionContainer(
       padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1100),
+      child: Column(
+        children: [
+          // Section Heading
+          DSectionHeader(
+            label: 'SEND A MESSAGE',
+            title: 'Tell Me About Your Project',
+            subtitle: 'Fill out the form below and I\'ll get back to you within 24 hours',
+            alignment: TextAlign.center,
+            maxWidth: 700,
           ),
-          child: Column(
-            children: [
-              // Section Heading
-              DSectionHeader(
-                label: 'SEND A MESSAGE',
-                title: 'Tell Me About Your Project',
-                subtitle: 'Fill out the form below and I\'ll get back to you within 24 hours',
-                alignment: TextAlign.center,
-                maxWidth: 700,
-              ),
-              SizedBox(height: s.spaceBtwItems),
+          SizedBox(height: s.spaceBtwItems),
 
-              // Form
-              _buildForm(context, s),
-            ],
-          ),
-        ),
+          // Form
+          _buildForm(context, s),
+        ],
       ),
     );
   }

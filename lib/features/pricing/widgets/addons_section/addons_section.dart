@@ -20,26 +20,19 @@ class PriceAddonsSection extends StatelessWidget {
 
     return SectionContainer(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 1000, desktop: 1400),
-          ),
-          child: Column(
-            children: [
-              // Section Heading
-              _buildSectionHeading(fonts, s),
-              SizedBox(height: s.spaceBtwSections),
+      child: Column(
+        children: [
+          // Section Heading
+          _buildSectionHeading(fonts, s),
+          SizedBox(height: s.spaceBtwSections),
 
-              // Add-on Cards Grid
-              _buildAddonsGrid(context, addons, s),
-              SizedBox(height: s.spaceBtwSections),
+          // Add-on Cards Grid
+          _buildAddonsGrid(context, addons, s),
+          SizedBox(height: s.spaceBtwSections),
 
-              // Bundle Discount Banner
-              BundleDiscountBanner(),
-            ],
-          ),
-        ),
+          // Bundle Discount Banner
+          BundleDiscountBanner(),
+        ],
       ),
     );
   }

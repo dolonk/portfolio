@@ -16,18 +16,11 @@ class PricingCardsSection extends StatelessWidget {
 
     return SectionContainer(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1400),
-          ),
-          child: Column(
-            children: [
-              _buildPricingCards(context, tiers, s),
-              SizedBox(height: s.spaceBtwItems),
-            ],
-          ),
-        ),
+      child: Column(
+        children: [
+          _buildPricingCards(context, tiers, s),
+          SizedBox(height: s.spaceBtwItems),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/utility/constants/colors.dart';
+import '../../utility/responsive/responsive_helper.dart';
 import 'widgets/process_timeline_section/process_timeline_section.dart';
 import 'package:portfolio/common_function/base_screen/base_screen.dart';
 import 'package:portfolio/features/home/widgets/blog_section/blog_section.dart';
@@ -24,29 +25,40 @@ class HomePage extends StatelessWidget {
           // Hero Section
           HeroSection(),
 
-          // Services Section
-          MyServiceSection(),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1400),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  // Services Section
+                  MyServiceSection(),
 
-          // Experience Section
-          ExperienceSection(),
+                  // Experience Section
+                  ExperienceSection(),
 
-          // Latest Projects Section
-          LatestProjectsSection(),
+                  // Latest Projects Section
+                  LatestProjectsSection(),
 
-          // Why Choose Me Section
-          WhyWorkWithMeSection(),
+                  // Why Choose Me Section
+                  WhyWorkWithMeSection(),
 
-          // Tech Stack Section
-          TechStackSection(),
+                  // Tech Stack Section
+                  TechStackSection(),
 
-          // Process Timeline Section
-          ProcessTimelineSection(),
+                  // Process Timeline Section
+                  ProcessTimelineSection(),
 
-          // Reviews Section
-          ReviewsSection(),
+                  // Reviews Section
+                  ReviewsSection(),
 
-          // Blog Section
-          BlogSection(),
+                  // Blog Section
+                  BlogSection(),
+                ],
+              ),
+            ),
+          ),
 
           // Get In Touch Section
           GetInTouchSection(),

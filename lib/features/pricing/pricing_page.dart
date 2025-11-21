@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/features/pricing/widgets/cta/price_cta.dart';
 import 'package:portfolio/features/pricing/widgets/faq_section/faq_section.dart';
+import '../../utility/responsive/responsive_helper.dart';
 import 'widgets/pricing/price_into_section/pricing_intro_section.dart';
 import 'widgets/hero_section/pricing_hero_section.dart';
 import 'widgets/custom_cta_section/custom_cta_section.dart';
@@ -22,28 +24,43 @@ class PricingPage extends StatelessWidget {
           // Hero Section
           PricingHeroSection(),
 
-          // Intro
-          PricingIntroSection(),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1600),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  // Intro
+                  PricingIntroSection(),
 
-          // Pricing Cards
-          PricingCardsSection(),
+                  // Pricing Cards
+                  PricingCardsSection(),
 
-          // Comparison Table
-          ComparisonSection(),
+                  // Comparison Table
+                  ComparisonSection(),
 
-          // Custom CTA
-          PriceCustomCtaSection(),
+                  // Custom CTA
+                  PriceCustomCtaSection(),
 
-          // Add-on Services
-          PriceAddonsSection(),
+                  // Add-on Services
+                  PriceAddonsSection(),
 
-          // Payment Terms
-          PaymentTermsSection(),
+                  // Payment Terms
+                  PaymentTermsSection(),
 
-          // FAQ
-          PriceFaqSection(),
+                  // FAQ
+                  PriceFaqSection(),
+
+                  PriceCta()
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+
 }

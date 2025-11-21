@@ -157,7 +157,7 @@ class AboutHeroSection extends StatelessWidget {
       children: stats.map((stat) {
         return SizedBox(
           width: context.responsiveValue(
-            mobile: (MediaQuery.of(context).size.width - s.paddingMd * 5) / 2,
+            mobile: (context.screenWidth - s.paddingMd * 5) / 2,
             tablet: 160.0,
             desktop: 180.0,
           ),

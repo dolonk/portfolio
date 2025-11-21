@@ -22,7 +22,7 @@ class MyStorySection extends StatelessWidget {
       child: Center(
         child: Container(
           constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 900, desktop: 1200),
+            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 900, desktop: 1400),
           ),
           child: Column(
             children: [

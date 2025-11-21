@@ -18,32 +18,25 @@ class CalendarSection extends StatelessWidget {
 
     return SectionContainer(
       padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 900),
+      child: Column(
+        children: [
+          // Section Heading
+          DSectionHeader(
+            label: 'BOOK A CALL',
+            title: 'Schedule a Free Consultation',
+            subtitle: 'Or pick a time that works for you',
+            alignment: TextAlign.center,
+            maxWidth: 700,
           ),
-          child: Column(
-            children: [
-              // Section Heading
-              DSectionHeader(
-                label: 'BOOK A CALL',
-                title: 'Schedule a Free Consultation',
-                subtitle: 'Or pick a time that works for you',
-                alignment: TextAlign.center,
-                maxWidth: 700,
-              ),
-              SizedBox(height: s.spaceBtwItems),
+          SizedBox(height: s.spaceBtwItems),
 
-              // Calendly Widget
-              CalendlyWidget(calendlyUrl: 'https://calendly.com/your-username/30min', height: 700),
+          // Calendly Widget
+          CalendlyWidget(calendlyUrl: 'https://calendly.com/your-username/30min', height: 700),
 
-              // Info Badges
-              SizedBox(height: s.spaceBtwSections),
-              _buildInfoBadges(context, s),
-            ],
-          ),
-        ),
+          // Info Badges
+          SizedBox(height: s.spaceBtwSections),
+          _buildInfoBadges(context, s),
+        ],
       ),
     );
   }

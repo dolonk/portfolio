@@ -20,30 +20,23 @@ class PaymentTermsSection extends StatelessWidget {
     return SectionContainer(
       backgroundColor: DColors.secondaryBackground,
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 1000, desktop: 1400),
-          ),
-          child: Column(
-            children: [
-              // Section Heading
-              _buildSectionHeading(fonts, s),
-              SizedBox(height: s.spaceBtwSections),
+      child: Column(
+        children: [
+          // Section Heading
+          _buildSectionHeading(fonts, s),
+          SizedBox(height: s.spaceBtwSections),
 
-              // Payment Timeline
-              PaymentTimeline(),
-              SizedBox(height: s.spaceBtwSections),
+          // Payment Timeline
+          PaymentTimeline(),
+          SizedBox(height: s.spaceBtwSections),
 
-              // Payment Methods Card
-              PaymentMethodsCard(),
-              SizedBox(height: s.spaceBtwItems),
+          // Payment Methods Card
+          PaymentMethodsCard(),
+          SizedBox(height: s.spaceBtwItems),
 
-              // Payment Policies
-              PaymentPoliciesCard(),
-            ],
-          ),
-        ),
+          // Payment Policies
+          PaymentPoliciesCard(),
+        ],
       ),
     );
   }

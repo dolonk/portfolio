@@ -74,7 +74,6 @@ class MyServiceSection extends StatelessWidget {
             title: 'What I Offer',
             subtitle: 'Professional development services tailored to your needs',
             alignment: TextAlign.center,
-            maxWidth: 700,
           ),
           SizedBox(height: s.spaceBtwItems),
 

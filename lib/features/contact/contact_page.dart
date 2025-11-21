@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utility/responsive/responsive_helper.dart';
 import 'widgets/faq/contact_faq_section.dart';
 import 'widgets/timeline/timeline_section.dart';
 import 'widgets/calendar/calendar_section.dart';
@@ -40,26 +41,39 @@ class _ContactPageState extends State<ContactPage> {
           // Hero Section
           const ContactHeroSection(),
 
-          // Contact Options
-          ContactOptionsSection(onScrollToForm: _scrollToContactForm),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1600),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  // Contact Options
+                  ContactOptionsSection(onScrollToForm: _scrollToContactForm),
 
-          // Contact Form
-          ContactFormSection(key: _contactFormKey),
+                  // Contact Form
+                  ContactFormSection(key: _contactFormKey),
 
-          // Calendar Integration
-          const CalendarSection(),
+                  // Calendar Integration
+                  const CalendarSection(),
 
-          // Social Links
-          const SocialLinksSection(),
+                  // Social Links
+                  const SocialLinksSection(),
 
-          // FAQ section
-          const ContactFaqSection(),
+                  // FAQ section
+                  const ContactFaqSection(),
 
-          // Availability Status
-          const AvailabilitySection(),
+                  // Availability Status
+                  const AvailabilitySection(),
 
-          // What Happens Next (Timeline)
-          const TimelineSection(),
+                  // What Happens Next (Timeline)
+                  const TimelineSection(),
+                ],
+              ),
+            ),
+          ),
+
+
 
           // Testimonials section
           const TestimonialsSection(),

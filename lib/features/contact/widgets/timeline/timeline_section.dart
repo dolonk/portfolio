@@ -30,7 +30,6 @@ class TimelineSection extends StatelessWidget {
                 title: 'What Happens Next?',
                 subtitle: 'Here\'s my transparent process from first contact to project completion',
                 alignment: TextAlign.center,
-                maxWidth: 700,
               ),
               SizedBox(height: s.spaceBtwSections),
 

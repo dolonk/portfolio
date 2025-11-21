@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utility/responsive/responsive_helper.dart';
 import 'widgets/features/features_section.dart';
 import 'widgets/gallery/gallery_section.dart';
 import 'widgets/results/results_section.dart';
@@ -29,33 +30,45 @@ class ProjectDetailPage extends StatelessWidget {
         children: [
           // Hero Image
           ProjectHeroSection(project: project),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1600),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  // Project Overview
+                  ProjectOverviewSection(project: project),
 
-          // Project Overview
-          ProjectOverviewSection(project: project),
+                  // The Challenge
+                  ChallengeSection(project: project),
 
-          // The Challenge
-          ChallengeSection(project: project),
+                  // The Solution
+                  SolutionSection(project: project),
 
-          // The Solution
-          SolutionSection(project: project),
+                  // Tech Stack Used
+                  TechStackSection(project: project),
 
-          // Tech Stack Used
-          TechStackSection(project: project),
+                  // Key Features
+                  FeaturesSection(project: project),
 
-          // Key Features
-          FeaturesSection(project: project),
+                  // Results & Impact
+                  ResultsSection(project: project),
 
-          // Results & Impact
-          ResultsSection(project: project),
+                  // Image Gallery
+                  GallerySection(imagesGallery: project.galleryImages),
 
-          // Image Gallery
-          GallerySection(imagesGallery: project.galleryImages),
+                  // Demo & Links
+                  DemoLinksSection(project: project),
 
-          // Demo & Links
-          DemoLinksSection(project: project),
+                  // Related Projects
+                  RelatedProjectsSection(project: project),
+                ],
+              ),
+            ),
+          ),
 
-          // Related Projects
-          RelatedProjectsSection(project: project),
+
 
           // CTA
           const CtaSection(),
