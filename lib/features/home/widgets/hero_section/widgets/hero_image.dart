@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/constants/image_string.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class HeroImage extends StatelessWidget {
   const HeroImage({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:portfolio/utility/constants/colors.dart';
 import '../../../../../utility/url_launcher_service/url_launcher_service.dart';
-import 'package:responsive_website/data_layer/model/about/social_link_model.dart';
+import 'package:portfolio/data_layer/model/about/social_link_model.dart';
 
 class SocialLinkButton extends StatefulWidget {
   final SocialLinkModel social;

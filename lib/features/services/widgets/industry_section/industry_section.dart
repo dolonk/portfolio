@@ -2,9 +2,9 @@ import 'widgets/industry_card.dart';
 import 'package:flutter/material.dart';
 import '../../../../common_function/widgets/section_header.dart';
 import '../../../../common_function/widgets/responsive_grid.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/services/industry_model.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/data_layer/model/services/industry_model.dart';
 
 class IndustrySection extends StatelessWidget {
   const IndustrySection({super.key});

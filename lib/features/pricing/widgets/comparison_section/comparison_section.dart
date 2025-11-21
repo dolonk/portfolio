@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'widgets/category_filter_tabs.dart';
 import 'widgets/comparison_category_card.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:responsive_website/data_layer/model/pricing/comparison_feature_model.dart';
+import 'package:portfolio/data_layer/model/pricing/comparison_feature_model.dart';
 
 class ComparisonSection extends StatefulWidget {
   const ComparisonSection({super.key});

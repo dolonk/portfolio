@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../../utility/constants/colors.dart';
 import 'widgets/content_section/content_section.dart';
 import '../../data_layer/model/blog/blog_post_model.dart';
-import 'package:responsive_website/common_function/base_screen/base_screen.dart';
-import 'package:responsive_website/features/blog_detail/widgets/comments/comments_section.dart';
-import 'package:responsive_website/features/blog_detail/widgets/hero_section/blog_detail_hero.dart';
-import 'package:responsive_website/features/blog_detail/widgets/newsletter/newsletter_cta_section.dart';
+import 'package:portfolio/common_function/base_screen/base_screen.dart';
+import 'package:portfolio/features/blog_detail/widgets/comments/comments_section.dart';
+import 'package:portfolio/features/blog_detail/widgets/hero_section/blog_detail_hero.dart';
+import 'package:portfolio/features/blog_detail/widgets/newsletter/newsletter_cta_section.dart';
 
 class BlogDetailPage extends StatelessWidget {
   final String postId;

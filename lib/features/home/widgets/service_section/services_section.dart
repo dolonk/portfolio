@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/route/route_name.dart';
+import 'package:portfolio/route/route_name.dart';
 import '../../../../data_layer/model/home/service_model.dart';
 import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../common_function/widgets/section_header.dart';
 import '../../../../common_function/widgets/responsive_grid.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/features/home/widgets/service_section/widget/service_card.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/features/home/widgets/service_section/widget/service_card.dart';
 
 class MyServiceSection extends StatelessWidget {
   const MyServiceSection({super.key});

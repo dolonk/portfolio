@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class TimelineMarker extends StatelessWidget {
   final Color accentColor;

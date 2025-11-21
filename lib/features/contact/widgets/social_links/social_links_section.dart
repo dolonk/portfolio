@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../common_function/widgets/section_header.dart';
 import '../../../../common_function/widgets/animation_social_icon.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 
 class SocialLinksSection extends StatelessWidget {
   const SocialLinksSection({super.key});

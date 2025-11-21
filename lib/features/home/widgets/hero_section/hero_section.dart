@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/responsive_widget.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/features/home/widgets/hero_section/widgets/intro_content.dart';
-import 'package:responsive_website/features/home/widgets/hero_section/widgets/hero_image.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/responsive_widget.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/features/home/widgets/hero_section/widgets/intro_content.dart';
+import 'package:portfolio/features/home/widgets/hero_section/widgets/hero_image.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});

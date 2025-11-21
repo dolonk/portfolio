@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../route/route_name.dart';

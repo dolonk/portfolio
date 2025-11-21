@@ -3,11 +3,11 @@ import 'widgets/payment_timeline.dart';
 import 'widgets/payment_methods_card.dart';
 import 'widgets/payment_policies_card.dart';
 
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 
 class PaymentTermsSection extends StatelessWidget {
   const PaymentTermsSection({super.key});

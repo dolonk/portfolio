@@ -9,8 +9,8 @@ import 'package:go_router/go_router.dart';
 import '../features/about/about_page.dart';
 import '../features/contact/contact_page.dart';
 import '../features/services/services_page.dart';
-import 'package:responsive_website/features/home/home_page.dart';
-import 'package:responsive_website/features/portfolio/portfolio_page.dart';
+import 'package:portfolio/features/home/home_page.dart';
+import 'package:portfolio/features/portfolio/portfolio_page.dart';
 
 class RouteConfig {
   static final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();

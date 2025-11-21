@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:responsive_website/utility/constants/icon_string.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/constants/icon_string.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 import '../../../../data_layer/model/home/reviews_model.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/responsive_widget.dart';
-import 'package:responsive_website/features/home/widgets/reviews_section/widgets/reviews_card.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/responsive_widget.dart';
+import 'package:portfolio/features/home/widgets/reviews_section/widgets/reviews_card.dart';
 
 class ReviewsSection extends StatelessWidget {
   const ReviewsSection({super.key});

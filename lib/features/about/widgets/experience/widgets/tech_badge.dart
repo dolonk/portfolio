@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 
 class TechBadge extends StatelessWidget {
   final String tech;

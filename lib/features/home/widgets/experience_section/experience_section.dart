@@ -4,12 +4,12 @@ import '../../../../route/route_name.dart';
 import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../common_function/widgets/section_header.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/features/home/widgets/experience_section/widgets/start_card.dart';
-import 'package:responsive_website/features/home/widgets/experience_section/widgets/year_card.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/features/home/widgets/experience_section/widgets/start_card.dart';
+import 'package:portfolio/features/home/widgets/experience_section/widgets/year_card.dart';
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});

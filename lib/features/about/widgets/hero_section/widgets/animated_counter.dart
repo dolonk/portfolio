@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
 
 class AnimatedCounter extends StatelessWidget {
   final String value;

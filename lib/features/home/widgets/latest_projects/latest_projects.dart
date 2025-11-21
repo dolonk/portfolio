@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/route/route_name.dart';
+import 'package:portfolio/route/route_name.dart';
 import '../../../../common_function/widgets/custom_button.dart';
 import '../../../../data_layer/model/portfolio/project_model.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/common_function/widgets/section_header.dart';
-import 'package:responsive_website/common_function/widgets/responsive_grid.dart';
-import 'package:responsive_website/features/home/widgets/latest_projects/widgets/filter_chip.dart';
-import 'package:responsive_website/features/home/widgets/latest_projects/widgets/project_card.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/common_function/widgets/section_header.dart';
+import 'package:portfolio/common_function/widgets/responsive_grid.dart';
+import 'package:portfolio/features/home/widgets/latest_projects/widgets/filter_chip.dart';
+import 'package:portfolio/features/home/widgets/latest_projects/widgets/project_card.dart';
 
 class LatestProjectsSection extends StatefulWidget {
   const LatestProjectsSection({super.key});

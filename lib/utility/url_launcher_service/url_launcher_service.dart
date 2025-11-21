@@ -2,8 +2,8 @@ import '../../route/route_config.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
-import 'package:responsive_website/utility/url_launcher_service/url_validator.dart';
-import 'package:responsive_website/utility/url_launcher_service/url_launch_result.dart';
+import 'package:portfolio/utility/url_launcher_service/url_validator.dart';
+import 'package:portfolio/utility/url_launcher_service/url_launch_result.dart';
 
 class UrlLauncherService {
   static final UrlLauncherService _instance = UrlLauncherService._internal();

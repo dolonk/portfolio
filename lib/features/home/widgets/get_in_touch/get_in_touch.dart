@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/route/route_name.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/common_function/widgets/custom_button.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_widget.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/features/home/widgets/get_in_touch/widgets/contact_image.dart';
+import 'package:portfolio/route/route_name.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/common_function/widgets/custom_button.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_widget.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/features/home/widgets/get_in_touch/widgets/contact_image.dart';
 
 class GetInTouchSection extends StatelessWidget {
   const GetInTouchSection({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:portfolio/utility/constants/colors.dart';
 
 class PlatformBadge extends StatelessWidget {
   final String platform;

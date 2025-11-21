@@ -3,11 +3,11 @@ import 'widgets/calendly_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../common_function/widgets/section_header.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:responsive_website/data_layer/model/contact/calendar_info_model.dart';
+import 'package:portfolio/data_layer/model/contact/calendar_info_model.dart';
 
 class CalendarSection extends StatelessWidget {
   const CalendarSection({super.key});

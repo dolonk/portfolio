@@ -4,9 +4,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../data_layer/model/about/social_link_model.dart';
 import '../../utility/url_launcher_service/url_launcher_service.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class AnimationSocialIcon extends StatelessWidget {
   const AnimationSocialIcon({super.key});

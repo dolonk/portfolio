@@ -1,14 +1,14 @@
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/common_function/widgets/custom_button.dart';
+import 'package:portfolio/common_function/widgets/custom_button.dart';
 
 import '../../../../../route/route_name.dart';
 import 'tech_badge.dart';
 import 'platform_badge.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/data_layer/model/portfolio/project_model.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 
 class ProjectCard extends StatefulWidget {
   final ProjectModel project;

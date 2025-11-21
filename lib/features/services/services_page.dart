@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../common_function/base_screen/base_screen.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/features/services/widgets/faq_section/service_faq_section.dart';
-import 'package:responsive_website/features/services/widgets/cta_section/cta_section.dart';
-import 'package:responsive_website/features/services/widgets/hero/services_hero_section.dart';
-import 'package:responsive_website/features/services/widgets/addons_section/addons_section.dart';
-import 'package:responsive_website/features/services/widgets/process_section/process_section.dart';
-import 'package:responsive_website/features/services/widgets/industry_section/industry_section.dart';
-import 'package:responsive_website/features/services/widgets/service_cards/service_cards_section.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/features/services/widgets/faq_section/service_faq_section.dart';
+import 'package:portfolio/features/services/widgets/cta_section/cta_section.dart';
+import 'package:portfolio/features/services/widgets/hero/services_hero_section.dart';
+import 'package:portfolio/features/services/widgets/addons_section/addons_section.dart';
+import 'package:portfolio/features/services/widgets/process_section/process_section.dart';
+import 'package:portfolio/features/services/widgets/industry_section/industry_section.dart';
+import 'package:portfolio/features/services/widgets/service_cards/service_cards_section.dart';
 
 class ServicesPage extends StatelessWidget {
   const ServicesPage({super.key});

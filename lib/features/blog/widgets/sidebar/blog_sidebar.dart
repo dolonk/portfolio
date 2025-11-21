@@ -3,7 +3,7 @@ import 'widgets/recent_posts_widget.dart';
 import 'widgets/newsletter_widget.dart';
 import 'widgets/social_links_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 
 class BlogSidebar extends StatelessWidget {
   const BlogSidebar({super.key});

@@ -1,7 +1,7 @@
 import 'dart:ui_web' as ui_web;
 import 'package:web/web.dart' as web;
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:portfolio/utility/constants/colors.dart';
 
 class YouTubeVideoPlayer extends StatefulWidget {
   final String videoUrl;

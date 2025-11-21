@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
 
 class AppBarMenuItem extends StatefulWidget {
   final String title;

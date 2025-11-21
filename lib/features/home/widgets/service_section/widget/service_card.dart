@@ -6,10 +6,10 @@ import '../../../../../utility/constants/colors.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../data_layer/model/home/service_model.dart';
 import '../../../../../common_function/widgets/hoverable_card.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
 import '../../../../../common_function/widgets/animated_custom_button.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class ServiceCard extends StatefulWidget {
   final ServiceModel serviceModel;

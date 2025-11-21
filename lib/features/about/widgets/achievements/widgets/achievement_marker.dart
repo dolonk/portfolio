@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class AchievementMarker extends StatelessWidget {
   final Color accentColor;

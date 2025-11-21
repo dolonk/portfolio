@@ -4,13 +4,13 @@ import 'features_expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/route/route_name.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/common_function/widgets/custom_button.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/data_layer/model/pricing/pricing_tier_model.dart';
+import 'package:portfolio/route/route_name.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/common_function/widgets/custom_button.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/data_layer/model/pricing/pricing_tier_model.dart';
 
 class PricingCard extends StatefulWidget {
   final PricingTierModel tier;

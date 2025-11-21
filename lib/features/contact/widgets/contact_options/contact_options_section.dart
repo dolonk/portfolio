@@ -4,9 +4,9 @@ import 'widgets/phone_options_modal.dart';
 import 'widgets/contact_option_card.dart';
 import '../../../../common_function/widgets/section_header.dart';
 import '../../../../data_layer/model/contact/contact_info_model.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../../../utility/url_launcher_service/url_launcher_service.dart';
 

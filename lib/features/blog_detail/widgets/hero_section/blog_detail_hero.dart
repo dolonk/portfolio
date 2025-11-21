@@ -3,12 +3,12 @@ import '../../../../route/route_name.dart';
 import 'package:go_router/go_router.dart';
 import 'category_badge/category_badge.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/data_layer/model/blog/blog_post_model.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/features/blog_detail/widgets/hero_section/post_header/post_header_section.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/features/blog_detail/widgets/hero_section/post_header/post_header_section.dart';
 
 class BlogDetailHero extends StatelessWidget {
   final BlogPostModel post;

@@ -2,13 +2,13 @@ import 'widgets/comment_card.dart';
 import 'package:flutter/material.dart';
 import 'widgets/submit_comment_button.dart';
 import 'widgets/discussion_on_twitter_button.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/data_layer/model/blog/comment_model.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/data_layer/model/blog/blog_post_model.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/data_layer/model/blog/comment_model.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
 
 enum CommentSort { newest, oldest, mostLiked }
 

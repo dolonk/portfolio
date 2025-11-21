@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'widgets/achievement_item.dart';
 import '../../../../common_function/widgets/section_header.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/utility/responsive/responsive_helper.dart';
-import 'package:responsive_website/utility/responsive/section_container.dart';
-import 'package:responsive_website/data_layer/model/about/achievement_model.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/utility/responsive/section_container.dart';
+import 'package:portfolio/data_layer/model/about/achievement_model.dart';
 
 class AchievementsSection extends StatelessWidget {
   const AchievementsSection({super.key});

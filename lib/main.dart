@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:responsive_website/route/route_config.dart';
+import 'package:portfolio/route/route_config.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:portfolio/utility/constants/colors.dart';
 
 void main() {
   if (kDebugMode) {

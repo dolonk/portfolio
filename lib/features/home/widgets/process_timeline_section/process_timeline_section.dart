@@ -5,7 +5,7 @@ import '../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../utility/responsive/responsive_widget.dart';
 import '../../../../utility/responsive/section_container.dart';
 import '../../../../data_layer/model/services/process_step_model.dart';
-import 'package:responsive_website/common_function/widgets/section_header.dart';
+import 'package:portfolio/common_function/widgets/section_header.dart';
 
 class ProcessTimelineSection extends StatelessWidget {
   const ProcessTimelineSection({super.key});

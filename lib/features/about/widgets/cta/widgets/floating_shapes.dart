@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
+import 'package:portfolio/utility/constants/colors.dart';
 
 class FloatingShapes extends StatelessWidget {
   const FloatingShapes({super.key});

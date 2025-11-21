@@ -1,13 +1,13 @@
 import 'deliverable_item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_website/route/route_name.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/utility/default_sizes/font_size.dart';
-import 'package:responsive_website/utility/default_sizes/default_sizes.dart';
-import 'package:responsive_website/common_function/widgets/custom_button.dart';
-import 'package:responsive_website/common_function/widgets/hoverable_card.dart';
-import 'package:responsive_website/data_layer/model/services/service_detail_model.dart';
+import 'package:portfolio/route/route_name.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/common_function/widgets/custom_button.dart';
+import 'package:portfolio/common_function/widgets/hoverable_card.dart';
+import 'package:portfolio/data_layer/model/services/service_detail_model.dart';
 
 class ServiceCardDetailed extends StatefulWidget {
   final ServiceDetailModel service;

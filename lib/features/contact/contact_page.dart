@@ -7,9 +7,9 @@ import 'widgets/social_links/social_links_section.dart';
 import 'widgets/availability/availability_section.dart';
 import 'widgets/contact_form/contact_form_section.dart';
 import 'widgets/contact_options/contact_options_section.dart';
-import 'package:responsive_website/utility/constants/colors.dart';
-import 'package:responsive_website/common_function/base_screen/base_screen.dart';
-import 'package:responsive_website/features/contact/widgets/hero_section/contact_hero_section.dart';
+import 'package:portfolio/utility/constants/colors.dart';
+import 'package:portfolio/common_function/base_screen/base_screen.dart';
+import 'package:portfolio/features/contact/widgets/hero_section/contact_hero_section.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
