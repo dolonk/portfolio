@@ -6,7 +6,7 @@ import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
 
-import '../../../../../route/route_name.dart';
+import '../../../../../../route/route_name.dart';
 
 class BlogPostCard extends StatefulWidget {
   final BlogPostModel post;

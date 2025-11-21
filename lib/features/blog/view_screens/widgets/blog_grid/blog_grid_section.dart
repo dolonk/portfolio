@@ -24,7 +24,7 @@ class _BlogGridSectionState extends State<BlogGridSection> {
   @override
   void initState() {
     super.initState();
-    _allPosts = BlogPostModel.getRegularPosts();
+    _allPosts = BlogPostModel.getStaticPosts();
     _loadMorePosts();
   }
 

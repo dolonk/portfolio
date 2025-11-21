@@ -1,38 +1,67 @@
 import 'package:equatable/equatable.dart';
 
 class BlogPost extends Equatable {
+  // ==================== REQUIRED FIELDS ====================
   final String id;
   final String title;
   final String excerpt;
-  final String content;
   final String imagePath;
+  final List<String> tags;
   final String publishedDate;
   final String readingTime;
-  final List<String> tags;
+
+  // ==================== OPTIONAL WITH DEFAULTS ====================
+  final String category;
+  final bool isFeatured;
+  final String author;
+  final String authorImage;
+  final String authorBio;
   final int viewCount;
-  final String authorId;
-  final String authorName;
+
+  // ==================== OPTIONAL (Can be null/empty) ====================
+  final String content;
+  final String? videoUrl;
+  final List<String> contentImages;
+  final Map<String, String> authorSocialLinks;
+
+  // ==================== TIMESTAMPS ====================
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool isPublished;
-  final bool isFeatured;
 
   const BlogPost({
+    // Required
     required this.id,
     required this.title,
     required this.excerpt,
-    required this.content,
     required this.imagePath,
+    required this.tags,
     required this.publishedDate,
     required this.readingTime,
-    required this.tags,
-    required this.viewCount,
-    required this.authorId,
-    required this.authorName,
+
+    // Optional with defaults
+    this.category = 'Flutter',
+    this.isFeatured = false,
+    this.author = 'Dolon Kumar',
+    this.authorImage = 'assets/home/hero/dolon.png',
+    this.authorBio =
+        'Flutter Developer | Cross-Platform Expert with 2.6+ years experience building production-ready applications.',
+    this.viewCount = 0,
+
+    // Optional (can be empty)
+    this.content = '',
+    this.videoUrl,
+    this.contentImages = const [],
+    this.authorSocialLinks = const {
+      'github': 'https://github.com/yourusername',
+      'linkedin': 'https://linkedin.com/in/yourprofile',
+      'twitter': 'https://twitter.com/yourhandle',
+    },
+
+    // Timestamps
     required this.createdAt,
     required this.updatedAt,
     this.isPublished = true,
-    this.isFeatured = false,
   });
 
   @override
@@ -40,54 +69,68 @@ class BlogPost extends Equatable {
     id,
     title,
     excerpt,
-    content,
     imagePath,
+    category,
+    tags,
+    isFeatured,
+    author,
+    authorImage,
+    authorBio,
     publishedDate,
     readingTime,
-    tags,
     viewCount,
-    authorId,
-    authorName,
+    content,
+    videoUrl,
+    contentImages,
+    authorSocialLinks,
     createdAt,
     updatedAt,
     isPublished,
-    isFeatured,
   ];
 
-  /// Copy with method for immutability
   BlogPost copyWith({
     String? id,
     String? title,
     String? excerpt,
-    String? content,
     String? imagePath,
+    String? category,
+    List<String>? tags,
+    bool? isFeatured,
+    String? author,
+    String? authorImage,
+    String? authorBio,
     String? publishedDate,
     String? readingTime,
-    List<String>? tags,
     int? viewCount,
-    String? authorId,
-    String? authorName,
+    String? content,
+    String? videoUrl,
+    List<String>? contentImages,
+    Map<String, String>? authorSocialLinks,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isPublished,
-    bool? isFeatured,
   }) {
     return BlogPost(
       id: id ?? this.id,
       title: title ?? this.title,
       excerpt: excerpt ?? this.excerpt,
-      content: content ?? this.content,
       imagePath: imagePath ?? this.imagePath,
+      category: category ?? this.category,
+      tags: tags ?? this.tags,
+      isFeatured: isFeatured ?? this.isFeatured,
+      author: author ?? this.author,
+      authorImage: authorImage ?? this.authorImage,
+      authorBio: authorBio ?? this.authorBio,
       publishedDate: publishedDate ?? this.publishedDate,
       readingTime: readingTime ?? this.readingTime,
-      tags: tags ?? this.tags,
       viewCount: viewCount ?? this.viewCount,
-      authorId: authorId ?? this.authorId,
-      authorName: authorName ?? this.authorName,
+      content: content ?? this.content,
+      videoUrl: videoUrl ?? this.videoUrl,
+      contentImages: contentImages ?? this.contentImages,
+      authorSocialLinks: authorSocialLinks ?? this.authorSocialLinks,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isPublished: isPublished ?? this.isPublished,
-      isFeatured: isFeatured ?? this.isFeatured,
     );
   }
 }

@@ -61,7 +61,10 @@ class BlogRepositoryImpl implements BlogRepository {
         return Right(post);
       } else {
         final posts = BlogPostModel.getStaticPosts();
-        final post = posts.firstWhere((p) => p.id == id, orElse: () => throw ServerException('Post not found'));
+        final post = posts.firstWhere(
+          (p) => p.id == id,
+          orElse: () => throw ServerException('Post not found'),
+        );
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(post);
       }
