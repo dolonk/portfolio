@@ -4,7 +4,7 @@ import '../features/project_detail/project_detail_page.dart';
 import 'error_page.dart';
 import 'route_name.dart';
 import 'package:flutter/material.dart';
-import '../features/blog/blog_page.dart';
+import '../features/blog/view_screens/blog_page.dart';
 import 'package:go_router/go_router.dart';
 import '../features/about/about_page.dart';
 import '../features/contact/contact_page.dart';

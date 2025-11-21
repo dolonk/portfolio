@@ -1,4 +1,4 @@
-class BlogPostModel {
+/*class BlogPostModel {
   // Basic Info (For Blog Card)
   final String id;
   final String title;
@@ -674,5 +674,315 @@ Happy coding! 🚀
     } catch (e) {
       return null;
     }
+  }
+}*/
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../domain/entities/blog/blog_post.dart';
+
+class BlogPostModel extends BlogPost {
+  const BlogPostModel({
+    required super.id,
+    required super.title,
+    required super.excerpt,
+    required super.content,
+    required super.imagePath,
+    required super.publishedDate,
+    required super.readingTime,
+    required super.tags,
+    required super.viewCount,
+    required super.authorId,
+    required super.authorName,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.isPublished,
+    required super.isFeatured,
+  });
+
+  /// Convert Firebase DocumentSnapshot to Model
+  factory BlogPostModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return BlogPostModel(
+      id: doc.id,
+      title: data['title'] ?? '',
+      excerpt: data['excerpt'] ?? '',
+      content: data['content'] ?? '',
+      imagePath: data['imagePath'] ?? '',
+      publishedDate: data['publishedDate'] ?? '',
+      readingTime: data['readingTime'] ?? '',
+      tags: List<String>.from(data['tags'] ?? []),
+      viewCount: data['viewCount'] ?? 0,
+      authorId: data['authorId'] ?? '',
+      authorName: data['authorName'] ?? '',
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      isPublished: data['isPublished'] ?? true,
+      isFeatured: data['isFeatured'] ?? false,
+    );
+  }
+
+  /// Convert Model to Firebase Map
+  Map<String, dynamic> toFirestore() {
+    return {
+      'title': title,
+      'excerpt': excerpt,
+      'content': content,
+      'imagePath': imagePath,
+      'publishedDate': publishedDate,
+      'readingTime': readingTime,
+      'tags': tags,
+      'viewCount': viewCount,
+      'authorId': authorId,
+      'authorName': authorName,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+      'isPublished': isPublished,
+      'isFeatured': isFeatured,
+    };
+  }
+
+  /// Convert JSON to Model (for local/static data)
+  factory BlogPostModel.fromJson(Map<String, dynamic> json) {
+    return BlogPostModel(
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
+      excerpt: json['excerpt'] ?? '',
+      content: json['content'] ?? '',
+      imagePath: json['imagePath'] ?? '',
+      publishedDate: json['publishedDate'] ?? '',
+      readingTime: json['readingTime'] ?? '',
+      tags: List<String>.from(json['tags'] ?? []),
+      viewCount: json['viewCount'] ?? 0,
+      authorId: json['authorId'] ?? 'default',
+      authorName: json['authorName'] ?? 'Dolon Kumar',
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : DateTime.now(),
+      isPublished: json['isPublished'] ?? true,
+      isFeatured: json['isFeatured'] ?? false,
+    );
+  }
+
+  /// Convert Model to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'excerpt': excerpt,
+      'content': content,
+      'imagePath': imagePath,
+      'publishedDate': publishedDate,
+      'readingTime': readingTime,
+      'tags': tags,
+      'viewCount': viewCount,
+      'authorId': authorId,
+      'authorName': authorName,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'isPublished': isPublished,
+      'isFeatured': isFeatured,
+    };
+  }
+
+  /// Static sample data (Firebase না থাকলে এটা use হবে)
+  static List<BlogPostModel> getStaticPosts() {
+    return [
+      BlogPostModel(
+        id: 'mvvm-flutter-guide',
+        title: 'Complete MVVM Architecture Guide for Flutter',
+        excerpt:
+            'Learn how to implement clean MVVM architecture in Flutter with Provider state management for scalable applications.',
+        content: '''
+# Complete MVVM Architecture Guide for Flutter
+
+## Introduction
+MVVM (Model-View-ViewModel) is a powerful architectural pattern that helps you build maintainable and testable Flutter applications.
+
+## Why MVVM?
+- **Separation of Concerns**: Clear boundaries between UI and business logic
+- **Testability**: Easy to write unit tests for business logic
+- **Maintainability**: Changes in one layer don't affect others
+- **Scalability**: Perfect for large applications
+
+## Implementation Steps
+
+### 1. Project Structure
+\`\`\`
+lib/
+├── core/
+├── features/
+│   └── feature_name/
+│       ├── data/
+│       ├── domain/
+│       └── presentation/
+\`\`\`
+
+### 2. Layers Explained
+- **Domain Layer**: Business logic and entities
+- **Data Layer**: Data sources and repositories
+- **Presentation Layer**: UI and ViewModels
+
+## Conclusion
+MVVM architecture makes your Flutter apps more maintainable and testable.
+''',
+        imagePath: 'assets/blog/mvvm_flutter.png',
+        publishedDate: 'Nov 21, 2024',
+        readingTime: '15 min read',
+        tags: ['Flutter', 'MVVM', 'Architecture', 'Provider'],
+        viewCount: 2340,
+        authorId: 'dolon_kumar',
+        authorName: 'Dolon Kumar',
+        createdAt: DateTime(2024, 11, 21, 10, 0),
+        updatedAt: DateTime(2024, 11, 21, 10, 0),
+        isPublished: true,
+        isFeatured: true,
+      ),
+      BlogPostModel(
+        id: 'flutter-performance-tips',
+        title: '10 Flutter Performance Optimization Tips',
+        excerpt: 'Proven techniques to make your Flutter app faster and more responsive with practical examples.',
+        content: '''
+# 10 Flutter Performance Optimization Tips
+
+## 1. Use const Constructors
+Using const constructors prevents unnecessary widget rebuilds.
+
+## 2. Avoid Expensive Operations in Build
+Never put heavy computations in the build method.
+
+## 3. Use ListView.builder
+For long lists, always use ListView.builder instead of ListView.
+
+## 4. Optimize Images
+Compress and cache images properly.
+
+## 5. Profile Your App
+Use Flutter DevTools to identify bottlenecks.
+
+And 5 more tips...
+''',
+        imagePath: 'assets/blog/performance_tips.png',
+        publishedDate: 'Nov 20, 2024',
+        readingTime: '12 min read',
+        tags: ['Flutter', 'Performance', 'Optimization'],
+        viewCount: 1890,
+        authorId: 'dolon_kumar',
+        authorName: 'Dolon Kumar',
+        createdAt: DateTime(2024, 11, 20, 14, 30),
+        updatedAt: DateTime(2024, 11, 20, 14, 30),
+        isPublished: true,
+        isFeatured: false,
+      ),
+      BlogPostModel(
+        id: 'firebase-flutter-integration',
+        title: 'Complete Firebase Integration Guide for Flutter',
+        excerpt: 'Step-by-step tutorial on integrating Firebase Authentication, Firestore, and Storage in Flutter.',
+        content: '''
+# Complete Firebase Integration Guide for Flutter
+
+## Setup
+1. Create Firebase project
+2. Add Flutter app to Firebase
+3. Install FlutterFire CLI
+
+## Authentication
+Implement email/password and Google Sign-In.
+
+## Firestore
+Real-time database for your app.
+
+## Storage
+Upload and download files easily.
+''',
+        imagePath: 'assets/blog/firebase_guide.png',
+        publishedDate: 'Nov 18, 2024',
+        readingTime: '18 min read',
+        tags: ['Flutter', 'Firebase', 'Backend'],
+        viewCount: 3120,
+        authorId: 'dolon_kumar',
+        authorName: 'Dolon Kumar',
+        createdAt: DateTime(2024, 11, 18, 9, 0),
+        updatedAt: DateTime(2024, 11, 18, 9, 0),
+        isPublished: true,
+        isFeatured: true,
+      ),
+      BlogPostModel(
+        id: 'responsive-flutter-ui',
+        title: 'Building Responsive UIs in Flutter',
+        excerpt: 'Master responsive design in Flutter for mobile, tablet, and desktop with practical examples.',
+        content: '''
+# Building Responsive UIs in Flutter
+
+## MediaQuery
+Use MediaQuery to get screen dimensions.
+
+## LayoutBuilder
+Adapt your layout based on constraints.
+
+## Responsive Packages
+Use flutter_screenutil or responsive_framework.
+
+## Best Practices
+- Mobile-first approach
+- Test on multiple devices
+- Use breakpoints wisely
+''',
+        imagePath: 'assets/blog/responsive_ui.png',
+        publishedDate: 'Nov 15, 2024',
+        readingTime: '10 min read',
+        tags: ['Flutter', 'UI/UX', 'Responsive'],
+        viewCount: 1560,
+        authorId: 'dolon_kumar',
+        authorName: 'Dolon Kumar',
+        createdAt: DateTime(2024, 11, 15, 16, 0),
+        updatedAt: DateTime(2024, 11, 15, 16, 0),
+        isPublished: true,
+        isFeatured: false,
+      ),
+      BlogPostModel(
+        id: 'flutter-testing-guide',
+        title: 'Complete Flutter Testing Guide',
+        excerpt: 'Learn unit testing, widget testing, and integration testing in Flutter with real examples.',
+        content: '''
+# Complete Flutter Testing Guide
+
+## Unit Tests
+Test your business logic without UI.
+
+## Widget Tests
+Test individual widgets in isolation.
+
+## Integration Tests
+Test the complete app flow.
+
+## Best Practices
+- Write testable code
+- Use mocking
+- Test edge cases
+- Aim for high coverage
+''',
+        imagePath: 'assets/blog/testing_guide.png',
+        publishedDate: 'Nov 12, 2024',
+        readingTime: '14 min read',
+        tags: ['Flutter', 'Testing', 'Quality'],
+        viewCount: 980,
+        authorId: 'dolon_kumar',
+        authorName: 'Dolon Kumar',
+        createdAt: DateTime(2024, 11, 12, 11, 0),
+        updatedAt: DateTime(2024, 11, 12, 11, 0),
+        isPublished: true,
+        isFeatured: false,
+      ),
+    ];
+  }
+
+  /// Get featured posts only
+  static List<BlogPostModel> getFeaturedPosts() {
+    return getStaticPosts().where((post) => post.isFeatured).toList();
+  }
+
+  /// Get posts by tag
+  static List<BlogPostModel> getPostsByTag(String tag) {
+    return getStaticPosts().where((post) => post.tags.contains(tag)).toList();
   }
 }

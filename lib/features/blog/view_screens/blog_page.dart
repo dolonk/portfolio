@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/blog/widgets/blog_grid/blog_grid_section.dart';
+import 'widgets/blog_grid/blog_grid_section.dart';
+import 'widgets/hero_section/blog_hero_section.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'widgets/featured_post/featured_post_section.dart';
-import 'widgets/hero_section/blog_hero_section.dart';
 import 'package:portfolio/common_function/base_screen/base_screen.dart';
 
 class BlogPage extends StatelessWidget {

@@ -1,0 +1,75 @@
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../features/blog/providers/blog_provider.dart';
+import '../../features/blog/providers/blog_filter_provider.dart';
+import '../../features/blog/providers/blog_search_provider.dart';
+import '../../data_layer/domain/repositories/blog/blog_repository.dart';
+import '../../data_layer/domain/repositories/blog/blog_repository_impl.dart';
+import '../../data_layer/data_sources/remote/blog/blog_remote_datasource.dart';
+
+/// GetIt instance - Global service locator
+final getIt = GetIt.instance;
+
+/// Initialize all dependencies
+/// Call this ONCE in main.dart before runApp()
+Future<void> initializeDependencies({
+  bool useFirebase = false, // Phase 1: false, Phase 2: true
+}) async {
+  // ==================== PHASE CONFIGURATION ====================
+
+  print('🚀 Initializing Dependencies...');
+  print('📱 Firebase Mode: ${useFirebase ? "ENABLED ✅" : "DISABLED ❌ (Static Data)"}');
+
+  // ==================== EXTERNAL DEPENDENCIES ====================
+
+  if (useFirebase) {
+    // Firebase Firestore instance
+    final firestore = FirebaseFirestore.instance;
+    getIt.registerLazySingleton<FirebaseFirestore>(() => firestore);
+
+    print('✅ Firebase Firestore registered');
+  } else {
+    print('⚠️  Firebase not initialized - Using static data');
+  }
+
+  // ==================== DATA SOURCES ====================
+
+  // Blog Remote DataSource
+  getIt.registerLazySingleton<BlogRemoteDataSource>(
+    () => BlogRemoteDataSourceImpl(
+      firestore: useFirebase
+          ? getIt<FirebaseFirestore>()
+          : FirebaseFirestore.instance, // Dummy instance for static mode
+    ),
+  );
+
+  print('✅ Blog DataSource registered');
+
+  // ==================== REPOSITORIES ====================
+
+  // Blog Repository
+  getIt.registerLazySingleton<BlogRepository>(
+    () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useFirebase: useFirebase),
+  );
+
+  print('✅ Blog Repository registered');
+  // ==================== PROVIDERS (State Management) ====================
+
+  // Blog Provider (Main)
+  getIt.registerFactory<BlogProvider>(() => BlogProvider(repository: getIt<BlogRepository>()));
+
+  // Blog Search Provider
+  getIt.registerFactory<BlogSearchProvider>(() => BlogSearchProvider(repository: getIt<BlogRepository>()));
+
+  // Blog Filter Provider
+  getIt.registerFactory<BlogFilterProvider>(() => BlogFilterProvider());
+
+  print('✅ All Providers registered');
+  print('🎉 Dependency Injection setup complete!\n');
+}
+
+/// Clear all dependencies (useful for testing)
+void resetDependencies() {
+  getIt.reset();
+  print('🔄 Dependencies reset');
+}
