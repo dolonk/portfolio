@@ -857,7 +857,7 @@ class BlogPostModel extends BlogPost {
         title: 'Building Scalable Flutter Apps with MVVM Architecture',
         excerpt:
             'Learn how to architect production-ready Flutter applications using the MVVM pattern, clean code principles, and best practices.',
-        imagePath: 'assets/home/projects/project_2.png',
+        imagePath: 'assets/home/projects/project_1.png',
         publishedDate: 'Nov 10, 2024',
         readingTime: '8 min read',
         tags: ['Flutter', 'Architecture', 'MVVM', 'Best Practices'],
@@ -865,10 +865,10 @@ class BlogPostModel extends BlogPost {
         viewCount: 1250,
         videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         contentImages: [
+          'assets/home/projects/project_1.png',
           'assets/home/projects/project_2.png',
-          'assets/home/projects/project_4.png',
-          'assets/home/projects/project_5.png',
           'assets/home/projects/project_3.png',
+          'assets/home/projects/project_4.png',
         ],
         content: '''[TOMAR FULL CONTENT - Document theke copy koro]''',
         createdAt: DateTime(2024, 11, 10),
@@ -881,7 +881,7 @@ class BlogPostModel extends BlogPost {
         title: 'Mastering Flutter Animations: A Complete Guide',
         excerpt:
             'Deep dive into Flutter animations with practical examples. Learn implicit animations, explicit animations, and custom animation controllers.',
-        imagePath: 'assets/blog/post_1.png',
+        imagePath: 'assets/home/projects/project_2.png',
         publishedDate: 'Nov 5, 2024',
         readingTime: '12 min read',
         tags: ['Flutter', 'Animations', 'UI/UX'],
@@ -896,7 +896,7 @@ class BlogPostModel extends BlogPost {
         title: 'State Management in Flutter: Provider vs BLoC vs Riverpod',
         excerpt:
             'Comprehensive comparison of popular state management solutions. Which one should you choose for your next project?',
-        imagePath: 'assets/blog/post_2.png',
+        imagePath: 'assets/home/projects/project_3.png',
         publishedDate: 'Oct 28, 2024',
         readingTime: '10 min read',
         tags: ['Flutter', 'Provider', 'BLoC', 'State Management'],
@@ -910,7 +910,7 @@ class BlogPostModel extends BlogPost {
         title: '10 Performance Optimization Tips for Flutter Apps',
         excerpt:
             'Proven techniques to make your Flutter app faster and more responsive. From widget rebuilds to memory management.',
-        imagePath: 'assets/blog/post_3.png',
+        imagePath: 'assets/home/projects/project_4.png',
         publishedDate: 'Oct 20, 2024',
         readingTime: '7 min read',
         tags: ['Flutter', 'Performance', 'Optimization'],
@@ -924,7 +924,7 @@ class BlogPostModel extends BlogPost {
         title: 'Complete Firebase Integration Guide for Flutter',
         excerpt:
             'Step-by-step tutorial on integrating Firebase Authentication, Firestore, and Cloud Storage in your Flutter app.',
-        imagePath: 'assets/blog/post_4.png',
+        imagePath: 'assets/home/projects/project_5.png',
         publishedDate: 'Oct 15, 2024',
         readingTime: '15 min read',
         tags: ['Flutter', 'Firebase', 'Backend'],
@@ -938,7 +938,7 @@ class BlogPostModel extends BlogPost {
         title: 'Building Responsive UIs in Flutter: Best Practices',
         excerpt:
             'Learn how to create adaptive layouts that work seamlessly across mobile, tablet, and desktop platforms.',
-        imagePath: 'assets/blog/post_5.png',
+        imagePath: 'assets/home/projects/project_6.png',
         publishedDate: 'Oct 8, 2024',
         readingTime: '9 min read',
         tags: ['Flutter', 'Responsive', 'UI/UX'],
@@ -952,7 +952,7 @@ class BlogPostModel extends BlogPost {
         title: 'Testing in Flutter: Unit, Widget, and Integration Tests',
         excerpt:
             'Complete guide to writing effective tests for your Flutter applications. Ensure code quality and reliability.',
-        imagePath: 'assets/blog/post_6.png',
+        imagePath: 'assets/home/projects/project_1.png',
         publishedDate: 'Oct 1, 2024',
         readingTime: '11 min read',
         tags: ['Flutter', 'Testing', 'Quality Assurance'],
@@ -962,9 +962,6 @@ class BlogPostModel extends BlogPost {
       ),
     ];
   }
-
-
-
 
   /// demo section
   static BlogPostModel? getPostById(String id) {

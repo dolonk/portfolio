@@ -59,10 +59,10 @@ class BlogPage extends StatelessWidget {
                 const BlogHeroSection(),
 
                 // Featured Post Section
-                 //FeaturedPostSection(),
+                 FeaturedPostSection(),
 
                 // Filter Chips (Tags)
-                //const BlogFilterChips(),
+                const BlogFilterChips(),
 
                 const BlogGridSection(),
               ],

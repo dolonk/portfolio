@@ -25,7 +25,7 @@ class BlogFilterChips extends StatelessWidget {
     }
 
     return SectionContainer(
-      padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
+      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

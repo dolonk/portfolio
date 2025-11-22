@@ -19,7 +19,6 @@ abstract class BlogRemoteDataSource {
 /// Blog Remote DataSource Implementation
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final FirebaseFirestore? firestore;
-
   BlogRemoteDataSourceImpl({this.firestore});
 
   // Collection reference (with null check)

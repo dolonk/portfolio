@@ -18,10 +18,12 @@ class BlogRepositoryImpl implements BlogRepository {
       if (useFirebase) {
         // Firebase থেকে data fetch
         final posts = await remoteDataSource.getAllPosts();
+        print('get firebase data dolon');
         return Right(posts);
       } else {
         // Static data use
         final posts = BlogPostModel.getStaticPosts();
+        print('get static data dolon');
         // Simulate network delay
         await Future.delayed(const Duration(milliseconds: 500));
         return Right(posts);
@@ -114,6 +116,7 @@ class BlogRepositoryImpl implements BlogRepository {
     }
   }
 
+  /// Admin section
   @override
   Future<Either<Failure, void>> createPost(BlogPost post) async {
     try {
