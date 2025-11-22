@@ -12,24 +12,26 @@ final getIt = GetIt.instance;
 
 /// Initialize all dependencies
 /// Call this ONCE in main.dart before runApp()
-Future<void> initializeDependencies({
-  bool useFirebase = false, // Phase 1: false, Phase 2: true
-}) async {
+Future<void> initializeDependencies({bool useFirebase = false}) async {
   // ==================== PHASE CONFIGURATION ====================
 
   print('🚀 Initializing Dependencies...');
   print('📱 Firebase Mode: ${useFirebase ? "ENABLED ✅" : "DISABLED ❌ (Static Data)"}');
 
   // ==================== EXTERNAL DEPENDENCIES ====================
-
   if (useFirebase) {
-    // Firebase Firestore instance
-    final firestore = FirebaseFirestore.instance;
-    getIt.registerLazySingleton<FirebaseFirestore>(() => firestore);
-
-    print('✅ Firebase Firestore registered');
+    try {
+      // Firebase Firestore instance
+      final firestore = FirebaseFirestore.instance;
+      getIt.registerLazySingleton<FirebaseFirestore>(() => firestore);
+      print('✅ Firebase Firestore registered');
+    } catch (e) {
+      print('⚠️ Firebase registration failed: $e');
+      print('⚠️ Falling back to static data');
+      // Don't register Firebase, will use static data
+    }
   } else {
-    print('⚠️  Firebase not initialized - Using static data');
+    print('⚠️ Firebase not initialized - Using static data');
   }
 
   // ==================== DATA SOURCES ====================
@@ -37,9 +39,9 @@ Future<void> initializeDependencies({
   // Blog Remote DataSource
   getIt.registerLazySingleton<BlogRemoteDataSource>(
     () => BlogRemoteDataSourceImpl(
-      firestore: useFirebase
+      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>()
           ? getIt<FirebaseFirestore>()
-          : FirebaseFirestore.instance, // Dummy instance for static mode
+          : null, // ✅ Pass null if Firebase not available
     ),
   );
 
@@ -49,10 +51,14 @@ Future<void> initializeDependencies({
 
   // Blog Repository
   getIt.registerLazySingleton<BlogRepository>(
-    () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useFirebase: useFirebase),
+    () => BlogRepositoryImpl(
+      remoteDataSource: getIt<BlogRemoteDataSource>(),
+      useFirebase: useFirebase && getIt.isRegistered<FirebaseFirestore>(), // ✅ Check if Firebase available
+    ),
   );
 
   print('✅ Blog Repository registered');
+
   // ==================== PROVIDERS (State Management) ====================
 
   // Blog Provider (Main)

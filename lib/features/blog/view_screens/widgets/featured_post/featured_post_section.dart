@@ -1,17 +1,18 @@
-import 'package:go_router/go_router.dart';
-import '../../../../../common_function/widgets/custom_button.dart';
-import '../../../../../route/route_name.dart';
 import 'widgets/post_tags.dart';
 import 'widgets/featured_badge.dart';
 import 'widgets/post_meta_info.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../route/route_name.dart';
+import '../../../view_models/blog_view_model.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
-import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
+import '../../../../../common_function/widgets/custom_button.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 
 class FeaturedPostSection extends StatefulWidget {
   const FeaturedPostSection({super.key});
@@ -26,8 +27,15 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
-    final post = BlogPostModel.getFeaturedPost();
+    final viewModel = BlogViewModel(context);
 
+    // Get featured posts from ViewModel
+    final featuredPosts = viewModel.featuredPosts;
+
+    // Show first featured post (or null if empty)
+    final post = featuredPosts.isNotEmpty ? featuredPosts.first : null;
+
+    // Hide if no featured post
     if (post == null) return const SizedBox.shrink();
 
     return SectionContainer(
@@ -101,7 +109,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Desktop/Tablet Layout (Image on Left, Content on Right)
-  Widget _buildDesktopLayout(BuildContext context, BlogPostModel post, DSizes s, void Function() onPressed) {
+  Widget _buildDesktopLayout(BuildContext context, BlogPost post, DSizes s, void Function() onPressed) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
@@ -124,7 +132,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Mobile Layout (Image on Top, Content Below)
-  Widget _buildMobileLayout(BuildContext context, BlogPostModel post, DSizes s, void Function() onPressed) {
+  Widget _buildMobileLayout(BuildContext context, BlogPost post, DSizes s, void Function() onPressed) {
     return Column(
       children: [
         // Image Section (Top)
@@ -137,7 +145,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Image Section with Gradient Overlay
-  Widget _buildImageSection(BuildContext context, BlogPostModel post, DSizes s) {
+  Widget _buildImageSection(BuildContext context, BlogPost post, DSizes s) {
     return SizedBox(
       height: context.responsiveValue(mobile: 250.0, tablet: 350.0, desktop: 400.0),
       child: Stack(
@@ -174,7 +182,7 @@ class _FeaturedPostSectionState extends State<FeaturedPostSection> {
   }
 
   /// Content Section
-  Widget _buildContentSection(BuildContext context, BlogPostModel post, DSizes s, void Function() onPressed) {
+  Widget _buildContentSection(BuildContext context, BlogPost post, DSizes s, void Function() onPressed) {
     final fonts = context.fonts;
 
     return Padding(

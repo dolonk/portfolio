@@ -18,17 +18,26 @@ abstract class BlogRemoteDataSource {
 
 /// Blog Remote DataSource Implementation
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
-  final FirebaseFirestore firestore;
+  final FirebaseFirestore? firestore;
 
-  BlogRemoteDataSourceImpl({required this.firestore});
+  BlogRemoteDataSourceImpl({this.firestore});
 
-  // Collection reference
-  CollectionReference get _postsCollection => firestore.collection('blog_posts');
+  // Collection reference (with null check)
+  CollectionReference? get _postsCollection => firestore?.collection('blog_posts');
+
+  // ==================== HELPER: Check Firebase availability ====================
+  void _checkFirebaseAvailable() {
+    if (firestore == null || _postsCollection == null) {
+      throw ServerException('Firebase not initialized. Please use static data instead.');
+    }
+  }
 
   @override
   Future<List<BlogPostModel>> getAllPosts() async {
     try {
-      final querySnapshot = await _postsCollection
+      _checkFirebaseAvailable();
+
+      final querySnapshot = await _postsCollection!
           .where('isPublished', isEqualTo: true)
           .orderBy('createdAt', descending: true)
           .get();
@@ -42,7 +51,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogPostModel>> getFeaturedPosts() async {
     try {
-      final querySnapshot = await _postsCollection
+      _checkFirebaseAvailable();
+
+      final querySnapshot = await _postsCollection!
           .where('isPublished', isEqualTo: true)
           .where('isFeatured', isEqualTo: true)
           .orderBy('createdAt', descending: true)
@@ -57,7 +68,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<BlogPostModel> getPostById(String id) async {
     try {
-      final doc = await _postsCollection.doc(id).get();
+      _checkFirebaseAvailable();
+
+      final doc = await _postsCollection!.doc(id).get();
 
       if (!doc.exists) {
         throw ServerException('Post not found');
@@ -65,7 +78,6 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       return BlogPostModel.fromFirestore(doc);
     } catch (e) {
-      if (e is ServerException) rethrow;
       throw ServerException('Failed to fetch post: ${e.toString()}');
     }
   }
@@ -73,7 +85,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogPostModel>> getPostsByTag(String tag) async {
     try {
-      final querySnapshot = await _postsCollection
+      _checkFirebaseAvailable();
+
+      final querySnapshot = await _postsCollection!
           .where('isPublished', isEqualTo: true)
           .where('tags', arrayContains: tag)
           .orderBy('createdAt', descending: true)
@@ -88,16 +102,18 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<String>> getAllTags() async {
     try {
-      final querySnapshot = await _postsCollection.where('isPublished', isEqualTo: true).get();
+      _checkFirebaseAvailable();
 
-      final allTags = <String>{};
+      final querySnapshot = await _postsCollection!.where('isPublished', isEqualTo: true).get();
+
+      final Set<String> tags = {};
       for (var doc in querySnapshot.docs) {
         final data = doc.data() as Map<String, dynamic>;
-        final tags = List<String>.from(data['tags'] ?? []);
-        allTags.addAll(tags);
+        final postTags = List<String>.from(data['tags'] ?? []);
+        tags.addAll(postTags);
       }
 
-      return allTags.toList()..sort();
+      return tags.toList()..sort();
     } catch (e) {
       throw ServerException('Failed to fetch tags: ${e.toString()}');
     }
@@ -106,7 +122,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> createPost(BlogPostModel post) async {
     try {
-      await _postsCollection.doc(post.id).set(post.toFirestore());
+      _checkFirebaseAvailable();
+
+      await _postsCollection!.doc(post.id).set(post.toFirestore());
     } catch (e) {
       throw ServerException('Failed to create post: ${e.toString()}');
     }
@@ -115,7 +133,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> updatePost(BlogPostModel post) async {
     try {
-      await _postsCollection.doc(post.id).update(post.toFirestore());
+      _checkFirebaseAvailable();
+
+      await _postsCollection!.doc(post.id).update(post.toFirestore());
     } catch (e) {
       throw ServerException('Failed to update post: ${e.toString()}');
     }
@@ -124,7 +144,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> deletePost(String id) async {
     try {
-      await _postsCollection.doc(id).delete();
+      _checkFirebaseAvailable();
+
+      await _postsCollection!.doc(id).delete();
     } catch (e) {
       throw ServerException('Failed to delete post: ${e.toString()}');
     }
@@ -133,22 +155,23 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> incrementViewCount(String id) async {
     try {
-      await _postsCollection.doc(id).update({'viewCount': FieldValue.increment(1)});
+      _checkFirebaseAvailable();
+
+      await _postsCollection!.doc(id).update({'viewCount': FieldValue.increment(1)});
     } catch (e) {
-      return;
+      throw ServerException('Failed to increment view count: ${e.toString()}');
     }
   }
 
-  // This is a basic implementation - for production use Algolia/ElasticSearch
   @override
   Future<List<BlogPostModel>> searchPosts(String query) async {
     try {
-      final querySnapshot = await _postsCollection
-          .where('isPublished', isEqualTo: true)
-          .orderBy('createdAt', descending: true)
-          .get();
+      _checkFirebaseAvailable();
+
+      final querySnapshot = await _postsCollection!.where('isPublished', isEqualTo: true).get();
 
       final searchQuery = query.toLowerCase();
+
       final filteredDocs = querySnapshot.docs.where((doc) {
         final data = doc.data() as Map<String, dynamic>;
         final title = (data['title'] ?? '').toLowerCase();

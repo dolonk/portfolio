@@ -8,9 +8,7 @@ import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
 
 class BlogHeroSection extends StatelessWidget {
-  final Function(String) onSearch;
-
-  const BlogHeroSection({super.key, required this.onSearch});
+  const BlogHeroSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class BlogHeroSection extends StatelessWidget {
           SizedBox(height: s.spaceBtwSections),
 
           // Search Bar
-          BlogSearchBar(onSearch: onSearch),
+          BlogSearchBar(),
         ],
       ),
     );

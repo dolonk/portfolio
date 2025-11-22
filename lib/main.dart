@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:portfolio/route/route_config.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:provider/provider.dart';
-
+import 'core/config/firebase_options.dart';
 import 'core/di/injection_container.dart';
 import 'features/blog/providers/blog_filter_provider.dart';
 import 'features/blog/providers/blog_provider.dart';
 import 'features/blog/providers/blog_search_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 /*void main() {
   if (kDebugMode) {
@@ -59,48 +57,26 @@ class MyApp extends StatelessWidget {
   }
 }*/
 
-const bool kUseFirebase = false;
+
 
 void main() async {
-  // Ensure Flutter is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // URL Strategy for web
-  usePathUrlStrategy();
-
-  // ==================== PHASE 1: Static Data Mode ====================
-  if (!kUseFirebase) {
-    print('\n🎯 PHASE 1: Running with STATIC DATA');
-    print('📝 No Firebase required - Perfect for testing!\n');
-
-    // Initialize DI without Firebase
-    await initializeDependencies(useFirebase: false);
+  // ==================== FIREBASE INITIALIZATION (OPTIONAL) ====================
+  bool firebaseInitialized = false;
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    firebaseInitialized = true;
+    print('✅ Firebase initialized successfully');
+  } catch (e) {
+    print('⚠️ Firebase initialization failed: $e');
+    print('📝 Using static data instead');
   }
 
-  // ==================== PHASE 2: Firebase Mode ====================
-  // Phase 2 এ এই block uncomment করবে
-  /*
-  else {
-    print('\n🔥 PHASE 2: Running with FIREBASE');
+  // ==================== DEPENDENCY INJECTION SETUP ====================
+  await initializeDependencies(useFirebase: firebaseInitialized);
 
-    // Initialize Firebase
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    print('✅ Firebase initialized\n');
-
-    // Initialize DI with Firebase
-    await initializeDependencies(useFirebase: true);
-  }
-  */
-
-  // Hide debug banner in debug mode
-  if (kDebugMode) {
-    debugPrintScheduleBuildForStacks = false;
-  }
-
-  // Run app
-  runApp(DevicePreview(enabled: kDebugMode, builder: (context) => const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -110,58 +86,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ==================== BLOG PROVIDERS ====================
+        // ==================== BLOG PROVIDERS (From GetIt) ====================
 
-        // Main Blog Provider
-        ChangeNotifierProvider(
-          create: (_) => getIt<BlogProvider>()
-            ..fetchAllPosts() // Auto-fetch on init
-            ..fetchFeaturedPosts()
-            ..fetchAllTags(),
-        ),
+        // Blog Provider
+        ChangeNotifierProvider<BlogProvider>(create: (_) => getIt<BlogProvider>()),
 
-        // Blog Search Provider
-        ChangeNotifierProvider(create: (_) => getIt<BlogSearchProvider>()),
+        // Search Provider
+        ChangeNotifierProvider<BlogSearchProvider>(create: (_) => getIt<BlogSearchProvider>()),
 
-        // Blog Filter Provider
-        ChangeNotifierProvider(create: (_) => getIt<BlogFilterProvider>()),
-
-        // ==================== PORTFOLIO PROVIDERS ====================
-        // TODO: Add portfolio providers in next phase
-        // ChangeNotifierProvider(
-        //   create: (_) => getIt<PortfolioProvider>()..fetchAllProjects(),
-        // ),
+        // Filter Provider
+        ChangeNotifierProvider<BlogFilterProvider>(create: (_) => getIt<BlogFilterProvider>()),
       ],
       child: MaterialApp.router(
-        title: 'Build Storm - Flutter Portfolio',
+        title: 'Portfolio - Dolon Kumar',
         debugShowCheckedModeBanner: false,
-
-        // Device Preview support
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-
-        // Theme
-        theme: ThemeData(
-          scrollbarTheme: ScrollbarThemeData(
-            interactive: true,
-            minThumbLength: 60,
-            thickness: WidgetStateProperty.all(8.0),
-            trackVisibility: WidgetStateProperty.all(false),
-            thumbColor: WidgetStateProperty.all(DColors.primaryButton.withAlpha((255 * 0.8).round())),
-            thumbVisibility: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.dragged) || states.contains(WidgetState.hovered)) {
-                return true;
-              }
-              return false;
-            }),
-          ),
-          primarySwatch: Colors.blue,
-          fontFamily: 'Roboto',
-          useMaterial3: true,
-        ),
-
-        // GoRouter Configuration
         routerConfig: RouteConfig.router,
+        theme: ThemeData(useMaterial3: true, scaffoldBackgroundColor: DColors.background),
       ),
     );
   }

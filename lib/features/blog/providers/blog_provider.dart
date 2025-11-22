@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import '../../../data_layer/domain/entities/blog/blog_post.dart';
 import '../../../data_layer/domain/repositories/blog/blog_repository.dart';
 
@@ -8,7 +7,9 @@ enum BlogStatus { initial, loading, success, error, empty }
 
 class BlogProvider with ChangeNotifier {
   final BlogRepository repository;
-  BlogProvider({required this.repository});
+  BlogProvider({required this.repository}) {
+    _initializePosts();
+  }
 
   // ==================== STATE ====================
   List<BlogPost> _allPosts = [];
@@ -65,6 +66,12 @@ class BlogProvider with ChangeNotifier {
   }
 
   // ==================== METHODS ====================
+
+  /// Initialize posts automatically
+  Future<void> _initializePosts() async {
+    await fetchAllPosts();
+  }
+
   /// Fetch all blog posts
   Future<void> fetchAllPosts() async {
     _status = BlogStatus.loading;

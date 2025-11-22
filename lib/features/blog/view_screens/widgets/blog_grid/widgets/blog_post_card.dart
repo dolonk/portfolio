@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../../route/route_name.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
-import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
-
-import '../../../../../../route/route_name.dart';
+import '../../../../../../data_layer/domain/entities/blog/blog_post.dart';
 
 class BlogPostCard extends StatefulWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const BlogPostCard({super.key, required this.post});
 

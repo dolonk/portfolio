@@ -835,8 +835,6 @@ class BlogPostModel extends BlogPost {
     };
   }
 
-
-
   /// Helper methods
   static List<BlogPostModel> getFeaturedPosts() {
     return getStaticPosts().where((post) => post.isFeatured).toList();
@@ -850,7 +848,6 @@ class BlogPostModel extends BlogPost {
     return getStaticPosts().where((post) => post.category == category).toList();
   }
 
-
   /// Static data
   static List<BlogPostModel> getStaticPosts() {
     return [
@@ -859,7 +856,7 @@ class BlogPostModel extends BlogPost {
         id: 'flutter-mvvm-architecture',
         title: 'Building Scalable Flutter Apps with MVVM Architecture',
         excerpt:
-        'Learn how to architect production-ready Flutter applications using the MVVM pattern, clean code principles, and best practices.',
+            'Learn how to architect production-ready Flutter applications using the MVVM pattern, clean code principles, and best practices.',
         imagePath: 'assets/home/projects/project_2.png',
         publishedDate: 'Nov 10, 2024',
         readingTime: '8 min read',
@@ -883,7 +880,7 @@ class BlogPostModel extends BlogPost {
         id: 'flutter-animations-guide',
         title: 'Mastering Flutter Animations: A Complete Guide',
         excerpt:
-        'Deep dive into Flutter animations with practical examples. Learn implicit animations, explicit animations, and custom animation controllers.',
+            'Deep dive into Flutter animations with practical examples. Learn implicit animations, explicit animations, and custom animation controllers.',
         imagePath: 'assets/blog/post_1.png',
         publishedDate: 'Nov 5, 2024',
         readingTime: '12 min read',
@@ -898,7 +895,7 @@ class BlogPostModel extends BlogPost {
         id: 'state-management-comparison',
         title: 'State Management in Flutter: Provider vs BLoC vs Riverpod',
         excerpt:
-        'Comprehensive comparison of popular state management solutions. Which one should you choose for your next project?',
+            'Comprehensive comparison of popular state management solutions. Which one should you choose for your next project?',
         imagePath: 'assets/blog/post_2.png',
         publishedDate: 'Oct 28, 2024',
         readingTime: '10 min read',
@@ -912,7 +909,7 @@ class BlogPostModel extends BlogPost {
         id: 'flutter-performance-optimization',
         title: '10 Performance Optimization Tips for Flutter Apps',
         excerpt:
-        'Proven techniques to make your Flutter app faster and more responsive. From widget rebuilds to memory management.',
+            'Proven techniques to make your Flutter app faster and more responsive. From widget rebuilds to memory management.',
         imagePath: 'assets/blog/post_3.png',
         publishedDate: 'Oct 20, 2024',
         readingTime: '7 min read',
@@ -926,7 +923,7 @@ class BlogPostModel extends BlogPost {
         id: 'firebase-integration-guide',
         title: 'Complete Firebase Integration Guide for Flutter',
         excerpt:
-        'Step-by-step tutorial on integrating Firebase Authentication, Firestore, and Cloud Storage in your Flutter app.',
+            'Step-by-step tutorial on integrating Firebase Authentication, Firestore, and Cloud Storage in your Flutter app.',
         imagePath: 'assets/blog/post_4.png',
         publishedDate: 'Oct 15, 2024',
         readingTime: '15 min read',
@@ -940,7 +937,7 @@ class BlogPostModel extends BlogPost {
         id: 'responsive-design-flutter',
         title: 'Building Responsive UIs in Flutter: Best Practices',
         excerpt:
-        'Learn how to create adaptive layouts that work seamlessly across mobile, tablet, and desktop platforms.',
+            'Learn how to create adaptive layouts that work seamlessly across mobile, tablet, and desktop platforms.',
         imagePath: 'assets/blog/post_5.png',
         publishedDate: 'Oct 8, 2024',
         readingTime: '9 min read',
@@ -954,7 +951,7 @@ class BlogPostModel extends BlogPost {
         id: 'flutter-testing-guide',
         title: 'Testing in Flutter: Unit, Widget, and Integration Tests',
         excerpt:
-        'Complete guide to writing effective tests for your Flutter applications. Ensure code quality and reliability.',
+            'Complete guide to writing effective tests for your Flutter applications. Ensure code quality and reliability.',
         imagePath: 'assets/blog/post_6.png',
         publishedDate: 'Oct 1, 2024',
         readingTime: '11 min read',
@@ -965,6 +962,9 @@ class BlogPostModel extends BlogPost {
       ),
     ];
   }
+
+
+
 
   /// demo section
   static BlogPostModel? getPostById(String id) {
