@@ -1,174 +1,209 @@
-import 'package:flutter/foundation.dart';
-import 'package:fpdart/fpdart.dart';
-import '../../../core/error/failures.dart';
-import '../../../utility/enum/enum.dart';
+import 'package:flutter/material.dart';
+import '../../../core/state/state.dart';
 import '../../../data_layer/domain/entities/blog/blog_post.dart';
 import '../../../data_layer/domain/repositories/blog/blog_repository.dart';
 
-/*class BlogProvider with ChangeNotifier {
+class BlogProvider with ChangeNotifier {
   final BlogRepository repository;
 
   BlogProvider({required this.repository}) {
-    _initializeProvider();
+    _initialize();
   }
 
-  // ==================== MAIN STATE ====================
-  List<BlogPost> _allPosts = [];
-  List<BlogPost> _featuredPosts = [];
-  List<BlogPost> _filteredPosts = [];
-  BlogPost? _selectedPost;
-  List<String> _allTags = [];
+  // ==================== STATE HOLDERS ====================
 
-  // ==================== SEARCH STATE ====================
+  /// Main posts state
+  DataState<List<BlogPost>> _postsState = DataState.initial();
+
+  /// Featured posts state
+  DataState<List<BlogPost>> _featuredState = DataState.initial();
+
+  /// Single post detail state
+  DataState<BlogPost> _detailState = DataState.initial();
+
+  /// All tags state
+  DataState<List<String>> _tagsState = DataState.initial();
+
+  /// Recent posts state (for sidebar/widgets)
+  DataState<List<BlogPost>> _recentState = DataState.initial();
+
+  // ==================== PAGINATION ====================
+  PaginationState<BlogPost> _pagination = PaginationState.initial(itemsPerPage: 6);
+
+  // ==================== FILTER & SEARCH STATE ====================
   String _searchQuery = '';
-
-  // ==================== FILTER STATE ====================
   String? _selectedTag;
-  final List<String> _selectedTags = [];
   bool _showOnlyFeatured = false;
 
-  // ==================== STATUS STATE ====================
-  GettingStatus _status = GettingStatus.initial;
-  GettingStatus _featuredStatus = GettingStatus.initial;
-  GettingStatus _detailStatus = GettingStatus.initial;
+  // ==================== INTERNAL LISTS ====================
+  List<BlogPost> _allPosts = [];
+  List<BlogPost> _filteredPosts = [];
 
-  String? _errorMessage;
-  bool _hasMore = true;
-  int _currentPage = 1;
-  static const int _postsPerPage = 6;
+  // ==================== PUBLIC GETTERS - States ====================
+  DataState<List<BlogPost>> get postsState => _postsState;
+  DataState<List<BlogPost>> get featuredState => _featuredState;
+  DataState<BlogPost> get detailState => _detailState;
+  DataState<List<String>> get tagsState => _tagsState;
+  DataState<List<BlogPost>> get recentState => _recentState;
 
-  // ==================== MAIN GETTERS ====================
+  // ==================== PUBLIC GETTERS - Data ====================
   List<BlogPost> get allPosts => _allPosts;
-  List<BlogPost> get featuredPosts => _featuredPosts;
-  List<String> get allTags => _allTags;
+  List<BlogPost> get featuredPosts => _featuredState.data ?? [];
+  List<BlogPost> get recentPosts => _recentState.data ?? [];
+  List<String> get allTags => _tagsState.data ?? [];
+  BlogPost? get selectedPost => _detailState.data;
 
-  // ==================== SEARCH GETTERS ====================
+  // ==================== PUBLIC GETTERS - Status (Backward Compatible) ====================
+  bool get isLoading => _postsState.isLoading;
+  bool get hasError => _postsState.hasError;
+  bool get isEmpty => _postsState.isEmpty;
+  String? get errorMessage => _postsState.errorMessage;
+
+  // ==================== PUBLIC GETTERS - Featured ====================
+  bool get isFeaturedLoading => _featuredState.isLoading;
+  bool get hasFeaturedError => _featuredState.hasError;
+
+  // ==================== PUBLIC GETTERS - Pagination ====================
+  bool get hasMore => _pagination.hasMore;
+  int get currentPage => _pagination.currentPage;
+  int get totalPages => _pagination.totalPages;
+  List<BlogPost> get displayPosts => _pagination.currentItems;
+
+  // ==================== PUBLIC GETTERS - Filter & Search ====================
   String get searchQuery => _searchQuery;
-
-  // ==================== FILTER GETTERS ====================
   String? get selectedTag => _selectedTag;
   bool get showOnlyFeatured => _showOnlyFeatured;
-  bool get hasActiveFilters =>
-      _selectedTag != null || _selectedTags.isNotEmpty || _showOnlyFeatured || _searchQuery.isNotEmpty;
+  int get filteredPostsCount => _filteredPosts.length;
+  int get totalPostsCount => _allPosts.length;
+  bool get hasActiveFilters => _selectedTag != null || _showOnlyFeatured || _searchQuery.isNotEmpty;
 
-  // ==================== STATUS GETTERS ====================
-  GettingStatus get detailStatus => _detailStatus;
-  String? get errorMessage => _errorMessage;
-  bool get hasMore => _hasMore;
-
-  // Computed getters
-  bool get isLoading => _status == GettingStatus.loading;
-  bool get hasError => _status == GettingStatus.error;
-  bool get isEmpty => _status == GettingStatus.empty;
-  bool get isDetailLoading => _detailStatus == GettingStatus.loading;
-
-  // ==================== DISPLAY POSTS (Paginated) ====================
-  List<BlogPost> get displayPosts {
-    final endIndex = _currentPage * _postsPerPage;
-    if (endIndex >= _filteredPosts.length) {
-      _hasMore = false;
-      return _filteredPosts;
-    }
-    return _filteredPosts.sublist(0, endIndex);
-  }
+  // ==================== PUBLIC GETTERS - Detail ====================
+  bool get isDetailLoading => _detailState.isLoading;
+  bool get hasDetailError => _detailState.hasError;
 
   // ==================== INITIALIZATION ====================
-  Future<void> _initializeProvider() async {
-    print('🔄 BlogProvider: Starting initialization...');
-    await fetchAllPosts();
-    await fetchFeaturedPosts();
-    await fetchAllTags();
-    print('✅ BlogProvider: Initialization complete!');
+  Future<void> _initialize() async {
+    debugPrint('🔄 BlogProvider: Initializing...');
+
+    await Future.wait([fetchAllPosts(), fetchFeaturedPosts(), fetchAllTags(), fetchRecentPosts()]);
+
+    debugPrint('✅ BlogProvider: Initialization complete!');
   }
 
   // ==================== FETCH METHODS ====================
-  /// Fetch all blog posts
+  /// Fetch all posts
   Future<void> fetchAllPosts() async {
-    print('📥 Fetching all posts...');
-    _status = GettingStatus.loading;
-    _errorMessage = null;
+    _postsState = DataState.loading();
     notifyListeners();
 
     final result = await repository.getAllPosts();
 
     result.fold(
       (failure) {
-        print('❌ Failed to fetch posts: ${failure.message}');
-        _status = GettingStatus.error;
-        _errorMessage = failure.message;
+        _postsState = DataState.error(failure.message);
+        debugPrint('❌ Posts fetch failed: ${failure.message}');
       },
       (posts) {
-        print('✅ Fetched ${posts.length} posts successfully');
         _allPosts = posts;
         _filteredPosts = posts;
-        _status = posts.isEmpty ? GettingStatus.empty : GettingStatus.success;
-        _currentPage = 1;
-        _hasMore = posts.length > _postsPerPage;
+        _pagination = _pagination.setItems(posts);
+        _postsState = posts.isEmpty ? DataState.empty() : DataState.success(posts);
+        debugPrint('✅ Fetched ${posts.length} posts');
       },
     );
+
     notifyListeners();
   }
 
-  /// Fetch featured posts only
+  /// Fetch featured posts
   Future<void> fetchFeaturedPosts() async {
-    print('📥 Fetching featured posts...');
-    _featuredStatus = GettingStatus.loading;
+    _featuredState = DataState.loading();
     notifyListeners();
 
     final result = await repository.getFeaturedPosts();
 
     result.fold(
       (failure) {
-        print('❌ Failed to fetch featured posts: ${failure.message}');
-        _featuredStatus = GettingStatus.error;
+        _featuredState = DataState.error(failure.message);
+        debugPrint('❌ Featured posts fetch failed: ${failure.message}');
       },
       (posts) {
-        print('✅ Fetched ${posts.length} featured posts');
-        _featuredPosts = posts;
-        _featuredStatus = posts.isEmpty ? GettingStatus.empty : GettingStatus.success;
+        _featuredState = posts.isEmpty ? DataState.empty() : DataState.success(posts);
+        debugPrint('✅ Fetched ${posts.length} featured posts');
       },
     );
+
     notifyListeners();
   }
 
-  /// Fetch all available tags
+  /// Fetch recent posts (for sidebar/home widgets)
+  Future<void> fetchRecentPosts({int limit = 5}) async {
+    _recentState = DataState.loading();
+    notifyListeners();
+
+    final result = await repository.getRecentPosts(limit: limit);
+
+    result.fold(
+      (failure) {
+        _recentState = DataState.error(failure.message);
+        debugPrint('❌ Recent posts fetch failed: ${failure.message}');
+      },
+      (posts) {
+        _recentState = posts.isEmpty ? DataState.empty() : DataState.success(posts);
+        debugPrint('✅ Fetched ${posts.length} recent posts');
+      },
+    );
+
+    notifyListeners();
+  }
+
+  /// Fetch all tags
   Future<void> fetchAllTags() async {
-    print('📥 Fetching tags...');
+    _tagsState = DataState.loading();
+
     final result = await repository.getAllTags();
 
-    result.fold((failure) => print('⚠️ Failed to fetch tags: ${failure.message}'), (tags) {
-      print('✅ Fetched ${tags.length} tags');
-      _allTags = tags;
-      notifyListeners();
-    });
+    result.fold(
+      (failure) {
+        _tagsState = DataState.error(failure.message);
+        debugPrint('❌ Tags fetch failed: ${failure.message}');
+      },
+      (tags) {
+        _tagsState = DataState.success(tags);
+        debugPrint('✅ Fetched ${tags.length} tags');
+      },
+    );
+
+    notifyListeners();
   }
 
   /// Fetch single post by ID
   Future<void> fetchPostById(String id) async {
-    _detailStatus = GettingStatus.loading;
-    _errorMessage = null;
+    _detailState = DataState.loading();
     notifyListeners();
 
     final result = await repository.getPostById(id);
 
     result.fold(
       (failure) {
-        _detailStatus = GettingStatus.error;
-        _errorMessage = failure.message;
+        _detailState = DataState.error(failure.message);
+        debugPrint('❌ Post detail fetch failed: ${failure.message}');
       },
       (post) {
-        _selectedPost = post;
-        _detailStatus = GettingStatus.success;
+        _detailState = DataState.success(post);
+        // Increment view count (fire and forget)
         repository.incrementViewCount(id);
+        debugPrint('✅ Fetched post: ${post.title}');
       },
     );
+
     notifyListeners();
   }
 
   // ==================== SEARCH METHODS ====================
   /// Search posts by query
   Future<void> searchPosts(String query) async {
-    print('🔍 Searching for: "$query"');
+    debugPrint('🔍 Searching: "$query"');
     _searchQuery = query;
 
     if (query.trim().isEmpty) {
@@ -176,40 +211,38 @@ import '../../../data_layer/domain/repositories/blog/blog_repository.dart';
       return;
     }
 
-    _status = GettingStatus.loading;
+    _postsState = DataState.loading();
     notifyListeners();
 
     final result = await repository.searchPosts(query);
 
     result.fold(
       (failure) {
-        print('❌ Search failed: ${failure.message}');
-        _status = GettingStatus.error;
-        _errorMessage = failure.message;
+        _postsState = DataState.error(failure.message);
         _filteredPosts = [];
       },
       (posts) {
-        print('✅ Found ${posts.length} results for "$query"');
         _filteredPosts = posts;
-        _status = posts.isEmpty ? GettingStatus.empty : GettingStatus.success;
-        _currentPage = 1;
-        _hasMore = posts.length > _postsPerPage;
+        _pagination = _pagination.setItems(posts);
+        _postsState = posts.isEmpty ? DataState.empty() : DataState.success(posts);
+        debugPrint('✅ Found ${posts.length} results for "$query"');
       },
     );
+
     notifyListeners();
   }
 
-  /// Clear search
+  /// Clear search and reset
   void clearSearch() {
-    print('🧹 Clearing search');
+    debugPrint('🧹 Clearing search');
     _searchQuery = '';
     _resetToAllPosts();
   }
 
   // ==================== FILTER METHODS ====================
-  /// Filter posts by single tag
+  /// Filter posts by tag
   Future<void> filterByTag(String? tag) async {
-    print('🏷️ Filtering by tag: $tag');
+    debugPrint('🏷️ Filtering by tag: $tag');
     _selectedTag = tag;
 
     if (tag == null || tag.isEmpty) {
@@ -217,400 +250,123 @@ import '../../../data_layer/domain/repositories/blog/blog_repository.dart';
       return;
     }
 
-    _status = GettingStatus.loading;
+    _postsState = DataState.loading();
     notifyListeners();
 
     final result = await repository.getPostsByTag(tag);
 
     result.fold(
       (failure) {
-        _status = GettingStatus.error;
-        _errorMessage = failure.message;
+        _postsState = DataState.error(failure.message);
+        _filteredPosts = [];
       },
       (posts) {
-        print('✅ Found ${posts.length} posts with tag "$tag"');
         _filteredPosts = posts;
-        _status = posts.isEmpty ? GettingStatus.empty : GettingStatus.success;
-        _currentPage = 1;
-        _hasMore = posts.length > _postsPerPage;
+        _pagination = _pagination.setItems(posts);
+        _postsState = posts.isEmpty ? DataState.empty() : DataState.success(posts);
+        debugPrint('✅ Found ${posts.length} posts with tag "$tag"');
       },
     );
+
     notifyListeners();
   }
 
-  // ==================== PAGINATION ====================
-  /// Load more posts
-  void loadMore() {
-    if (!_hasMore || _status == GettingStatus.loading) return;
-    _currentPage++;
-    _hasMore = (_currentPage * _postsPerPage) < _filteredPosts.length;
+  /// Toggle featured filter
+  void toggleFeaturedFilter() {
+    _showOnlyFeatured = !_showOnlyFeatured;
+
+    if (_showOnlyFeatured) {
+      _filteredPosts = _allPosts.where((p) => p.isFeatured).toList();
+    } else {
+      _filteredPosts = _allPosts;
+    }
+
+    _pagination = _pagination.setItems(_filteredPosts);
+    _postsState = _filteredPosts.isEmpty ? DataState.empty() : DataState.success(_filteredPosts);
+
     notifyListeners();
   }
 
-  // ==================== CLEAR / RESET METHODS ====================
-  /// Reset to all posts
-  void _resetToAllPosts() {
-    _filteredPosts = _allPosts;
-    _status = _allPosts.isEmpty ? GettingStatus.empty : GettingStatus.success;
-    _currentPage = 1;
-    _hasMore = _filteredPosts.length > _postsPerPage;
-    notifyListeners();
-  }
-
-  /// Clear all filters and search
+  /// Clear all filters
   void clearFilters() {
-    print('🧹 Clearing all filters');
+    debugPrint('🧹 Clearing all filters');
     _selectedTag = null;
-    _selectedTags.clear();
     _showOnlyFeatured = false;
     _searchQuery = '';
     _resetToAllPosts();
+  }
+
+  // ==================== PAGINATION METHODS ====================
+  /// Load more posts
+  void loadMore() {
+    if (!_pagination.hasMore || _postsState.isLoading) return;
+
+    _pagination = _pagination.loadNextPage();
+    debugPrint('📄 Loaded page ${_pagination.currentPage}');
+    notifyListeners();
+  }
+
+  /// Reset pagination to first page
+  void resetPagination() {
+    _pagination = _pagination.reset();
+    notifyListeners();
+  }
+
+  // ==================== UTILITY METHODS ====================
+  /// Reset to all posts (internal)
+  void _resetToAllPosts() {
+    _filteredPosts = _allPosts;
+    _pagination = _pagination.setItems(_allPosts);
+    _postsState = _allPosts.isEmpty ? DataState.empty() : DataState.success(_allPosts);
+    notifyListeners();
+  }
+
+  /// Get post count by specific tag
+  int getPostCountByTag(String tag) {
+    return _allPosts.where((post) => post.tags.contains(tag)).length;
+  }
+
+  /// Get filter summary text for UI
+  String getFilterSummaryText() {
+    final List<String> filters = [];
+
+    if (_selectedTag != null) {
+      filters.add('Tag: $_selectedTag');
+    }
+
+    if (_showOnlyFeatured) {
+      filters.add('Featured only');
+    }
+
+    if (_searchQuery.isNotEmpty) {
+      filters.add('Search: "$_searchQuery"');
+    }
+
+    if (filters.isEmpty) {
+      return 'No filters applied';
+    }
+
+    return filters.join(' • ');
   }
 
   /// Refresh all data
   Future<void> refresh() async {
+    debugPrint('🔄 Refreshing all data...');
     clearFilters();
-    await _initializeProvider();
+    await _initialize();
+  }
+
+  /// Clear selected post (when leaving detail page)
+  void clearSelectedPost() {
+    _detailState = DataState.initial();
+    notifyListeners();
   }
 
   @override
   void dispose() {
     _allPosts.clear();
-    _featuredPosts.clear();
     _filteredPosts.clear();
-    _selectedTags.clear();
-    _allTags.clear();
+    debugPrint('🗑️ BlogProvider disposed');
     super.dispose();
   }
-}*/
-
-class BlogProvider with ChangeNotifier {
-  final BlogRepository repository;
-
-  BlogProvider({required this.repository}) {
-    _initializeProvider();
-  }
-
-  // ==================== STATE HOLDERS ====================
-  final List<BlogPost> _allPosts = [];
-  final List<BlogPost> _featuredPosts = [];
-  final List<BlogPost> _filteredPosts = [];
-  final List<String> _allTags = [];
-  final List<String> _selectedTags = [];
-  BlogPost? _selectedPost;
-
-  String _searchQuery = '';
-  String? _selectedTag;
-  bool _showOnlyFeatured = false;
-
-  // ==================== STATUS MANAGEMENT ====================
-  final _statusManager = _StatusManager();
-
-  // ==================== PAGINATION ====================
-  final _paginationManager = _PaginationManager(postsPerPage: 6);
-
-  // ==================== PUBLIC GETTERS ====================
-  List<BlogPost> get allPosts => _allPosts;
-  List<BlogPost> get featuredPosts => _featuredPosts;
-  List<String> get allTags => _allTags;
-  String get searchQuery => _searchQuery;
-  String? get selectedTag => _selectedTag;
-  bool get showOnlyFeatured => _showOnlyFeatured;
-  BlogPost? get selectedPost => _selectedPost;
-  bool get hasActiveFilters =>
-      _selectedTag != null || _selectedTags.isNotEmpty || _showOnlyFeatured || _searchQuery.isNotEmpty;
-
-  // Status getters
-  GettingStatus get status => _statusManager.mainStatus;
-  GettingStatus get featuredStatus => _statusManager.featuredStatus;
-  GettingStatus get detailStatus => _statusManager.detailStatus;
-  String? get errorMessage => _statusManager.errorMessage;
-  bool get hasMore => _paginationManager.hasMore;
-
-  // Computed getters
-  bool get isLoading => _statusManager.isLoading;
-  bool get hasError => _statusManager.hasError;
-  bool get isEmpty => _statusManager.isEmpty;
-  bool get isDetailLoading => _statusManager.isDetailLoading;
-  bool get hasDetailError => _statusManager.hasDetailError;
-
-  // ==================== DISPLAY POSTS (Paginated) ====================
-  List<BlogPost> get displayPosts => _paginationManager.getPaginatedPosts(_filteredPosts);
-
-  // ==================== INITIALIZATION ====================
-  Future<void> _initializeProvider() async {
-    print('🔄 BlogProvider: Starting initialization...');
-    await Future.wait([fetchAllPosts(), fetchFeaturedPosts(), fetchAllTags()]);
-    print('✅ BlogProvider: Initialization complete!');
-  }
-
-  // ==================== Helper FETCH METHOD ====================
-  Future<void> _fetchData<T>({
-    required Future<Either<Failure, T>> Function() fetchFunction,
-    required void Function(T data) onSuccess,
-    required GettingStatus Function(T data) getSuccessStatus,
-    required _StatusType statusType,
-    bool notify = true,
-  }) async {
-    _statusManager.setLoading(statusType);
-    if (notify) notifyListeners();
-
-    final result = await fetchFunction();
-
-    result.fold(
-      (failure) {
-        _statusManager.setError(statusType, failure.message);
-        print('❌ ${statusType.name} fetch failed: ${failure.message}');
-      },
-      (data) {
-        onSuccess(data);
-        _statusManager.setStatus(statusType, getSuccessStatus(data));
-        print('✅ ${statusType.name} fetch successful: ${_getDataInfo(data)}');
-      },
-    );
-
-    if (notify) notifyListeners();
-  }
-
-  // ==================== MAIN FETCH METHODS ====================
-  Future<void> fetchAllPosts() => _fetchData<List<BlogPost>>(
-    fetchFunction: repository.getAllPosts,
-    onSuccess: (posts) {
-      _allPosts
-        ..clear()
-        ..addAll(posts);
-      _resetToAllPosts();
-    },
-    getSuccessStatus: (posts) => posts.isEmpty ? GettingStatus.empty : GettingStatus.success,
-    statusType: _StatusType.main,
-  );
-
-  Future<void> fetchFeaturedPosts() => _fetchData<List<BlogPost>>(
-    fetchFunction: repository.getFeaturedPosts,
-    onSuccess: (posts) => _featuredPosts
-      ..clear()
-      ..addAll(posts),
-    getSuccessStatus: (posts) => posts.isEmpty ? GettingStatus.empty : GettingStatus.success,
-    statusType: _StatusType.featured,
-  );
-
-  Future<void> fetchAllTags() => _fetchData<List<String>>(
-    fetchFunction: repository.getAllTags,
-    onSuccess: (tags) => _allTags
-      ..clear()
-      ..addAll(tags),
-    getSuccessStatus: (tags) => GettingStatus.success,
-    statusType: _StatusType.tags,
-    notify: false,
-  );
-
-  Future<void> fetchPostById(String id) => _fetchData<BlogPost>(
-    fetchFunction: () => repository.getPostById(id),
-    onSuccess: (post) {
-      _selectedPost = post;
-      repository.incrementViewCount(id);
-    },
-    getSuccessStatus: (_) => GettingStatus.success,
-    statusType: _StatusType.detail,
-  );
-
-  // ==================== SEARCH & FILTER METHODS ====================
-  Future<void> searchPosts(String query) async {
-    print('🔍 Searching for: "$query"');
-    _searchQuery = query;
-
-    if (query.trim().isEmpty) {
-      _resetToAllPosts();
-      return;
-    }
-
-    await _fetchData<List<BlogPost>>(
-      fetchFunction: () => repository.searchPosts(query),
-      onSuccess: (posts) => _updateFilteredPosts(posts),
-      getSuccessStatus: (posts) => posts.isEmpty ? GettingStatus.empty : GettingStatus.success,
-      statusType: _StatusType.main,
-    );
-  }
-
-  Future<void> filterByTag(String? tag) async {
-    print('🏷️ Filtering by tag: $tag');
-    _selectedTag = tag;
-
-    if (tag == null || tag.isEmpty) {
-      _resetToAllPosts();
-      return;
-    }
-
-    await _fetchData<List<BlogPost>>(
-      fetchFunction: () => repository.getPostsByTag(tag),
-      onSuccess: (posts) => _updateFilteredPosts(posts),
-      getSuccessStatus: (posts) => posts.isEmpty ? GettingStatus.empty : GettingStatus.success,
-      statusType: _StatusType.main,
-    );
-  }
-
-  // ==================== HELPER METHODS ====================
-  void _updateFilteredPosts(List<BlogPost> posts) {
-    _filteredPosts
-      ..clear()
-      ..addAll(posts);
-    _paginationManager.reset();
-    _paginationManager.updateHasMore(posts.length);
-  }
-
-  void _resetToAllPosts() {
-    _filteredPosts
-      ..clear()
-      ..addAll(_allPosts);
-    _paginationManager.reset();
-    _paginationManager.updateHasMore(_allPosts.length);
-    _statusManager.setMainStatus(_allPosts.isEmpty ? GettingStatus.empty : GettingStatus.success);
-    notifyListeners();
-  }
-
-  // ==================== PUBLIC ACTIONS ====================
-  void clearSearch() {
-    print('🧹 Clearing search');
-    _searchQuery = '';
-    _resetToAllPosts();
-  }
-
-  void clearFilters() {
-    print('🧹 Clearing all filters');
-    _selectedTag = null;
-    _selectedTags.clear();
-    _showOnlyFeatured = false;
-    _searchQuery = '';
-    _resetToAllPosts();
-  }
-
-  void loadMore() {
-    if (!_paginationManager.canLoadMore || _statusManager.isLoading) return;
-    _paginationManager.loadNextPage();
-    notifyListeners();
-  }
-
-  Future<void> refresh() async {
-    clearFilters();
-    await _initializeProvider();
-  }
-
-  @override
-  void dispose() {
-    _allPosts.clear();
-    _featuredPosts.clear();
-    _filteredPosts.clear();
-    _selectedTags.clear();
-    _allTags.clear();
-    _selectedPost = null;
-    super.dispose();
-  }
-
-  // ==================== PRIVATE HELPER METHODS ====================
-  String _getDataInfo<T>(T data) {
-    if (data is List) return '${data.length} items';
-    if (data is BlogPost) return 'post: ${data.title}';
-    return 'data updated';
-  }
-}
-
-// ==================== STATUS MANAGEMENT CLASS ====================
-class _StatusManager {
-  GettingStatus _mainStatus = GettingStatus.initial;
-  GettingStatus _featuredStatus = GettingStatus.initial;
-  GettingStatus _detailStatus = GettingStatus.initial;
-  String? _errorMessage;
-
-  // Getters
-  GettingStatus get mainStatus => _mainStatus;
-  GettingStatus get featuredStatus => _featuredStatus;
-  GettingStatus get detailStatus => _detailStatus;
-  String? get errorMessage => _errorMessage;
-
-  bool get isLoading => _mainStatus == GettingStatus.loading;
-  bool get hasError => _mainStatus == GettingStatus.error;
-  bool get isEmpty => _mainStatus == GettingStatus.empty;
-  bool get isDetailLoading => _detailStatus == GettingStatus.loading;
-  bool get hasDetailError => _detailStatus == GettingStatus.error;
-  bool get isFeaturedLoading => _featuredStatus == GettingStatus.loading;
-
-  // Methods
-  void setLoading(_StatusType type) {
-    _errorMessage = null;
-    _setStatus(type, GettingStatus.loading);
-  }
-
-  void setError(_StatusType type, String message) {
-    _errorMessage = message;
-    _setStatus(type, GettingStatus.error);
-  }
-
-  void setStatus(_StatusType type, GettingStatus status) {
-    _setStatus(type, status);
-  }
-
-  void setMainStatus(GettingStatus status) {
-    _mainStatus = status;
-  }
-
-  void _setStatus(_StatusType type, GettingStatus status) {
-    switch (type) {
-      case _StatusType.main:
-        _mainStatus = status;
-        break;
-      case _StatusType.featured:
-        _featuredStatus = status;
-        break;
-      case _StatusType.detail:
-        _detailStatus = status;
-        break;
-      case _StatusType.tags:
-        break;
-    }
-  }
-}
-
-// ==================== PAGINATION MANAGEMENT CLASS ====================
-class _PaginationManager {
-  final int postsPerPage;
-  int _currentPage = 1;
-  bool _hasMore = true;
-
-  _PaginationManager({required this.postsPerPage});
-
-  bool get hasMore => _hasMore;
-  bool get canLoadMore => _hasMore;
-
-  List<BlogPost> getPaginatedPosts(List<BlogPost> posts) {
-    final endIndex = _currentPage * postsPerPage;
-    if (endIndex >= posts.length) {
-      _hasMore = false;
-      return posts;
-    }
-    return posts.sublist(0, endIndex);
-  }
-
-  void loadNextPage() {
-    _currentPage++;
-  }
-
-  void reset() {
-    _currentPage = 1;
-    _hasMore = true;
-  }
-
-  void updateHasMore(int totalPosts) {
-    _hasMore = totalPosts > (_currentPage * postsPerPage);
-  }
-}
-
-// ==================== STATUS TYPE ENUM ====================
-enum _StatusType {
-  main('Main Posts'),
-  featured('Featured Posts'),
-  detail('Post Detail'),
-  tags('Tags');
-
-  const _StatusType(this.name);
-  final String name;
 }

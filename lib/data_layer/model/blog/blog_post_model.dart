@@ -785,9 +785,4 @@ Happy coding! 🚀
       ),
     ];
   }
-
-  /// Demo
-  static List<BlogPostModel> getRegularPosts() {
-    return getStaticPosts().where((post) => !post.isFeatured).toList();
-  }
 }

@@ -9,6 +9,9 @@ abstract class BlogRepository {
   /// Get all featured posts
   Future<Either<Failure, List<BlogPost>>> getFeaturedPosts();
 
+  /// Get recent posts with limit
+  Future<Either<Failure, List<BlogPost>>> getRecentPosts({int limit = 5});
+
   /// Get single post by ID
   Future<Either<Failure, BlogPost>> getPostById(String id);
 

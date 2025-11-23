@@ -4,8 +4,8 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../utility/default_sizes/default_sizes.dart';
 import '../../../utility/responsive/responsive_helper.dart';
 
-class BlogPage extends StatelessWidget {
-  const BlogPage({super.key});
+class BlogPageLoading extends StatelessWidget {
+  const BlogPageLoading({super.key});
 
   @override
   Widget build(BuildContext context) {

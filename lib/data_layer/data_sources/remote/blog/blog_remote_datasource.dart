@@ -14,6 +14,7 @@ abstract class BlogRemoteDataSource {
   Future<void> deletePost(String id);
   Future<void> incrementViewCount(String id);
   Future<List<BlogPostModel>> searchPosts(String query);
+  Future<List<BlogPostModel>> getRecentPosts({int limit = 5});
 }
 
 /// Blog Remote DataSource Implementation
@@ -185,6 +186,23 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       return filteredDocs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
     } catch (e) {
       throw ServerException('Failed to search posts: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<List<BlogPostModel>> getRecentPosts({int limit = 5}) async {
+    try {
+      _checkFirebaseAvailable();
+
+      final querySnapshot = await _postsCollection!
+          .where('isPublished', isEqualTo: true)
+          .orderBy('createdAt', descending: true)
+          .limit(limit)
+          .get();
+
+      return querySnapshot.docs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
+    } catch (e) {
+      throw ServerException('Failed to fetch recent posts: ${e.toString()}');
     }
   }
 }

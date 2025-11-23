@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../common_function/state_widgets/data_not_found/not_found_state.dart';
+import '../../common_function/state_widgets/error/error_state.dart';
+import '../../common_function/state_widgets/loading/blog_details_page.dart';
 import '../../utility/constants/colors.dart';
 import 'widgets/content_section/content_section.dart';
-import '../../common_function/exception_ui/error/error_state.dart';
+
 import 'package:portfolio/common_function/base_screen/base_screen.dart';
 import 'package:portfolio/features/blog/view_models/blog_view_model.dart';
-import '../../common_function/exception_ui/loading/blog_details_page.dart';
-import '../../common_function/exception_ui/data_not_found/not_found_state.dart';
 import 'package:portfolio/features/blog_detail/widgets/comments/comments_section.dart';
 import 'package:portfolio/features/blog_detail/widgets/hero_section/blog_detail_hero.dart';
 import 'package:portfolio/features/blog_detail/widgets/newsletter/newsletter_cta_section.dart';

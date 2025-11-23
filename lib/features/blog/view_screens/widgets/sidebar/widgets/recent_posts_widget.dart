@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../route/route_name.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../../view_models/blog_view_model.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
-import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
+import 'package:portfolio/data_layer/domain/entities/blog/blog_post.dart';
 
 class RecentPostsWidget extends StatelessWidget {
   const RecentPostsWidget({super.key});
@@ -14,8 +15,8 @@ class RecentPostsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.sizes;
     final fonts = context.fonts;
-    final recentPosts = BlogPostModel.getRegularPosts().take(5).toList();
-
+    final viewModel = BlogViewModel(context);
+    final recentPosts = viewModel.recentPosts;
     return Container(
       padding: EdgeInsets.all(s.paddingLg),
       decoration: BoxDecoration(
@@ -61,7 +62,7 @@ class RecentPostsWidget extends StatelessWidget {
 }
 
 class _RecentPostItem extends StatefulWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const _RecentPostItem({required this.post});
 

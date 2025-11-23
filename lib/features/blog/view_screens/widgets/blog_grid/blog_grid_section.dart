@@ -1,3 +1,8 @@
+import '../../../../../common_function/state_widgets/data_not_found/not_found_state.dart';
+import '../../../../../common_function/state_widgets/error/error_state.dart';
+import '../../../../../common_function/state_widgets/loading/blog_page.dart';
+import '../../../../../common_function/state_widgets/state_builder.dart';
+import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 import 'widgets/blog_post_card.dart';
 import 'widgets/load_more_button.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +12,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
-import '../../../../../common_function/exception_ui/loading/blog_page.dart';
-import '../../../../../common_function/exception_ui/error/error_state.dart';
-import '../../../../../common_function/exception_ui/data_not_found/not_found_state.dart';
 
 class BlogGridSection extends StatelessWidget {
   const BlogGridSection({super.key});
@@ -55,7 +57,7 @@ class BlogGridSection extends StatelessWidget {
   }
 
   /// Build content based on state
-  Widget _buildContent(BuildContext context, BlogViewModel viewModel, DSizes s) {
+  /*Widget _buildContent(BuildContext context, BlogViewModel viewModel, DSizes s) {
     // ==================== LOADING STATE (First time) ====================
     if (viewModel.isLoading && viewModel.allPosts.isEmpty) {
       return const BlogPage();
@@ -76,6 +78,16 @@ class BlogGridSection extends StatelessWidget {
 
     // ==================== SUCCESS STATE - Show Posts ====================
     return _buildBlogGrid(context, viewModel, s);
+  }*/
+
+  Widget _buildContent(BuildContext context, BlogViewModel viewModel, DSizes s) {
+    return DStateBuilder<List<BlogPost>>(
+      state: viewModel.postsState,
+      onLoading: () => const BlogPageLoading(),
+      onError: (message) => ErrorState(message: message, onRetry: viewModel.fetchAllPosts),
+      onEmpty: () => const DataNotFoundState(),
+      onSuccess: (posts) => _buildBlogGrid(context, viewModel, s),
+    );
   }
 
   /// Blog Post Grid

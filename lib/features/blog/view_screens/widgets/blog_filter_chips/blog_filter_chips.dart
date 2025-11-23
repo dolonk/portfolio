@@ -75,10 +75,10 @@ class BlogFilterChips extends StatelessWidget {
         if (filterViewModel.hasActiveFilters)
           TextButton.icon(
             onPressed: () => filterViewModel.clearFilters(),
-            icon: Icon(Icons.clear_all_rounded, size: 18, color: DColors.primaryButton),
+            icon: Icon(Icons.clear_all_rounded, size: 24, color: DColors.primaryButton),
             label: Text(
               'Clear',
-              style: context.fonts.labelSmall.rubik(color: DColors.primaryButton, fontWeight: FontWeight.w600),
+              style: context.fonts.labelMedium.rubik(color: DColors.primaryButton, fontWeight: FontWeight.w600),
             ),
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: s.paddingSm, vertical: s.paddingSm / 2),
