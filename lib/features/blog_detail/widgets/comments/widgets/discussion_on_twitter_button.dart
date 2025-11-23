@@ -3,11 +3,11 @@ import '../../../../../utility/constants/colors.dart';
 import '../../../../../utility/default_sizes/font_size.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../../utility/default_sizes/default_sizes.dart';
-import '../../../../../data_layer/model/blog/blog_post_model.dart';
+import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 import '../../../../../utility/url_launcher_service/url_launcher_service.dart';
 
 class DiscussOnTwitterButton extends StatefulWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const DiscussOnTwitterButton({super.key, required this.post});
 
@@ -34,9 +34,7 @@ class _DiscussOnTwitterButtonState extends State<DiscussOnTwitterButton> {
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: s.paddingLg, vertical: s.paddingMd),
           decoration: BoxDecoration(
-            gradient: _isHovered
-                ? const LinearGradient(colors: [Color(0xFF1DA1F2), Color(0xFF0C85D0)])
-                : null,
+            gradient: _isHovered ? const LinearGradient(colors: [Color(0xFF1DA1F2), Color(0xFF0C85D0)]) : null,
             color: _isHovered ? null : const Color(0xFF1DA1F2).withAlpha((255 * 0.1).round()),
             borderRadius: BorderRadius.circular(s.borderRadiusMd),
             border: Border.all(color: _isHovered ? const Color(0xFF1DA1F2) : DColors.cardBorder, width: 2),
@@ -44,11 +42,7 @@ class _DiscussOnTwitterButtonState extends State<DiscussOnTwitterButton> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                FontAwesomeIcons.xTwitter,
-                color: _isHovered ? Colors.white : const Color(0xFF1DA1F2),
-                size: 20,
-              ),
+              Icon(FontAwesomeIcons.xTwitter, color: _isHovered ? Colors.white : const Color(0xFF1DA1F2), size: 20),
               SizedBox(width: s.paddingSm),
               Text(
                 'Discuss on Twitter',

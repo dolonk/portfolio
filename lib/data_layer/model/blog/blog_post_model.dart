@@ -1,71 +1,179 @@
-/*class BlogPostModel {
-  // Basic Info (For Blog Card)
-  final String id;
-  final String title;
-  final String excerpt;
-  final String imagePath;
-  final String category;
-  final List<String> tags;
-  final bool isFeatured;
+import '../../domain/entities/blog/blog_post.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  // Meta Information (For Blog Card & Detail)
-  final String author;
-  final String authorImage;
-  final String authorBio;
-  final String publishedDate;
-  final String readingTime;
-  final int viewCount;
+class BlogPostModel extends BlogPost {
+  const BlogPostModel({
+    // Required only
+    required super.id,
+    required super.title,
+    required super.excerpt,
+    required super.imagePath,
+    required super.tags,
+    required super.publishedDate,
+    required super.readingTime,
 
-  // Detail Page Content
-  final String content;
-  final String? videoUrl;
-  final List<String> contentImages;
+    // Optional with defaults
+    super.category,
+    super.isFeatured,
+    super.author,
+    super.authorImage,
+    super.authorBio,
+    super.viewCount,
 
-  // Author Social Links (For Detail Page)
-  final Map<String, String> authorSocialLinks;
+    // Optional (can be empty)
+    super.content,
+    super.videoUrl,
+    super.contentImages,
+    super.authorSocialLinks,
 
-  BlogPostModel({
-    // Basic Info
-    required this.id,
-    required this.title,
-    required this.excerpt,
-    required this.imagePath,
-    this.category = 'Flutter',
-    required this.tags,
-    this.isFeatured = false,
-
-    // Meta Information
-    this.author = 'Dolon Kumar',
-    this.authorImage = 'assets/home/hero/dolon.png',
-    this.authorBio =
-        'Flutter Developer | Cross-Platform Expert with 2.6+ years experience building production-ready applications.',
-    required this.publishedDate,
-    required this.readingTime,
-    this.viewCount = 0,
-
-    // Detail Page Content
-    this.content = '',
-    this.videoUrl,
-    this.contentImages = const [],
-
-    // Author Social Links
-    this.authorSocialLinks = const {
-      'github': 'https://github.com/yourusername',
-      'linkedin': 'https://linkedin.com/in/yourprofile',
-      'twitter': 'https://twitter.com/yourhandle',
-    },
+    // Timestamps
+    required super.createdAt,
+    required super.updatedAt,
+    super.isPublished,
   });
 
-  /// Get all blog posts (sample data)
-  static List<BlogPostModel> getAllPosts() {
+  /// Firebase to Model
+  factory BlogPostModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return BlogPostModel(
+      id: doc.id,
+      title: data['title'] ?? '',
+      excerpt: data['excerpt'] ?? '',
+      imagePath: data['imagePath'] ?? '',
+      tags: List<String>.from(data['tags'] ?? []),
+      publishedDate: data['publishedDate'] ?? '',
+      readingTime: data['readingTime'] ?? '',
+      category: data['category'] ?? 'Flutter',
+      isFeatured: data['isFeatured'] ?? false,
+      author: data['author'] ?? 'Dolon Kumar',
+      authorImage: data['authorImage'] ?? 'assets/home/hero/dolon.png',
+      authorBio: data['authorBio'] ?? 'Flutter Developer | Cross-Platform Expert with 2.6+ years experience.',
+      viewCount: data['viewCount'] ?? 0,
+      content: data['content'] ?? '',
+      videoUrl: data['videoUrl'],
+      contentImages: List<String>.from(data['contentImages'] ?? []),
+      authorSocialLinks: Map<String, String>.from(
+        data['authorSocialLinks'] ??
+            {
+              'github': 'https://github.com/dolonkumar',
+              'linkedin': 'https://linkedin.com/in/dolonkumar',
+              'twitter': 'https://twitter.com/dolonkumar',
+            },
+      ),
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      isPublished: data['isPublished'] ?? true,
+    );
+  }
+
+  /// Model to Firebase
+  Map<String, dynamic> toFirestore() {
+    return {
+      'title': title,
+      'excerpt': excerpt,
+      'imagePath': imagePath,
+      'category': category,
+      'tags': tags,
+      'isFeatured': isFeatured,
+      'author': author,
+      'authorImage': authorImage,
+      'authorBio': authorBio,
+      'publishedDate': publishedDate,
+      'readingTime': readingTime,
+      'viewCount': viewCount,
+      'content': content,
+      'videoUrl': videoUrl,
+      'contentImages': contentImages,
+      'authorSocialLinks': authorSocialLinks,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+      'isPublished': isPublished,
+    };
+  }
+
+  /// JSON to Model (for static data)
+  factory BlogPostModel.fromJson(Map<String, dynamic> json) {
+    return BlogPostModel(
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
+      excerpt: json['excerpt'] ?? '',
+      imagePath: json['imagePath'] ?? '',
+      tags: List<String>.from(json['tags'] ?? []),
+      publishedDate: json['publishedDate'] ?? '',
+      readingTime: json['readingTime'] ?? '',
+      category: json['category'] ?? 'Flutter',
+      isFeatured: json['isFeatured'] ?? false,
+      author: json['author'] ?? 'Dolon Kumar',
+      authorImage: json['authorImage'] ?? 'assets/home/hero/dolon.png',
+      authorBio: json['authorBio'] ?? 'Flutter Developer',
+      viewCount: json['viewCount'] ?? 0,
+      content: json['content'] ?? '',
+      videoUrl: json['videoUrl'],
+      contentImages: List<String>.from(json['contentImages'] ?? []),
+      authorSocialLinks: Map<String, String>.from(
+        json['authorSocialLinks'] ??
+            {
+              'github': 'https://github.com/dolonkumar',
+              'linkedin': 'https://linkedin.com/in/dolonkumar',
+              'twitter': 'https://twitter.com/dolonkumar',
+            },
+      ),
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : DateTime.now(),
+      isPublished: json['isPublished'] ?? true,
+    );
+  }
+
+  /// Model to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'excerpt': excerpt,
+      'imagePath': imagePath,
+      'category': category,
+      'tags': tags,
+      'isFeatured': isFeatured,
+      'author': author,
+      'authorImage': authorImage,
+      'authorBio': authorBio,
+      'publishedDate': publishedDate,
+      'readingTime': readingTime,
+      'viewCount': viewCount,
+      'content': content,
+      'videoUrl': videoUrl,
+      'contentImages': contentImages,
+      'authorSocialLinks': authorSocialLinks,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'isPublished': isPublished,
+    };
+  }
+
+  /// Helper methods
+  static List<BlogPostModel> getFeaturedPosts() {
+    return getStaticPosts().where((post) => post.isFeatured).toList();
+  }
+
+  static List<BlogPostModel> getPostsByTag(String tag) {
+    return getStaticPosts().where((post) => post.tags.contains(tag)).toList();
+  }
+
+  static List<BlogPostModel> getPostsByCategory(String category) {
+    return getStaticPosts().where((post) => post.category == category).toList();
+  }
+
+  /// Static data
+  static List<BlogPostModel> getStaticPosts() {
     return [
-      // Featured Post
+      // Featured Post - Full content
       BlogPostModel(
         id: 'flutter-mvvm-architecture',
         title: 'Building Scalable Flutter Apps with MVVM Architecture',
         excerpt:
-            'Learn how to architect production-ready Flutter applications using the MVVM pattern, clean code principles, and best practices for maintainability and scalability.',
-        imagePath: 'assets/home/projects/project_2.png',
+            'Learn how to architect production-ready Flutter applications using the MVVM pattern, clean code principles, and best practices.',
+        imagePath: 'assets/home/projects/project_1.png',
         publishedDate: 'Nov 10, 2024',
         readingTime: '8 min read',
         tags: ['Flutter', 'Architecture', 'MVVM', 'Best Practices'],
@@ -73,10 +181,10 @@
         viewCount: 1250,
         videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         contentImages: [
+          'assets/home/projects/project_1.png',
           'assets/home/projects/project_2.png',
-          'assets/home/projects/project_4.png',
-          'assets/home/projects/project_5.png',
           'assets/home/projects/project_3.png',
+          'assets/home/projects/project_4.png',
         ],
         content: '''
 ## Introduction
@@ -586,291 +694,6 @@ Want to learn more about MVVM and Flutter architecture? Check out these resource
 
 Happy coding! 🚀
 ''',
-      ),
-
-      // Regular Posts
-      BlogPostModel(
-        id: 'flutter-animations-guide',
-        title: 'Mastering Flutter Animations: A Complete Guide',
-        excerpt:
-            'Deep dive into Flutter animations with practical examples. Learn implicit animations, explicit animations, and custom animation controllers.',
-        imagePath: 'assets/blog/post_1.png',
-        publishedDate: 'Nov 5, 2024',
-        readingTime: '12 min read',
-        tags: ['Flutter', 'Animations', 'UI/UX'],
-        viewCount: 890,
-      ),
-
-      BlogPostModel(
-        id: 'state-management-comparison',
-        title: 'State Management in Flutter: Provider vs BLoC vs Riverpod',
-        excerpt:
-            'Comprehensive comparison of popular state management solutions. Which one should you choose for your next project?',
-        imagePath: 'assets/blog/post_2.png',
-        publishedDate: 'Oct 28, 2024',
-        readingTime: '10 min read',
-        tags: ['Flutter', 'Provider', 'BLoC', 'State Management'],
-        viewCount: 1520,
-      ),
-
-      BlogPostModel(
-        id: 'flutter-performance-optimization',
-        title: '10 Performance Optimization Tips for Flutter Apps',
-        excerpt:
-            'Proven techniques to make your Flutter app faster and more responsive. From widget rebuilds to memory management.',
-        imagePath: 'assets/blog/post_3.png',
-        publishedDate: 'Oct 20, 2024',
-        readingTime: '7 min read',
-        tags: ['Flutter', 'Performance', 'Optimization'],
-        viewCount: 2100,
-      ),
-
-      BlogPostModel(
-        id: 'firebase-integration-guide',
-        title: 'Complete Firebase Integration Guide for Flutter',
-        excerpt:
-            'Step-by-step tutorial on integrating Firebase Authentication, Firestore, and Cloud Storage in your Flutter app.',
-        imagePath: 'assets/blog/post_4.png',
-        publishedDate: 'Oct 15, 2024',
-        readingTime: '15 min read',
-        tags: ['Flutter', 'Firebase', 'Backend'],
-        viewCount: 1780,
-      ),
-
-      BlogPostModel(
-        id: 'responsive-design-flutter',
-        title: 'Building Responsive UIs in Flutter: Best Practices',
-        excerpt:
-            'Learn how to create adaptive layouts that work seamlessly across mobile, tablet, and desktop platforms.',
-        imagePath: 'assets/blog/post_5.png',
-        publishedDate: 'Oct 8, 2024',
-        readingTime: '9 min read',
-        tags: ['Flutter', 'Responsive', 'UI/UX'],
-        viewCount: 950,
-      ),
-
-      BlogPostModel(
-        id: 'flutter-testing-guide',
-        title: 'Testing in Flutter: Unit, Widget, and Integration Tests',
-        excerpt:
-            'Complete guide to writing effective tests for your Flutter applications. Ensure code quality and reliability.',
-        imagePath: 'assets/blog/post_6.png',
-        publishedDate: 'Oct 1, 2024',
-        readingTime: '11 min read',
-        tags: ['Flutter', 'Testing', 'Quality Assurance'],
-        viewCount: 720,
-      ),
-    ];
-  }
-
-  /// Get featured post
-  static BlogPostModel? getFeaturedPost() {
-    return getAllPosts().firstWhere((post) => post.isFeatured);
-  }
-
-  /// Get regular posts (non-featured)
-  static List<BlogPostModel> getRegularPosts() {
-    return getAllPosts().where((post) => !post.isFeatured).toList();
-  }
-
-  static BlogPostModel? getPostById(String id) {
-    try {
-      return getAllPosts().firstWhere((post) => post.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-}*/
-
-import '../../domain/entities/blog/blog_post.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-class BlogPostModel extends BlogPost {
-  const BlogPostModel({
-    // Required only
-    required super.id,
-    required super.title,
-    required super.excerpt,
-    required super.imagePath,
-    required super.tags,
-    required super.publishedDate,
-    required super.readingTime,
-
-    // Optional with defaults
-    super.category,
-    super.isFeatured,
-    super.author,
-    super.authorImage,
-    super.authorBio,
-    super.viewCount,
-
-    // Optional (can be empty)
-    super.content,
-    super.videoUrl,
-    super.contentImages,
-    super.authorSocialLinks,
-
-    // Timestamps
-    required super.createdAt,
-    required super.updatedAt,
-    super.isPublished,
-  });
-
-  /// Firebase to Model
-  factory BlogPostModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-
-    return BlogPostModel(
-      id: doc.id,
-      title: data['title'] ?? '',
-      excerpt: data['excerpt'] ?? '',
-      imagePath: data['imagePath'] ?? '',
-      tags: List<String>.from(data['tags'] ?? []),
-      publishedDate: data['publishedDate'] ?? '',
-      readingTime: data['readingTime'] ?? '',
-      category: data['category'] ?? 'Flutter',
-      isFeatured: data['isFeatured'] ?? false,
-      author: data['author'] ?? 'Dolon Kumar',
-      authorImage: data['authorImage'] ?? 'assets/home/hero/dolon.png',
-      authorBio: data['authorBio'] ?? 'Flutter Developer | Cross-Platform Expert with 2.6+ years experience.',
-      viewCount: data['viewCount'] ?? 0,
-      content: data['content'] ?? '',
-      videoUrl: data['videoUrl'],
-      contentImages: List<String>.from(data['contentImages'] ?? []),
-      authorSocialLinks: Map<String, String>.from(
-        data['authorSocialLinks'] ??
-            {
-              'github': 'https://github.com/dolonkumar',
-              'linkedin': 'https://linkedin.com/in/dolonkumar',
-              'twitter': 'https://twitter.com/dolonkumar',
-            },
-      ),
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      isPublished: data['isPublished'] ?? true,
-    );
-  }
-
-  /// Model to Firebase
-  Map<String, dynamic> toFirestore() {
-    return {
-      'title': title,
-      'excerpt': excerpt,
-      'imagePath': imagePath,
-      'category': category,
-      'tags': tags,
-      'isFeatured': isFeatured,
-      'author': author,
-      'authorImage': authorImage,
-      'authorBio': authorBio,
-      'publishedDate': publishedDate,
-      'readingTime': readingTime,
-      'viewCount': viewCount,
-      'content': content,
-      'videoUrl': videoUrl,
-      'contentImages': contentImages,
-      'authorSocialLinks': authorSocialLinks,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
-      'isPublished': isPublished,
-    };
-  }
-
-  /// JSON to Model (for static data)
-  factory BlogPostModel.fromJson(Map<String, dynamic> json) {
-    return BlogPostModel(
-      id: json['id'] ?? '',
-      title: json['title'] ?? '',
-      excerpt: json['excerpt'] ?? '',
-      imagePath: json['imagePath'] ?? '',
-      tags: List<String>.from(json['tags'] ?? []),
-      publishedDate: json['publishedDate'] ?? '',
-      readingTime: json['readingTime'] ?? '',
-      category: json['category'] ?? 'Flutter',
-      isFeatured: json['isFeatured'] ?? false,
-      author: json['author'] ?? 'Dolon Kumar',
-      authorImage: json['authorImage'] ?? 'assets/home/hero/dolon.png',
-      authorBio: json['authorBio'] ?? 'Flutter Developer',
-      viewCount: json['viewCount'] ?? 0,
-      content: json['content'] ?? '',
-      videoUrl: json['videoUrl'],
-      contentImages: List<String>.from(json['contentImages'] ?? []),
-      authorSocialLinks: Map<String, String>.from(
-        json['authorSocialLinks'] ??
-            {
-              'github': 'https://github.com/dolonkumar',
-              'linkedin': 'https://linkedin.com/in/dolonkumar',
-              'twitter': 'https://twitter.com/dolonkumar',
-            },
-      ),
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
-      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : DateTime.now(),
-      isPublished: json['isPublished'] ?? true,
-    );
-  }
-
-  /// Model to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'excerpt': excerpt,
-      'imagePath': imagePath,
-      'category': category,
-      'tags': tags,
-      'isFeatured': isFeatured,
-      'author': author,
-      'authorImage': authorImage,
-      'authorBio': authorBio,
-      'publishedDate': publishedDate,
-      'readingTime': readingTime,
-      'viewCount': viewCount,
-      'content': content,
-      'videoUrl': videoUrl,
-      'contentImages': contentImages,
-      'authorSocialLinks': authorSocialLinks,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-      'isPublished': isPublished,
-    };
-  }
-
-  /// Helper methods
-  static List<BlogPostModel> getFeaturedPosts() {
-    return getStaticPosts().where((post) => post.isFeatured).toList();
-  }
-
-  static List<BlogPostModel> getPostsByTag(String tag) {
-    return getStaticPosts().where((post) => post.tags.contains(tag)).toList();
-  }
-
-  static List<BlogPostModel> getPostsByCategory(String category) {
-    return getStaticPosts().where((post) => post.category == category).toList();
-  }
-
-  /// Static data
-  static List<BlogPostModel> getStaticPosts() {
-    return [
-      // Featured Post - Full content
-      BlogPostModel(
-        id: 'flutter-mvvm-architecture',
-        title: 'Building Scalable Flutter Apps with MVVM Architecture',
-        excerpt:
-            'Learn how to architect production-ready Flutter applications using the MVVM pattern, clean code principles, and best practices.',
-        imagePath: 'assets/home/projects/project_1.png',
-        publishedDate: 'Nov 10, 2024',
-        readingTime: '8 min read',
-        tags: ['Flutter', 'Architecture', 'MVVM', 'Best Practices'],
-        isFeatured: true,
-        viewCount: 1250,
-        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        contentImages: [
-          'assets/home/projects/project_1.png',
-          'assets/home/projects/project_2.png',
-          'assets/home/projects/project_3.png',
-          'assets/home/projects/project_4.png',
-        ],
-        content: '''[TOMAR FULL CONTENT - Document theke copy koro]''',
         createdAt: DateTime(2024, 11, 10),
         updatedAt: DateTime(2024, 11, 10),
       ),
@@ -963,20 +786,8 @@ class BlogPostModel extends BlogPost {
     ];
   }
 
-  /// demo section
-  static BlogPostModel? getPostById(String id) {
-    try {
-      return getStaticPosts().firstWhere((post) => post.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
+  /// Demo
   static List<BlogPostModel> getRegularPosts() {
     return getStaticPosts().where((post) => !post.isFeatured).toList();
-  }
-
-  static BlogPostModel? getFeaturedPost() {
-    return getStaticPosts().firstWhere((post) => post.isFeatured);
   }
 }

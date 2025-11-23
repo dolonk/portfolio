@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'widgets/submit_comment_button.dart';
 import 'widgets/discussion_on_twitter_button.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:portfolio/data_layer/model/blog/comment_model.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
-import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
+import '../../../../data_layer/domain/entities/blog/blog_post.dart';
+import 'package:portfolio/data_layer/model/blog/comment_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
@@ -13,7 +13,7 @@ import 'package:portfolio/utility/responsive/section_container.dart';
 enum CommentSort { newest, oldest, mostLiked }
 
 class CommentsSection extends StatefulWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const CommentsSection({super.key, required this.post});
 
@@ -341,10 +341,7 @@ class _CommentsSectionState extends State<CommentsSection> {
             style: fonts.titleMedium.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
           ),
           SizedBox(height: s.paddingSm),
-          Text(
-            'Be the first to share your thoughts!',
-            style: fonts.bodyMedium.rubik(color: DColors.textSecondary),
-          ),
+          Text('Be the first to share your thoughts!', style: fonts.bodyMedium.rubik(color: DColors.textSecondary)),
         ],
       ),
     );

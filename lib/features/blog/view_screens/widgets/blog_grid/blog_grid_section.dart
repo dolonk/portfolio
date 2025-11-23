@@ -1,6 +1,3 @@
-import '../error_section/blog_empty_state.dart';
-import '../error_section/blog_error_state.dart';
-import '../error_section/blog_loading_skeleton.dart';
 import 'widgets/blog_post_card.dart';
 import 'widgets/load_more_button.dart';
 import 'package:flutter/material.dart';
@@ -10,134 +7,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
-
-/*class BlogGridSection extends StatefulWidget {
-  const BlogGridSection({super.key});
-
-  @override
-  State<BlogGridSection> createState() => _BlogGridSectionState();
-}
-
-class _BlogGridSectionState extends State<BlogGridSection> {
-  final List<BlogPostModel> _displayedPosts = [];
-  List<BlogPostModel> _allPosts = [];
-  bool _isLoading = false;
-  final int _postsPerPage = 4;
-
-  @override
-  void initState() {
-    super.initState();
-    _allPosts = BlogPostModel.getStaticPosts();
-    _loadMorePosts();
-  }
-
-  void _loadMorePosts() {
-    setState(() => _isLoading = true);
-
-    // Simulate loading delay
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (mounted) {
-        setState(() {
-          final currentLength = _displayedPosts.length;
-          final remainingPosts = _allPosts.length - currentLength;
-          final postsToAdd = remainingPosts > _postsPerPage ? _postsPerPage : remainingPosts;
-
-          _displayedPosts.addAll(_allPosts.skip(currentLength).take(postsToAdd));
-          _isLoading = false;
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final s = context.sizes;
-
-    return SectionContainer(
-      padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
-      child: context.isMobile ? _buildMobileLayout(s) : _buildDesktopLayout(s),
-    );
-  }
-
-  /// Desktop/Tablet Layout (Grid + Sidebar)
-  Widget _buildDesktopLayout(DSizes s) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Blog Grid (Left - 70%)
-        Expanded(flex: 70, child: _buildBlogGrid(s)),
-        SizedBox(width: s.spaceBtwSections),
-
-        // Sidebar (Right - 30%)
-        Expanded(flex: 30, child: const BlogSidebar()),
-      ],
-    );
-  }
-
-  /// Mobile Layout (Grid then Sidebar)
-  Widget _buildMobileLayout(DSizes s) {
-    return Column(
-      children: [
-        // Blog Grid
-        _buildBlogGrid(s),
-        SizedBox(height: s.spaceBtwSections),
-
-        // Sidebar (Below)
-        const BlogSidebar(),
-      ],
-    );
-  }
-
-  /// Blog Post Grid
-  Widget _buildBlogGrid(DSizes s) {
-    final crossAxisCount = context.responsiveValue(mobile: 1, tablet: 2, desktop: 2);
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final double desiredHeight = context.isMobile ? 424 : 530;
-        final double itemWidth =
-            (constraints.maxWidth - (crossAxisCount - 1) * s.spaceBtwItems) / crossAxisCount;
-        final double finalAspectRatio = itemWidth / desiredHeight;
-
-        return Column(
-          children: [
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: s.spaceBtwItems,
-                mainAxisSpacing: s.spaceBtwItems,
-                childAspectRatio: finalAspectRatio,
-              ),
-              itemCount: _displayedPosts.length,
-              itemBuilder: (context, index) {
-                return BlogPostCard(post: _displayedPosts[index])
-                    .animate()
-                    .fadeIn(duration: 400.ms, delay: (100 * index).ms)
-                    .slideY(begin: 0.1, duration: 400.ms, delay: (100 * index).ms);
-              },
-            ),
-
-            // Load More Button
-            if (_displayedPosts.length < _allPosts.length) ...[
-              SizedBox(height: s.spaceBtwSections),
-              LoadMoreButton(
-                    onPressed: _loadMorePosts,
-                    currentCount: _displayedPosts.length,
-                    totalCount: _allPosts.length,
-                    isLoading: _isLoading,
-                  )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms)
-                  .slideY(begin: 0.1, duration: 600.ms, delay: 200.ms),
-            ],
-          ],
-        );
-      },
-    );
-  }
-}*/
+import '../../../../../common_function/exception_ui/loading/blog_page.dart';
+import '../../../../../common_function/exception_ui/error/error_state.dart';
+import '../../../../../common_function/exception_ui/data_not_found/not_found_state.dart';
 
 class BlogGridSection extends StatelessWidget {
   const BlogGridSection({super.key});
@@ -149,9 +21,7 @@ class BlogGridSection extends StatelessWidget {
 
     return SectionContainer(
       padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
-      child: context.isMobile
-          ? _buildMobileLayout(context, viewModel, s)
-          : _buildDesktopLayout(context, viewModel, s),
+      child: context.isMobile ? _buildMobileLayout(context, viewModel, s) : _buildDesktopLayout(context, viewModel, s),
     );
   }
 
@@ -188,12 +58,12 @@ class BlogGridSection extends StatelessWidget {
   Widget _buildContent(BuildContext context, BlogViewModel viewModel, DSizes s) {
     // ==================== LOADING STATE (First time) ====================
     if (viewModel.isLoading && viewModel.allPosts.isEmpty) {
-      return const BlogLoadingSkeleton();
+      return const BlogPage();
     }
 
     // ==================== ERROR STATE ====================
     if (viewModel.hasError) {
-      return BlogErrorState(
+      return ErrorState(
         message: viewModel.errorMessage ?? 'Failed to load posts',
         onRetry: () => viewModel.fetchAllPosts(),
       );
@@ -201,7 +71,7 @@ class BlogGridSection extends StatelessWidget {
 
     // ==================== EMPTY STATE ====================
     if (viewModel.isEmpty) {
-      return const BlogEmptyState();
+      return const DataNotFoundState();
     }
 
     // ==================== SUCCESS STATE - Show Posts ====================
@@ -220,8 +90,7 @@ class BlogGridSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double desiredHeight = context.isMobile ? 424 : 530;
-        final double itemWidth =
-            (constraints.maxWidth - (crossAxisCount - 1) * s.spaceBtwItems) / crossAxisCount;
+        final double itemWidth = (constraints.maxWidth - (crossAxisCount - 1) * s.spaceBtwItems) / crossAxisCount;
         final double finalAspectRatio = itemWidth / desiredHeight;
 
         return Column(
@@ -249,14 +118,11 @@ class BlogGridSection extends StatelessWidget {
             if (hasMore) ...[
               SizedBox(height: s.spaceBtwSections),
               LoadMoreButton(
-                    onPressed: () => viewModel.loadMore(),
-                    currentCount: displayedPosts.length,
-                    totalCount: viewModel.allPosts.length,
-                    isLoading: isLoadingMore,
-                  )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms)
-                  .slideY(begin: 0.1, duration: 600.ms, delay: 200.ms),
+                onPressed: () => viewModel.loadMore(),
+                currentCount: displayedPosts.length,
+                totalCount: viewModel.allPosts.length,
+                isLoading: isLoadingMore,
+              ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.1, duration: 600.ms, delay: 200.ms),
             ],
           ],
         );

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 import 'widgets/post_meta.dart';
 import 'widgets/share_buttons.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class PostHeaderSection extends StatelessWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const PostHeaderSection({super.key, required this.post});
 
@@ -26,28 +27,30 @@ class PostHeaderSection extends StatelessWidget {
           constraints: BoxConstraints(
             maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 700, desktop: 800),
           ),
-          child: Column(
-            children: [
-              // Title with Gradient
-              _buildTitle(context, s),
-              SizedBox(height: s.spaceBtwItems),
-
-              // Author Avatar + Name
-              _buildAuthorInfo(context, s),
-              SizedBox(height: s.paddingMd),
-
-              // Meta Information
-              PostMeta(
-                author: post.author,
-                publishedDate: post.publishedDate,
-                readingTime: post.readingTime,
-                viewCount: post.viewCount,
-              ),
-              SizedBox(height: s.spaceBtwItems),
-
-              // Share Buttons
-              ShareButtons(postTitle: post.title, postUrl: 'https://yourwebsite.com/blog/${post.id}'),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Title with Gradient
+                _buildTitle(context, s),
+                SizedBox(height: s.spaceBtwItems),
+            
+                // Author Avatar + Name
+                _buildAuthorInfo(context, s),
+                SizedBox(height: s.paddingMd),
+            
+                // Meta Information
+                PostMeta(
+                  author: post.author,
+                  publishedDate: post.publishedDate,
+                  readingTime: post.readingTime,
+                  viewCount: post.viewCount,
+                ),
+                SizedBox(height: s.spaceBtwItems),
+            
+                // Share Buttons
+                ShareButtons(postTitle: post.title, postUrl: 'https://yourwebsite.com/blog/${post.id}'),
+              ],
+            ),
           ),
         ),
       ),

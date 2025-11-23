@@ -4,11 +4,12 @@ import 'core/di/injection_container.dart';
 import 'package:portfolio/route/route_config.dart';
 import 'features/blog/providers/blog_provider.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'features/blog/providers/blog_search_provider.dart';
-import 'features/blog/providers/blog_filter_provider.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Remove # Url
+  usePathUrlStrategy();
 
   // ==================== FIREBASE INITIALIZATION (OPTIONAL) ====================
   bool firebaseInitialized = false;
@@ -29,18 +30,28 @@ class MyApp extends StatelessWidget {
       providers: [
         // Blog Provider
         ChangeNotifierProvider<BlogProvider>(create: (_) => getIt<BlogProvider>()),
-
-        // Search Provider
-        ChangeNotifierProvider<BlogSearchProvider>(create: (_) => getIt<BlogSearchProvider>()),
-
-        // Filter Provider
-        ChangeNotifierProvider<BlogFilterProvider>(create: (_) => getIt<BlogFilterProvider>()),
       ],
       child: MaterialApp.router(
         title: 'Portfolio',
         debugShowCheckedModeBanner: false,
         routerConfig: RouteConfig.router,
-        theme: ThemeData(useMaterial3: true, scaffoldBackgroundColor: DColors.background),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: DColors.background,
+          scrollbarTheme: ScrollbarThemeData(
+            interactive: true,
+            minThumbLength: 60,
+            thickness: WidgetStateProperty.all(8.0),
+            trackVisibility: WidgetStateProperty.all(false),
+            thumbColor: WidgetStateProperty.all(DColors.primaryButton.withAlpha((255 * 0.8).round())),
+            thumbVisibility: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.dragged) || states.contains(WidgetState.hovered)) return true;
+              return false;
+            }),
+          ),
+          fontFamily: 'Roboto',
+          useMaterial3: true,
+        ),
       ),
     );
   }

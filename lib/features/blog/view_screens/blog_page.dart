@@ -1,35 +1,12 @@
 import 'package:flutter/material.dart';
 import 'widgets/blog_grid/blog_grid_section.dart';
-import 'widgets/error_section/blog_filter_chips.dart';
+import 'widgets/blog_filter_chips/blog_filter_chips.dart';
 import 'widgets/hero_section/blog_hero_section.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'widgets/featured_post/featured_post_section.dart';
 import 'package:portfolio/common_function/base_screen/base_screen.dart';
 import '../view_models/blog_view_model.dart';
 import 'widgets/hero_section/widgets/blog_search_bar.dart';
-
-/*class BlogPage extends StatelessWidget {
-  const BlogPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BaseScreen(
-      backgroundColor: DColors.background,
-      child: Column(
-        children: [
-          // Hero Section
-          BlogHeroSection(onSearch: (query) => print('Searching: $query')),
-
-          // Featured Post Section
-          FeaturedPostSection(),
-
-          // Blog Grid + Sidebar
-          const BlogGridSection(),
-        ],
-      ),
-    );
-  }
-}*/
 
 class BlogPage extends StatelessWidget {
   const BlogPage({super.key});
@@ -59,7 +36,7 @@ class BlogPage extends StatelessWidget {
                 const BlogHeroSection(),
 
                 // Featured Post Section
-                 FeaturedPostSection(),
+                FeaturedPostSection(),
 
                 // Filter Chips (Tags)
                 const BlogFilterChips(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/data_layer/domain/entities/blog/blog_post.dart';
 import '../../../../route/route_name.dart';
 import 'package:go_router/go_router.dart';
 import 'category_badge/category_badge.dart';
@@ -11,7 +12,7 @@ import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/features/blog_detail/widgets/hero_section/post_header/post_header_section.dart';
 
 class BlogDetailHero extends StatelessWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const BlogDetailHero({super.key, required this.post});
 
@@ -24,38 +25,46 @@ class BlogDetailHero extends StatelessWidget {
       height: context.responsiveValue(
         mobile: ResponsiveHelper.getHeight(context) * 0.4,
         tablet: ResponsiveHelper.getHeight(context) * 0.28,
-        desktop: ResponsiveHelper.getHeight(context) * 0.53,
+        desktop: ResponsiveHelper.getHeight(context) * 0.44,
       ),
       child: Stack(
         children: [
           // Background Image
           _buildHeroImage(context),
 
-          PostHeaderSection(post: post),
+          // Post Header Section
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: PostHeaderSection(post: post),
+            ),
+          ),
 
+          // Back Button (Desktop only)
           context.isDesktop
               ? Positioned(top: 2, left: s.paddingLg, child: _buildBackButton(context, s))
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
 
-          // Category Badge (Top Left)
+          // Category Badge (Desktop only)
           context.isDesktop
               ? Positioned(
                   bottom: 2,
                   left: s.paddingLg,
                   child: CategoryBadge(category: post.category),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         ],
       ),
     ).animate().fadeIn(duration: 800.ms);
   }
 
-  /// Hero Image with Error Handling
+  /// Hero Image with Error Handling and Responsive Height
   Widget _buildHeroImage(BuildContext context) {
     return Image.asset(
       post.imagePath,
       fit: BoxFit.cover,
       width: double.infinity,
+      height: double.infinity,
       errorBuilder: (context, error, stackTrace) {
         return Container(
           color: DColors.cardBackground,
@@ -65,10 +74,7 @@ class BlogDetailHero extends StatelessWidget {
               children: [
                 Icon(Icons.image_not_supported_outlined, size: 80, color: DColors.textSecondary),
                 SizedBox(height: 16),
-                Text(
-                  'Image not available',
-                  style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
-                ),
+                Text('Image not available', style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary)),
               ],
             ),
           ),

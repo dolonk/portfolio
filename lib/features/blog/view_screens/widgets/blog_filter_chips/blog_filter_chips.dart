@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../../utility/constants/colors.dart';
-import '../../../../../utility/default_sizes/default_sizes.dart';
-import '../../../../../utility/default_sizes/font_size.dart';
-import '../../../../../utility/responsive/section_container.dart';
-import '../../../view_models/blog_filter_view_model.dart';
 import '../../../view_models/blog_view_model.dart';
+import '../../../../../utility/constants/colors.dart';
+import '../../../../../utility/default_sizes/font_size.dart';
+import '../../../../../utility/default_sizes/default_sizes.dart';
+import '../../../../../utility/responsive/section_container.dart';
 
 class BlogFilterChips extends StatelessWidget {
   const BlogFilterChips({super.key});
@@ -13,7 +12,7 @@ class BlogFilterChips extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get both ViewModels
     final blogViewModel = BlogViewModel(context);
-    final filterViewModel = BlogFilterViewModel(context);
+    final filterViewModel = BlogViewModel(context);
 
     final s = context.sizes;
     final tags = blogViewModel.allTags;
@@ -40,11 +39,7 @@ class BlogFilterChips extends StatelessWidget {
             runSpacing: s.paddingSm,
             children: [
               // "All" chip
-              _FilterChip(
-                label: 'All',
-                isSelected: selectedTag == null,
-                onTap: () => blogViewModel.filterByTag(null),
-              ),
+              _FilterChip(label: 'All', isSelected: selectedTag == null, onTap: () => blogViewModel.filterByTag(null)),
 
               // Tag chips
               ...tags.map(
@@ -69,7 +64,7 @@ class BlogFilterChips extends StatelessWidget {
   }
 
   /// Build header with label and clear button
-  Widget _buildHeader(BuildContext context, DSizes s, BlogFilterViewModel filterViewModel) {
+  Widget _buildHeader(BuildContext context, DSizes s, BlogViewModel filterViewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -83,10 +78,7 @@ class BlogFilterChips extends StatelessWidget {
             icon: Icon(Icons.clear_all_rounded, size: 18, color: DColors.primaryButton),
             label: Text(
               'Clear',
-              style: context.fonts.labelSmall.rubik(
-                color: DColors.primaryButton,
-                fontWeight: FontWeight.w600,
-              ),
+              style: context.fonts.labelSmall.rubik(color: DColors.primaryButton, fontWeight: FontWeight.w600),
             ),
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: s.paddingSm, vertical: s.paddingSm / 2),
@@ -99,7 +91,7 @@ class BlogFilterChips extends StatelessWidget {
   }
 
   /// Build filter summary
-  Widget _buildFilterSummary(BuildContext context, DSizes s, BlogFilterViewModel filterViewModel) {
+  Widget _buildFilterSummary(BuildContext context, DSizes s, BlogViewModel filterViewModel) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
       decoration: BoxDecoration(
@@ -115,10 +107,7 @@ class BlogFilterChips extends StatelessWidget {
           Flexible(
             child: Text(
               filterViewModel.getFilterSummaryText(),
-              style: context.fonts.labelSmall.rubik(
-                color: DColors.primaryButton,
-                fontWeight: FontWeight.w600,
-              ),
+              style: context.fonts.labelSmall.rubik(color: DColors.primaryButton, fontWeight: FontWeight.w600),
               overflow: TextOverflow.ellipsis,
             ),
           ),

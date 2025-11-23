@@ -1,15 +1,15 @@
 import 'widgets/article_content.dart';
 import 'widgets/table_of_contents.dart';
 import 'package:flutter/material.dart';
-import '../../../project_detail/widgets/gallery/gallery_section.dart';
-import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
+import '../../../../data_layer/domain/entities/blog/blog_post.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../project_detail/widgets/gallery/gallery_section.dart';
 import '../../../project_detail/widgets/demo_links/ widgets/video_player.dart';
 
 class ContentSection extends StatefulWidget {
-  final BlogPostModel post;
+  final BlogPost post;
 
   const ContentSection({super.key, required this.post});
 
@@ -32,10 +32,7 @@ class _ContentSectionState extends State<ContentSection> {
   /// Extract H2 headings from content for TOC
   void _extractHeadings() {
     final lines = widget.post.content.split('\n');
-    _headings = lines
-        .where((line) => line.startsWith('## '))
-        .map((line) => line.replaceAll('## ', ''))
-        .toList();
+    _headings = lines.where((line) => line.startsWith('## ')).map((line) => line.replaceAll('## ', '')).toList();
   }
 
   /// Create GlobalKeys for each heading
@@ -119,11 +116,7 @@ class _ContentSectionState extends State<ContentSection> {
 
         // TOC at top (collapsible)
         if (_headings.isNotEmpty) ...[
-          TableOfContents(
-            headings: _headings,
-            activeIndex: _activeHeadingIndex,
-            onHeadingTap: _scrollToHeading,
-          ),
+          TableOfContents(headings: _headings, activeIndex: _activeHeadingIndex, onHeadingTap: _scrollToHeading),
           SizedBox(height: s.spaceBtwSections),
         ],
 

@@ -26,7 +26,7 @@ class PopularTagsWidget extends StatelessWidget {
     ];
 
     return Container(
-      padding: EdgeInsets.all(s.paddingLg),
+      padding: EdgeInsets.all(s.paddingMd),
       decoration: BoxDecoration(
         color: DColors.cardBackground,
         borderRadius: BorderRadius.circular(s.borderRadiusLg),
@@ -95,9 +95,7 @@ class _TagChipState extends State<_TagChip> {
                 : DColors.primaryButton.withAlpha((255 * 0.1).round()),
             borderRadius: BorderRadius.circular(s.borderRadiusSm),
             border: Border.all(
-              color: _isHovered
-                  ? DColors.primaryButton
-                  : DColors.primaryButton.withAlpha((255 * 0.3).round()),
+              color: _isHovered ? DColors.primaryButton : DColors.primaryButton.withAlpha((255 * 0.3).round()),
               width: 1,
             ),
           ),

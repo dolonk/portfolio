@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../utility/enum/enum.dart';
 import '../providers/blog_provider.dart';
 import '../../../../data_layer/domain/entities/blog/blog_post.dart';
 
@@ -9,126 +10,71 @@ class BlogViewModel {
   BlogViewModel(this.context);
 
   // ==================== PROVIDER ACCESS ====================
-  /// Get BlogProvider (read only - no rebuild)
   BlogProvider get _provider => context.read<BlogProvider>();
-
-  /// Watch BlogProvider (rebuilds on change)
   BlogProvider get _watchProvider => context.watch<BlogProvider>();
 
-  // ==================== GETTERS  ====================
-  /// All posts
+  // ==================== MAIN GETTERS ====================
   List<BlogPost> get allPosts => _watchProvider.allPosts;
-
-  /// Featured posts
   List<BlogPost> get featuredPosts => _watchProvider.featuredPosts;
-
-  /// Display posts (paginated)
   List<BlogPost> get displayPosts => _watchProvider.displayPosts;
-
-  /// Selected post
+  List<String> get allTags => _watchProvider.allTags;
   BlogPost? get selectedPost => _watchProvider.selectedPost;
 
-  /// All tags
-  List<String> get allTags => _watchProvider.allTags;
-
-  /// Selected tag
-  String? get selectedTag => _watchProvider.selectedTag;
-
-  /// Search query
-  String get searchQuery => _watchProvider.searchQuery;
-
   // ==================== STATUS GETTERS ====================
-
-  /// Is loading
   bool get isLoading => _watchProvider.isLoading;
-
-  /// Has error
   bool get hasError => _watchProvider.hasError;
-
-  /// Is empty
   bool get isEmpty => _watchProvider.isEmpty;
-
-  /// Error message
+  bool get hasMore => _watchProvider.hasMore;
   String? get errorMessage => _watchProvider.errorMessage;
 
-  /// Has more posts
-  bool get hasMore => _watchProvider.hasMore;
+  // ADD DETAIL STATUS GETTERS
+  bool get isDetailLoading => _watchProvider.isDetailLoading;
+  bool get hasDetailError => _watchProvider.hasDetailError;
+  bool get isFeaturedLoading => _watchProvider.featuredStatus == GettingStatus.loading;
+  bool get hasFeaturedError => _watchProvider.featuredStatus == GettingStatus.error;
 
-  /// Is featured loading
-  bool get isFeaturedLoading => _watchProvider.isFeaturedLoading;
+  // ==================== SEARCH GETTERS ====================
+  String get searchQuery => _watchProvider.searchQuery;
 
-  // ==================== ACTIONS (UI থেকে call হবে) ====================
+  // ==================== FILTER GETTERS ====================
+  String? get selectedTag => _watchProvider.selectedTag;
+  bool get showOnlyFeatured => _watchProvider.showOnlyFeatured;
+  bool get hasActiveFilters => _watchProvider.hasActiveFilters;
 
-  /// Fetch all posts
-  Future<void> fetchAllPosts() async {
-    await _provider.fetchAllPosts();
-  }
-
-  /// Fetch featured posts
-  Future<void> fetchFeaturedPosts() async {
-    await _provider.fetchFeaturedPosts();
-  }
+  // ==================== FETCH ACTIONS ====================
+  Future<void> fetchAllPosts() async => await _provider.fetchAllPosts();
 
   /// Fetch post by ID
-  Future<void> fetchPostById(String id) async {
-    await _provider.fetchPostById(id);
-  }
+  Future<void> fetchPostById(String id) async => await _provider.fetchPostById(id);
 
-  /// Fetch all tags
-  Future<void> fetchAllTags() async {
-    await _provider.fetchAllTags();
-  }
+  // ==================== SEARCH ACTIONS ====================
+  Future<void> search(String query) async => await _provider.searchPosts(query);
+  void clearSearch() => _provider.clearSearch();
 
-  /// Filter by tag
-  Future<void> filterByTag(String? tag) async {
-    await _provider.filterByTag(tag);
-  }
+  // ==================== FILTER ACTIONS ====================
+  Future<void> filterByTag(String? tag) async => await _provider.filterByTag(tag);
 
-  /// Search posts
-  Future<void> searchPosts(String query) async {
-    await _provider.searchPosts(query);
-  }
+  void clearFilters() => _provider.clearFilters();
 
-  /// Load more posts (pagination)
-  void loadMore() {
-    _provider.loadMore();
-  }
+  // ==================== PAGINATION ====================
+  void loadMore() => _provider.loadMore();
 
-  /// Clear filters
-  void clearFilters() {
-    _provider.clearFilters();
-  }
-
-  /// Refresh all data
-  Future<void> refresh() async {
-    await _provider.refresh();
-  }
-
-  /// Clear selected post
-  void clearSelectedPost() {
-    _provider.clearSelectedPost();
-  }
-
-  /// Clear error
-  void clearError() {
-    _provider.clearError();
-  }
+  // ==================== OTHER ====================
+  Future<void> refresh() async => await _provider.refresh();
 
   // ==================== HELPER METHODS ====================
-  /// Get post count text
-  String getPostCountText() {
-    final count = displayPosts.length;
-    final total = allPosts.length;
-    return 'Showing $count of $total posts';
-  }
-
-  /// Check if tag is selected
-  bool isTagSelected(String tag) {
-    return selectedTag == tag;
-  }
-
-  /// Get filtered post count by tag
   int getPostCountByTag(String tag) {
     return allPosts.where((post) => post.tags.contains(tag)).length;
+  }
+
+  String getFilterSummaryText() {
+    if (!hasActiveFilters) return 'No filters applied';
+
+    final parts = <String>[];
+    if (selectedTag != null) parts.add('Tag: $selectedTag');
+    if (searchQuery.isNotEmpty) parts.add('Search: "$searchQuery"');
+    if (showOnlyFeatured) parts.add('Featured only');
+
+    return parts.join(' • ');
   }
 }
