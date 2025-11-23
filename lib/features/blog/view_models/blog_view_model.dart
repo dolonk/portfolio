@@ -51,7 +51,7 @@ class BlogViewModel {
   /// Currently selected post
   BlogPost? get selectedPost => _watch.selectedPost;
 
-  // ==================== STATUS GETTERS (Backward Compatible) ====================
+  // ==================== STATUS GETTERS  ====================
   bool get isLoading => _watch.isLoading;
   bool get hasError => _watch.hasError;
   bool get isEmpty => _watch.isEmpty;
@@ -120,7 +120,7 @@ class BlogViewModel {
   void resetPagination() => _provider.resetPagination();
 
   // ==================== UTILITY ACTIONS ====================
-  /// Clear selected post (call when leaving detail page)
+  /// Clear selected post
   void clearSelectedPost() => _provider.clearSelectedPost();
 
   /// Get post count by tag

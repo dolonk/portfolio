@@ -1,14 +1,13 @@
 import 'dart:ui';
-import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 import 'widgets/post_meta.dart';
 import 'widgets/share_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
-import 'package:portfolio/data_layer/model/blog/blog_post_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 
 class PostHeaderSection extends StatelessWidget {
   final BlogPost post;
@@ -33,11 +32,11 @@ class PostHeaderSection extends StatelessWidget {
                 // Title with Gradient
                 _buildTitle(context, s),
                 SizedBox(height: s.spaceBtwItems),
-            
+
                 // Author Avatar + Name
                 _buildAuthorInfo(context, s),
                 SizedBox(height: s.paddingMd),
-            
+
                 // Meta Information
                 PostMeta(
                   author: post.author,
@@ -45,8 +44,8 @@ class PostHeaderSection extends StatelessWidget {
                   readingTime: post.readingTime,
                   viewCount: post.viewCount,
                 ),
-                SizedBox(height: s.spaceBtwItems),
-            
+                SizedBox(height: s.paddingSm),
+
                 // Share Buttons
                 ShareButtons(postTitle: post.title, postUrl: 'https://yourwebsite.com/blog/${post.id}'),
               ],
@@ -75,7 +74,7 @@ class PostHeaderSection extends StatelessWidget {
           height: 1.2,
         ),
         overflow: TextOverflow.ellipsis,
-        maxLines: 2,
+        maxLines: 1,
         textAlign: TextAlign.center,
       ),
     ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.2, duration: 600.ms, delay: 200.ms);

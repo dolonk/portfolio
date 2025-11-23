@@ -19,6 +19,20 @@ class CommentModel {
     this.replies = const [],
   });
 
+  /// Copy with method for updating
+  CommentModel copyWith({int? likes, List<CommentModel>? replies}) {
+    return CommentModel(
+      id: id,
+      authorName: authorName,
+      authorImage: authorImage,
+      content: content,
+      timestamp: timestamp,
+      likes: likes ?? this.likes,
+      parentId: parentId,
+      replies: replies ?? this.replies,
+    );
+  }
+
   /// Get sample comments for blog post
   static List<CommentModel> getSampleComments(String postId) {
     return [
@@ -92,19 +106,5 @@ class CommentModel {
         likes: 7,
       ),
     ];
-  }
-
-  /// Copy with method for updating
-  CommentModel copyWith({int? likes, List<CommentModel>? replies}) {
-    return CommentModel(
-      id: id,
-      authorName: authorName,
-      authorImage: authorImage,
-      content: content,
-      timestamp: timestamp,
-      likes: likes ?? this.likes,
-      parentId: parentId,
-      replies: replies ?? this.replies,
-    );
   }
 }

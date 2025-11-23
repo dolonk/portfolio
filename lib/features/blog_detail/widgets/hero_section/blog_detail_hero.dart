@@ -63,7 +63,6 @@ class BlogDetailHero extends StatelessWidget {
       post.imagePath,
       fit: BoxFit.cover,
       width: double.infinity,
-      height: double.infinity,
       errorBuilder: (context, error, stackTrace) {
         return Container(
           color: DColors.cardBackground,
@@ -73,7 +72,10 @@ class BlogDetailHero extends StatelessWidget {
               children: [
                 Icon(Icons.image_not_supported_outlined, size: 80, color: DColors.textSecondary),
                 SizedBox(height: 16),
-                Text('Image not available', style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary)),
+                Text(
+                  'Image not available',
+                  style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
+                ),
               ],
             ),
           ),
