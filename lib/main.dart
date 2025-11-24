@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/di/injection_container.dart';
 import 'package:portfolio/route/route_config.dart';
+import 'features/admin_section/auth/providers/admin_auth_provider.dart';
 import 'features/blog/providers/blog_provider.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
 
         // Project Provider
         ChangeNotifierProvider<ProjectProvider>(create: (_) => getIt<ProjectProvider>()),
+
+        /// ====================  Admin Provider ====================
+        ChangeNotifierProvider<AdminAuthProvider>(create: (_) => getIt<AdminAuthProvider>()),
       ],
       child: MaterialApp.router(
         title: 'Portfolio',

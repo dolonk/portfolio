@@ -1,3 +1,4 @@
+import '../features/admin_section/auth/login_page.dart';
 import '../features/blog_detail/view_screens/blog_detail_page.dart';
 import '../features/pricing/pricing_page.dart';
 import '../features/project_detail/project_detail_page.dart';
@@ -100,6 +101,20 @@ class RouteConfig {
         path: RouteNames.error,
         name: RouteNames.errorName,
         pageBuilder: (context, state) => NoTransitionPage(key: state.pageKey, child: const ErrorPage()),
+      ),
+
+      // ==================== ADMIN ROUTES ====================
+      // Admin Login
+      GoRoute(path: '/admin/login', name: 'adminLogin', builder: (context, state) => const AdminLoginPage()),
+
+      // Admin Dashboard (TODO: Will add in next step)
+      GoRoute(
+        path: '/admin/dashboard',
+        name: 'adminDashboard',
+        builder: (context, state) {
+          // TODO: Check authentication
+          return const Scaffold(body: Center(child: Text('Admin Dashboard - Coming Soon')));
+        },
       ),
     ],
 

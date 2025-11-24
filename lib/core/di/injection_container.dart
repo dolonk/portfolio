@@ -6,6 +6,7 @@ import '../../data_layer/domain/repositories/comment/comment_repository.dart';
 import '../../data_layer/domain/repositories/comment/comment_repository_impl.dart';
 import '../../data_layer/domain/repositories/portfolio/project_repository.dart';
 import '../../data_layer/domain/repositories/portfolio/project_repository_impl.dart';
+import '../../features/admin_section/auth/providers/admin_auth_provider.dart';
 import '../../features/blog/providers/blog_provider.dart';
 import '../../data_layer/domain/repositories/blog/blog_repository.dart';
 import '../../data_layer/domain/repositories/blog/blog_repository_impl.dart';
@@ -71,6 +72,13 @@ Future<void> initializeDependencies({bool useFirebase = false}) async {
   getIt.registerFactory<CommentProvider>(() => CommentProvider(repository: getIt<CommentRepository>()));
 
   getIt.registerFactory<ProjectProvider>(() => ProjectProvider(repository: getIt<ProjectRepository>()));
+
+  /// ====================  Admin Provider ====================
+  getIt.registerFactory<AdminAuthProvider>(
+    () => AdminAuthProvider(
+      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
+    ),
+  );
 
   print('✅ All Dependencies registered');
   print('🎉 Dependency Injection setup complete!\n');
