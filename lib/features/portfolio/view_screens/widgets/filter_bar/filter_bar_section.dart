@@ -1,6 +1,6 @@
 import 'widgets/filter_chip.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/utility/constants/colors.dart';
+import '../../../view_models/project_view_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 
 class FilterBarSection extends StatelessWidget {
@@ -12,11 +12,12 @@ class FilterBarSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
-    final filters = ['All', 'Mobile', 'Web', 'Desktop', 'UI/UX'];
+    final vm = ProjectViewModel(context);
+    final filters = ['All', ...vm.categories];
+    //final filters = ['All', 'Mobile', 'Web', 'Desktop', 'UI/UX'];
 
     return Container(
       width: double.infinity,
-      color: DColors.background,
       padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: Center(
         child: Wrap(

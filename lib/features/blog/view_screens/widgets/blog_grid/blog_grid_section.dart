@@ -57,29 +57,6 @@ class BlogGridSection extends StatelessWidget {
   }
 
   /// Build content based on state
-  /*Widget _buildContent(BuildContext context, BlogViewModel viewModel, DSizes s) {
-    // ==================== LOADING STATE (First time) ====================
-    if (viewModel.isLoading && viewModel.allPosts.isEmpty) {
-      return const BlogPage();
-    }
-
-    // ==================== ERROR STATE ====================
-    if (viewModel.hasError) {
-      return ErrorState(
-        message: viewModel.errorMessage ?? 'Failed to load posts',
-        onRetry: () => viewModel.fetchAllPosts(),
-      );
-    }
-
-    // ==================== EMPTY STATE ====================
-    if (viewModel.isEmpty) {
-      return const DataNotFoundState();
-    }
-
-    // ==================== SUCCESS STATE - Show Posts ====================
-    return _buildBlogGrid(context, viewModel, s);
-  }*/
-
   Widget _buildContent(BuildContext context, BlogViewModel viewModel, DSizes s) {
     return DStateBuilder<List<BlogPost>>(
       state: viewModel.postsState,

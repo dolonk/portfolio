@@ -1,40 +1,30 @@
 import 'widgets/project_card.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../../data_layer/domain/entities/portfolio/project.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class ProjectGridSection extends StatelessWidget {
-  final String selectedFilter;
-  final int displayedCount;
+  final List<Project> projects;
 
-  const ProjectGridSection({super.key, required this.selectedFilter, required this.displayedCount});
+  const ProjectGridSection({super.key, required this.projects});
 
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
-    final filteredProjects = _getFilteredProjects();
-    final visibleProjects = filteredProjects.take(displayedCount).toList();
 
     return SectionContainer(
       backgroundColor: DColors.secondaryBackground,
       padding: EdgeInsets.only(left: s.paddingMd, right: s.paddingMd, bottom: s.spaceBtwSections),
-      child: _buildProjectGrid(context, visibleProjects, s),
+      child: _buildProjectGrid(context, projects, s),
     );
   }
 
-  /// Filter projects based on the selected category
-  List<ProjectModel> _getFilteredProjects() {
-    final allProjects = ProjectModel.getAllProjects();
-    if (selectedFilter == 'All') return allProjects;
-    return allProjects.where((project) => project.category == selectedFilter).toList();
-  }
-
   /// Project Grid Layout with Staggered Animations
-  Widget _buildProjectGrid(BuildContext context, List<ProjectModel> projects, DSizes s) {
+  Widget _buildProjectGrid(BuildContext context, List<Project> projects, DSizes s) {
     final crossAxisCount = context.responsiveValue(mobile: 1, tablet: 2, desktop: 3);
     final spacing = s.spaceBtwItems;
 

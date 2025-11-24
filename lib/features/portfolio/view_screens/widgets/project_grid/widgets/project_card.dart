@@ -1,17 +1,16 @@
-import 'package:go_router/go_router.dart';
-import 'package:portfolio/common_function/widgets/custom_button.dart';
-
-import '../../../../../route/route_name.dart';
 import 'tech_badge.dart';
 import 'platform_badge.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../../route/route_name.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/common_function/widgets/custom_button.dart';
+import '../../../../../../data_layer/domain/entities/portfolio/project.dart';
 
 class ProjectCard extends StatefulWidget {
-  final ProjectModel project;
+  final Project project;
 
   const ProjectCard({super.key, required this.project});
 
@@ -169,7 +168,6 @@ class _ProjectCardState extends State<ProjectCard> {
         widget.project.imagePath,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          // Placeholder if image not found
           return Container(
             color: DColors.cardBackground,
             child: Center(child: Icon(Icons.image_rounded, size: 64, color: DColors.textSecondary)),

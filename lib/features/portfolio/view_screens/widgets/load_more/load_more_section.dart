@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
-import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import '../../../../../utility/responsive/responsive_helper.dart';
+import '../../../../../utility/responsive/section_container.dart';
 
 class LoadMoreSection extends StatelessWidget {
   final int displayedCount;

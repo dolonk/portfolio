@@ -1,151 +1,91 @@
-// import 'code_block.dart';
-// import 'callout_box.dart';
-// import 'package:flutter/material.dart';
-// import 'package:portfolio/utility/constants/colors.dart';
-// import 'package:portfolio/utility/default_sizes/font_size.dart';
-// import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+// class PortfolioPage extends StatefulWidget {
+//   const PortfolioPage({super.key});
 //
-// class ArticleContent extends StatelessWidget {
-//   final String content;
-//   final Map<int, GlobalKey> headingKeys; // ✅ Add this
+//   @override
+//   State<PortfolioPage> createState() => _PortfolioPageState();
+// }
 //
-//   const ArticleContent({
-//     super.key,
-//     required this.content,
-//     required this.headingKeys, // ✅ Add this
-//   });
+// class _PortfolioPageState extends State<PortfolioPage> {
+//   late final ProjectViewModel vm = ProjectViewModel(context);
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     final s = context.sizes;
-//     final fonts = context.fonts;
+//     final filterBar = FilterBarSection(
+//       selectedFilter: vm.selectedCategory ?? 'All',
+//       onFilterChanged: _handleFilterChange,
+//     );
 //
-//     final widgets = _parseContent(content, context, s, fonts);
+//     return BaseScreen(
+//       useCustomScrollView: true,
+//       backgroundColor: DColors.background,
+//       child: RefreshIndicator(
+//         onRefresh: () => vm.refresh(),
+//         child: CustomScrollView(
+//           slivers: [
+//             // Hero Section
+//             const SliverToBoxAdapter(child: PortfolioHeroSection()),
 //
-//     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
+//             // Filter Bar (Sticky)
+//             SliverPinnedHeader(child: filterBar),
+//
+//             // Project Grid with State Handling
+//             SliverToBoxAdapter(
+//               child: DStateBuilder<List<Project>>(
+//                 state: vm.projectsState,
+//                 onLoading: () => _buildLoadingState(),
+//                 onError: (msg) => _buildErrorState(msg),
+//                 onEmpty: () => _buildEmptyState(),
+//                 onSuccess: (projects) => ProjectGridSection(projects: vm.displayProjects),
+//               ),
+//             ),
+//
+//             // Load More Section
+//             SliverToBoxAdapter(child: _buildLoadMoreSection()),
+//
+//             // Footer
+//             const SliverToBoxAdapter(child: FooterSection()),
+//           ],
+//         ),
+//       ),
+//     );
 //   }
 //
-//   List<Widget> _parseContent(String content, BuildContext context, DSizes s, AppFonts fonts) {
-//     final List<Widget> widgets = [];
-//     final lines = content.split('\n');
-//     String codeBuffer = '';
-//     String codeLanguage = '';
-//     bool inCodeBlock = false;
-//     int headingIndex = 0; // ✅ Track heading index
+//   /// Handle filter change
+//   void _handleFilterChange(String filter) {
+//     if (filter == 'All') {
+//       vm.clearFilters();
+//     } else {
+//       vm.filterByCategory(filter);
+//     }
+//   }
 //
-//     for (var i = 0; i < lines.length; i++) {
-//       final line = lines[i];
-//
-//       // Code block start
-//       if (line.startsWith('```')) {
-//         if (!inCodeBlock) {
-//           inCodeBlock = true;
-//           codeLanguage = line.replaceAll('```', '').trim();
-//           if (codeLanguage.isEmpty) codeLanguage = 'dart';
-//           continue;
-//         } else {
-//           inCodeBlock = false;
-//           if (codeBuffer.isNotEmpty) {
-//             widgets.add(CodeBlock(code: codeBuffer.trim(), language: codeLanguage));
-//             codeBuffer = '';
-//           }
-//           continue;
-//         }
-//       }
-//
-//       if (inCodeBlock) {
-//         codeBuffer += line + '\n';
-//         continue;
-//       }
-//
-//       // ✅ H2 heading (with key for scrolling)
-//       if (line.startsWith('## ')) {
-//         final headingText = line.replaceAll('## ', '');
-//         final key = headingKeys[headingIndex];
-//
-//         widgets.add(
-//           Container(
-//             key: key, // ✅ Attach key to heading
-//             child: Text(
-//               headingText,
-//               style: fonts.headlineSmall.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
-//             ),
-//           ),
-//         );
-//
-//         headingIndex++;
-//         continue;
-//       }
-//
-//       // H3 heading
-//       if (line.startsWith('### ')) {
-//         widgets.add(SizedBox(height: s.spaceBtwItems));
-//         widgets.add(
-//           Text(
-//             line.replaceAll('### ', ''),
-//             style: fonts.titleLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
-//           ),
-//         );
-//         widgets.add(SizedBox(height: s.paddingSm));
-//         continue;
-//       }
-//
-//       // Callout boxes
-//       if (line.startsWith('💡 ')) {
-//         widgets.add(CalloutBox(text: line.replaceAll('💡 ', ''), type: CalloutType.tip));
-//         continue;
-//       }
-//       if (line.startsWith('⚠️ ')) {
-//         widgets.add(CalloutBox(text: line.replaceAll('⚠️ ', ''), type: CalloutType.warning));
-//         continue;
-//       }
-//       if (line.startsWith('📝 ')) {
-//         widgets.add(CalloutBox(text: line.replaceAll('📝 ', ''), type: CalloutType.note));
-//         continue;
-//       }
-//       if (line.startsWith('✅ ')) {
-//         widgets.add(CalloutBox(text: line.replaceAll('✅ ', ''), type: CalloutType.success));
-//         continue;
-//       }
-//
-//       // Bullet list
-//       if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
-//         widgets.add(
-//           Padding(
-//             padding: EdgeInsets.only(left: s.paddingMd, bottom: s.paddingSm),
-//             child: Row(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text('• ', style: fonts.bodyLarge.rubik(color: DColors.primaryButton)),
-//                 SizedBox(width: s.paddingSm),
-//                 Expanded(
-//                   child: Text(
-//                     line.replaceAll(RegExp(r'^[\s\-\*]+'), ''),
-//                     style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.7),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//         continue;
-//       }
-//
-//       // Empty line
-//       if (line.trim().isEmpty) {
-//         widgets.add(SizedBox(height: s.paddingSm));
-//         continue;
-//       }
-//
-//       // Regular paragraph
-//       widgets.add(
-//         Padding(
-//           padding: EdgeInsets.only(bottom: s.paddingMd),
-//           child: Text(line, style: fonts.bodyLarge.rubik(color: DColors.textSecondary, height: 1.7, fontSize: 16)),
-//         ),
-//       );
+//   /// Build Load More Section
+//   Widget _buildLoadMoreSection() {
+//     // Only show if there are more projects to load
+//     if (!vm.hasMore || vm.displayProjects.isEmpty) {
+//       return const SizedBox.shrink();
 //     }
 //
-//     return widgets;
+//     return LoadMoreSection(
+//       isLoading: vm.isLoading,
+//       displayedCount: vm.displayProjects.length,
+//       totalCount: vm.filteredProjectsCount,
+//       onLoadMore: () => vm.loadMore(),
+//     );
+//   }
+//
+//   /// Loading State
+//   Widget _buildLoadingState() {
+//     return const Padding(padding: EdgeInsets.all(60.0), child: Text("loading"));
+//   }
+//
+//   /// Error State
+//   Widget _buildErrorState(String message) {
+//     return Padding(padding: const EdgeInsets.all(60.0), child: Text("loading"));
+//   }
+//
+//   /// Empty State
+//   Widget _buildEmptyState() {
+//     return Padding(padding: const EdgeInsets.all(60.0), child: Text("loading"));
 //   }
 // }
