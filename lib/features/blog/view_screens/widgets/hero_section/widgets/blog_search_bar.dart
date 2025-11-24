@@ -109,7 +109,7 @@ class _BlogSearchBarState extends State<BlogSearchBar> {
     ).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideX(begin: 0.1, duration: 600.ms, delay: 400.ms);
   }
 
-  Widget _buildSearchButton(BuildContext context, DSizes s, AppFonts fonts, BlogViewModel viewModel) {
+  Widget _buildSearchButton(BuildContext context, DSizes s, DFontSizes fonts, BlogViewModel viewModel) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(

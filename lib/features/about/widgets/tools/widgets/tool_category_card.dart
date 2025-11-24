@@ -51,7 +51,7 @@ class ToolCategoryCard extends StatelessWidget {
   }
 
   /// Category Header
-  Widget _buildCategoryHeader(BuildContext context, DSizes s, AppFonts fonts) {
+  Widget _buildCategoryHeader(BuildContext context, DSizes s, DFontSizes fonts) {
     return Row(
       children: [
         // Category Icon

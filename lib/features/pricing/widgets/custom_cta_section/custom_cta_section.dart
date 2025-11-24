@@ -105,7 +105,7 @@ class _PriceCustomCtaSectionState extends State<PriceCustomCtaSection> {
   }
 
   /// Heading
-  Widget _buildHeading(AppFonts fonts, DSizes s) {
+  Widget _buildHeading(DFontSizes fonts, DSizes s) {
     return Text(
       'Need something different?',
       style: fonts.headlineLarge.rajdhani(
@@ -118,7 +118,7 @@ class _PriceCustomCtaSectionState extends State<PriceCustomCtaSection> {
   }
 
   /// Description
-  Widget _buildDescription(AppFonts fonts, DSizes s) {
+  Widget _buildDescription(DFontSizes fonts, DSizes s) {
     return Container(
       constraints: BoxConstraints(
         maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 600, desktop: 700),

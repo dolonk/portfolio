@@ -1,4 +1,4 @@
-import '../features/blog_detail/blog_detail_page.dart';
+import '../features/blog_detail/view_screens/blog_detail_page.dart';
 import '../features/pricing/pricing_page.dart';
 import '../features/project_detail/project_detail_page.dart';
 import 'error_page.dart';

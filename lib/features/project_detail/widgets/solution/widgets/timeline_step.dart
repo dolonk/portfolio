@@ -126,7 +126,7 @@ class TimelineStep extends StatelessWidget {
   }
 
   /// Key Points Highlights
-  Widget _buildHighlights(BuildContext context, DSizes s, AppFonts fonts) {
+  Widget _buildHighlights(BuildContext context, DSizes s, DFontSizes fonts) {
     return Container(
       padding: EdgeInsets.all(s.paddingLg),
       decoration: BoxDecoration(

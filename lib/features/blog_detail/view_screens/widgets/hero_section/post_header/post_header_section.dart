@@ -7,7 +7,7 @@ import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
-import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
+import '../../../../../../data_layer/domain/entities/blog/blog_post.dart';
 
 class PostHeaderSection extends StatelessWidget {
   final BlogPost post;

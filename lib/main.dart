@@ -6,6 +6,8 @@ import 'features/blog/providers/blog_provider.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
+import 'features/blog_detail/providers/comment_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Remove # Url
@@ -30,6 +32,9 @@ class MyApp extends StatelessWidget {
       providers: [
         // Blog Provider
         ChangeNotifierProvider<BlogProvider>(create: (_) => getIt<BlogProvider>()),
+
+        // Comment Provider
+        ChangeNotifierProvider<CommentProvider>(create: (_) => getIt<CommentProvider>()),
       ],
       child: MaterialApp.router(
         title: 'Portfolio',

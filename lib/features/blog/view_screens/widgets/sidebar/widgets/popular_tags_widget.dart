@@ -37,7 +37,7 @@ class PopularTagsWidget extends StatelessWidget {
   }
 
   /// Header with icon and title
-  Widget _buildHeader(BuildContext context, AppFonts fonts, DSizes s) {
+  Widget _buildHeader(BuildContext context, DFontSizes fonts, DSizes s) {
     return Row(
       children: [
         Icon(Icons.local_offer_rounded, color: DColors.primaryButton, size: 20),

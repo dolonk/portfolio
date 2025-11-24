@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/colors.dart';
 import '../responsive/responsive_helper.dart';
 
-class AppFonts {
-  factory AppFonts.of(BuildContext context) => AppFonts._fromContext(context);
+class DFontSizes {
+  factory DFontSizes.of(BuildContext context) => DFontSizes._fromContext(context);
 
   // ✅ Display font sizes (Hero section) - RAJDHANI
   final TextStyle displayLarge;
@@ -32,7 +32,7 @@ class AppFonts {
   final TextStyle labelSmall;
 
   // Private named constructor
-  AppFonts._internal({
+  DFontSizes._internal({
     required this.displayLarge,
     required this.displayMedium,
     required this.displaySmall,
@@ -51,7 +51,7 @@ class AppFonts {
   });
 
   // Build AppFonts instance dynamically based on context
-  factory AppFonts._fromContext(BuildContext context) {
+  factory DFontSizes._fromContext(BuildContext context) {
     final mobile = _MobileFonts();
     final tablet = _TabletFonts();
     final desktop = _DesktopFonts();
@@ -64,7 +64,7 @@ class AppFonts {
       return ResponsiveHelper.value(context, mobile: m(mobile), tablet: t(tablet), desktop: d(desktop));
     }
 
-    return AppFonts._internal(
+    return DFontSizes._internal(
       // Display fonts (RAJDHANI - Hero section)
       displayLarge: res((m) => m.displayLarge, (t) => t.displayLarge, (d) => d.displayLarge),
       displayMedium: res((m) => m.displayMedium, (t) => t.displayMedium, (d) => d.displayMedium),
@@ -353,7 +353,7 @@ class _DesktopFonts {
 
 /// ✅ Quick access extension
 extension AppFontsShorthand on BuildContext {
-  AppFonts get fonts => AppFonts.of(this);
+  DFontSizes get fonts => DFontSizes.of(this);
 }
 
 extension TextStyleCustom on TextStyle {

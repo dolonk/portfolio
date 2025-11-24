@@ -42,7 +42,7 @@ class PaymentTermsSection extends StatelessWidget {
   }
 
   /// Section Heading
-  Widget _buildSectionHeading(AppFonts fonts, DSizes s) {
+  Widget _buildSectionHeading(DFontSizes fonts, DSizes s) {
     return Column(
       children: [
         Text('How Payment Works', style: fonts.headlineLarge, textAlign: TextAlign.center),

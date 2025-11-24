@@ -35,7 +35,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
     );
   }
 
-  Widget _mainCard(BuildContext context, DSizes s, AppFonts fonts) {
+  Widget _mainCard(BuildContext context, DSizes s, DFontSizes fonts) {
     return AnimatedContainer(
           duration: 250.ms,
           curve: Curves.easeOut,
@@ -84,7 +84,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
   }
 
   // NUMBER BADGE
-  Widget _stepNumber(DSizes s, AppFonts fonts) {
+  Widget _stepNumber(DSizes s, DFontSizes fonts) {
     return AnimatedContainer(
       duration: 250.ms,
       width: context.responsiveValue(mobile: 48.0, tablet: 56.0, desktop: 64.0),

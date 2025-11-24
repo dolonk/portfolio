@@ -71,7 +71,7 @@ class PostMeta extends StatelessWidget {
 class _MetaItem extends StatelessWidget {
   final IconData icon;
   final String text;
-  final AppFonts fonts;
+  final DFontSizes fonts;
 
   const _MetaItem({required this.icon, required this.text, required this.fonts});
 

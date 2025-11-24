@@ -49,7 +49,7 @@ class PostMetaInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildMetaItem(BuildContext context, {required IconData icon, required String text, required AppFonts fonts}) {
+  Widget _buildMetaItem(BuildContext context, {required IconData icon, required String text, required DFontSizes fonts}) {
     final s = context.sizes;
 
     return Row(

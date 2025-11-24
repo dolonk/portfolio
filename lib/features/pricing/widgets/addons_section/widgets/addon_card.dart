@@ -110,7 +110,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// Header with Emoji Icon
-  Widget _buildHeader(AppFonts fonts, DSizes s) {
+  Widget _buildHeader(DFontSizes fonts, DSizes s) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(context.responsiveValue(mobile: s.paddingLg, desktop: s.paddingXl)),
@@ -135,7 +135,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// Service Name + Description
-  Widget _buildServiceName(AppFonts fonts, DSizes s) {
+  Widget _buildServiceName(DFontSizes fonts, DSizes s) {
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -159,7 +159,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// Price Range
-  Widget _buildPriceRange(AppFonts fonts, DSizes s) {
+  Widget _buildPriceRange(DFontSizes fonts, DSizes s) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
       decoration: BoxDecoration(
@@ -182,7 +182,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// Features Toggle Button
-  Widget _buildFeaturesToggle(AppFonts fonts, DSizes s) {
+  Widget _buildFeaturesToggle(DFontSizes fonts, DSizes s) {
     return InkWell(
       onTap: () => setState(() => _isFeaturesExpanded = !_isFeaturesExpanded),
       borderRadius: BorderRadius.circular(s.borderRadiusMd),
@@ -216,7 +216,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// Features List
-  Widget _buildFeaturesList(AppFonts fonts, DSizes s) {
+  Widget _buildFeaturesList(DFontSizes fonts, DSizes s) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.addon.features.map((feature) {
@@ -244,7 +244,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// CTA Button
-  Widget _buildCTAButton(AppFonts fonts, DSizes s) {
+  Widget _buildCTAButton(DFontSizes fonts, DSizes s) {
     return CustomButton(
       width: double.infinity,
       height: 48,
@@ -254,7 +254,7 @@ class _AddonCardState extends State<AddonCard> {
   }
 
   /// Popular Badge
-  Widget _buildPopularBadge(AppFonts fonts, DSizes s) {
+  Widget _buildPopularBadge(DFontSizes fonts, DSizes s) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm / 2),
       decoration: BoxDecoration(

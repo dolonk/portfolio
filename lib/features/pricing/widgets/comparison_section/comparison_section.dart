@@ -99,7 +99,7 @@ class _ComparisonSectionState extends State<ComparisonSection> {
   }
 
   /// Section Heading
-  Widget _buildSectionHeading(AppFonts fonts, DSizes s) {
+  Widget _buildSectionHeading(DFontSizes fonts, DSizes s) {
     return Column(
       children: [
         Text(
@@ -126,7 +126,7 @@ class _ComparisonSectionState extends State<ComparisonSection> {
   }
 
   /// Expand/Collapse All Button
-  Widget _buildExpandCollapseButton(AppFonts fonts, DSizes s) {
+  Widget _buildExpandCollapseButton(DFontSizes fonts, DSizes s) {
     final allExpanded =
         _expandedCategories.values.where((v) => v).length == ComparisonCategory.getAllCategories().length;
 

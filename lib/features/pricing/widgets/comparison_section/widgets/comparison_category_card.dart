@@ -63,7 +63,7 @@ class _ComparisonCategoryCardState extends State<ComparisonCategoryCard> {
   }
 
   /// Category Header
-  Widget _buildHeader(AppFonts fonts, DSizes s) {
+  Widget _buildHeader(DFontSizes fonts, DSizes s) {
     return InkWell(
       onTap: widget.onToggle,
       borderRadius: BorderRadius.circular(s.borderRadiusLg),

@@ -46,7 +46,7 @@ class PaymentPoliciesCard extends StatelessWidget {
     ).animate().fadeIn(duration: 600.ms, delay: 800.ms).slideY(begin: 0.2, duration: 600.ms, delay: 800.ms);
   }
 
-  Widget _buildPoliciesGrid(BuildContext context, List<PaymentPolicy> policies, AppFonts fonts, DSizes s) {
+  Widget _buildPoliciesGrid(BuildContext context, List<PaymentPolicy> policies, DFontSizes fonts, DSizes s) {
     final crossAxisCount = context.responsiveValue(mobile: 1, tablet: 2, desktop: 2);
     final spacing = s.paddingMd;
 

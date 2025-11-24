@@ -58,7 +58,7 @@ class PricingHeroSection extends StatelessWidget {
     ).animate().scaleX(begin: 0, duration: 800.ms, delay: 400.ms, curve: Curves.easeOut);
   }
 
-  Widget _buildHeading(BuildContext context, AppFonts fonts, DSizes s) {
+  Widget _buildHeading(BuildContext context, DFontSizes fonts, DSizes s) {
     return _buildAnimatedText(
       text: 'Transparent Pricing Plans',
       style: fonts.displayLarge.rajdhani(
@@ -69,7 +69,7 @@ class PricingHeroSection extends StatelessWidget {
     );
   }
 
-  Widget _buildSubheading(BuildContext context, AppFonts fonts, DSizes s) {
+  Widget _buildSubheading(BuildContext context, DFontSizes fonts, DSizes s) {
     return _buildAnimatedText(
       text: 'Investment in quality, delivered with care',
       style: fonts.titleLarge.rubik(
@@ -80,7 +80,7 @@ class PricingHeroSection extends StatelessWidget {
     );
   }
 
-  Widget _buildDescription(BuildContext context, AppFonts fonts, DSizes s) {
+  Widget _buildDescription(BuildContext context, DFontSizes fonts, DSizes s) {
     return _buildAnimatedText(
       text:
           'Choose the perfect package for your project needs.\nNo hidden fees, transparent pricing, flexible terms.',

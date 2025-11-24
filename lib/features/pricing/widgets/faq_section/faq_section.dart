@@ -103,7 +103,7 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
   }
 
   /// Section Heading
-  Widget _buildSectionHeading(AppFonts fonts, DSizes s) {
+  Widget _buildSectionHeading(DFontSizes fonts, DSizes s) {
     return Column(
       children: [
         Text('Common Questions About Pricing', style: fonts.headlineLarge, textAlign: TextAlign.center),
@@ -140,7 +140,7 @@ class _PriceFaqSectionState extends State<PriceFaqSection> {
   }
 
   /// No Results Message
-  Widget _buildNoResults(AppFonts fonts, DSizes s) {
+  Widget _buildNoResults(DFontSizes fonts, DSizes s) {
     return Container(
       padding: EdgeInsets.all(s.paddingXl * 2),
       child: Column(

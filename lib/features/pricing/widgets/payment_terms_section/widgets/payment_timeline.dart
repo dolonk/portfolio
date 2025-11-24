@@ -204,7 +204,7 @@ class PaymentTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildDueDate(PaymentMilestone milestone, AppFonts fonts) {
+  Widget _buildDueDate(PaymentMilestone milestone, DFontSizes fonts) {
     return Row(
       children: [
         Icon(Icons.calendar_today_rounded, color: DColors.textSecondary, size: 14),
@@ -216,7 +216,7 @@ class PaymentTimeline extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildDeliverables(PaymentMilestone milestone, AppFonts fonts, DSizes s) {
+  List<Widget> _buildDeliverables(PaymentMilestone milestone, DFontSizes fonts, DSizes s) {
     return milestone.deliverables.map((deliverable) {
       return Padding(
         padding: EdgeInsets.only(bottom: s.paddingSm / 2),

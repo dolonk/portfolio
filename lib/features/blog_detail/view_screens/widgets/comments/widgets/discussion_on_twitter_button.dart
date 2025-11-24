@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../../../utility/constants/colors.dart';
-import '../../../../../utility/default_sizes/font_size.dart';
+import '../../../../../../utility/constants/colors.dart';
+import '../../../../../../utility/default_sizes/font_size.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../../utility/default_sizes/default_sizes.dart';
-import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
-import '../../../../../utility/url_launcher_service/url_launcher_service.dart';
+import '../../../../../../utility/default_sizes/default_sizes.dart';
+import '../../../../../../data_layer/domain/entities/blog/blog_post.dart';
+import '../../../../../../utility/url_launcher_service/url_launcher_service.dart';
 
 class DiscussOnTwitterButton extends StatefulWidget {
   final BlogPost post;

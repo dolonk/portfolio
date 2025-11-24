@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../route/route_name.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../route/route_name.dart';
 import 'category_badge/category_badge.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/constants/colors.dart';
@@ -8,7 +8,7 @@ import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/data_layer/domain/entities/blog/blog_post.dart';
-import 'package:portfolio/features/blog_detail/widgets/hero_section/post_header/post_header_section.dart';
+import 'package:portfolio/features/blog_detail/view_screens/widgets/hero_section/post_header/post_header_section.dart';
 
 class BlogDetailHero extends StatelessWidget {
   final BlogPost post;
@@ -72,10 +72,7 @@ class BlogDetailHero extends StatelessWidget {
               children: [
                 Icon(Icons.image_not_supported_outlined, size: 80, color: DColors.textSecondary),
                 SizedBox(height: 16),
-                Text(
-                  'Image not available',
-                  style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
-                ),
+                Text('Image not available', style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary)),
               ],
             ),
           ),

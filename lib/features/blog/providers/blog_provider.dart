@@ -191,7 +191,6 @@ class BlogProvider with ChangeNotifier {
       },
       (post) {
         _detailState = DataState.success(post);
-        // Increment view count (fire and forget)
         repository.incrementViewCount(id);
         debugPrint('✅ Fetched post: ${post.title}');
       },

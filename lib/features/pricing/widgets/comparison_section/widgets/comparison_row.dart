@@ -57,7 +57,7 @@ class ComparisonRow extends StatelessWidget {
     );
   }
 
-  Widget _buildValue(String value, bool isIncluded, AppFonts fonts, DSizes s, {bool isHighlighted = false}) {
+  Widget _buildValue(String value, bool isIncluded, DFontSizes fonts, DSizes s, {bool isHighlighted = false}) {
     return Center(
       child: Text(
         value,

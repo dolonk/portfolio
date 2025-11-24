@@ -135,7 +135,7 @@ class DSectionHeader extends StatelessWidget {
   }
 
   /// Build title with optional gradient effect
-  Widget _buildTitle(BuildContext context, AppFonts fonts) {
+  Widget _buildTitle(BuildContext context, DFontSizes fonts) {
     final defaultStyle = titleStyle ?? fonts.displaySmall;
 
     final titleWidget = Text(
@@ -176,7 +176,7 @@ class DSectionHeader extends StatelessWidget {
   }
 
   /// Build subtitle text
-  Widget _buildSubtitle(BuildContext context, AppFonts fonts, DSizes s) {
+  Widget _buildSubtitle(BuildContext context, DFontSizes fonts, DSizes s) {
     Widget subtitleWidget = Text(
       subtitle!,
       style: subtitleStyle ?? fonts.bodyMedium.rubik(color: subtitleColor ?? DColors.textSecondary, height: 1.6),

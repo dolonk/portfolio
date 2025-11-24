@@ -1,16 +1,25 @@
-import 'package:flutter/material.dart';
-import '../../../../../utility/constants/colors.dart';
-import '../../../../../data_layer/model/blog/comment_model.dart';
-import '../../../../../utility/default_sizes/default_sizes.dart';
-import '../../../../../utility/default_sizes/font_size.dart';
 import 'link_button.dart';
+import 'package:flutter/material.dart';
+import '../../../../../../utility/constants/colors.dart';
+import '../../../../../../utility/default_sizes/font_size.dart';
+import '../../../../../../utility/default_sizes/default_sizes.dart';
+import '../../../../../../data_layer/domain/entities/blog/comment.dart';
 
 class CommentCard extends StatelessWidget {
-  final CommentModel comment;
+  final Comment comment;
   final VoidCallback onLike;
   final Function(String) onReplyLike;
+  final bool isLiked;
+  final bool Function(String) isReplyLiked;
 
-  const CommentCard({super.key, required this.comment, required this.onLike, required this.onReplyLike});
+  const CommentCard({
+    super.key,
+    required this.comment,
+    required this.onLike,
+    required this.onReplyLike,
+    this.isLiked = false,
+    required this.isReplyLiked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +36,11 @@ class CommentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Comment Header
           _buildCommentHeader(context, s),
           SizedBox(height: s.paddingSm),
-
-          // Comment Content
           _buildCommentContent(context, s),
           SizedBox(height: s.paddingMd),
-
-          // Comment Actions
           _buildCommentActions(context, s),
-
-          // Replies
           if (comment.replies.isNotEmpty) ...[SizedBox(height: s.paddingMd), _buildReplies(context, s)],
         ],
       ),
@@ -63,9 +65,25 @@ class CommentCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                comment.authorName,
-                style: fonts.bodyMedium.rubik(fontWeight: FontWeight.bold, color: DColors.textPrimary),
+              Row(
+                children: [
+                  Text(
+                    comment.authorName,
+                    style: fonts.bodyMedium.rubik(fontWeight: FontWeight.bold, color: DColors.textPrimary),
+                  ),
+                  // Author badge
+                  if (comment.isAuthorReply) ...[
+                    SizedBox(width: s.paddingSm * 0.5),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: s.paddingSm * 0.5, vertical: 2),
+                      decoration: BoxDecoration(color: DColors.primaryButton, borderRadius: BorderRadius.circular(4)),
+                      child: Text(
+                        'Author',
+                        style: fonts.labelSmall.rubik(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ],
               ),
               Text(
                 _formatTimestamp(comment.timestamp),
@@ -90,18 +108,20 @@ class CommentCard extends StatelessWidget {
     return Row(
       children: [
         // Like Button
-        LikeButton(likes: comment.likes, onTap: onLike),
+        LikeButton(likes: comment.likes, onTap: onLike, isLiked: isLiked),
         SizedBox(width: s.paddingMd),
 
-        // Reply Button (placeholder)
+        // Reply Button
         Icon(Icons.reply_rounded, color: DColors.textSecondary, size: 18),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Text('Reply', style: fonts.labelSmall.rubik(color: DColors.textSecondary)),
       ],
     );
   }
 
   Widget _buildReplies(BuildContext context, DSizes s) {
+    final fonts = context.fonts;
+
     return Container(
       margin: EdgeInsets.only(left: s.paddingLg),
       padding: EdgeInsets.only(left: s.paddingMd),
@@ -128,16 +148,35 @@ class CommentCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            reply.authorName,
-                            style: context.fonts.bodySmall.rubik(
-                              fontWeight: FontWeight.bold,
-                              color: DColors.textPrimary,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                reply.authorName,
+                                style: fonts.bodySmall.rubik(fontWeight: FontWeight.bold, color: DColors.textPrimary),
+                              ),
+                              if (reply.isAuthorReply) ...[
+                                SizedBox(width: s.paddingSm * 0.5),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: s.paddingSm * 0.5, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: DColors.primaryButton,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    'Author',
+                                    style: fonts.labelSmall.rubik(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                           Text(
                             _formatTimestamp(reply.timestamp),
-                            style: context.fonts.labelSmall.rubik(color: DColors.textSecondary, fontSize: 10),
+                            style: fonts.labelSmall.rubik(color: DColors.textSecondary, fontSize: 10),
                           ),
                         ],
                       ),
@@ -147,14 +186,16 @@ class CommentCard extends StatelessWidget {
                 SizedBox(height: s.paddingSm),
 
                 // Reply Content
-                Text(
-                  reply.content,
-                  style: context.fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.6),
-                ),
+                Text(reply.content, style: fonts.bodySmall.rubik(color: DColors.textSecondary, height: 1.5)),
                 SizedBox(height: s.paddingSm),
 
                 // Reply Actions
-                LikeButton(likes: reply.likes, onTap: () => onReplyLike(reply.id)),
+                LikeButton(
+                  likes: reply.likes,
+                  onTap: () => onReplyLike(reply.id),
+                  isLiked: isReplyLiked(reply.id),
+                  small: true,
+                ),
               ],
             ),
           );
@@ -167,7 +208,9 @@ class CommentCard extends StatelessWidget {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
-    if (difference.inDays > 0) {
+    if (difference.inDays > 7) {
+      return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
+    } else if (difference.inDays > 0) {
       return '${difference.inDays}d ago';
     } else if (difference.inHours > 0) {
       return '${difference.inHours}h ago';

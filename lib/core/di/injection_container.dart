@@ -1,11 +1,16 @@
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../data_layer/data_sources/remote/comment/comment_remote_datasource.dart';
+import '../../data_layer/domain/repositories/comment/comment_repository.dart';
+import '../../data_layer/domain/repositories/comment/comment_repository_impl.dart';
 import '../../features/blog/providers/blog_provider.dart';
 import '../../data_layer/domain/repositories/blog/blog_repository.dart';
 import '../../data_layer/domain/repositories/blog/blog_repository_impl.dart';
 import '../../data_layer/data_sources/remote/blog/blog_remote_datasource.dart';
+import '../../features/blog_detail/providers/comment_provider.dart';
 
 final getIt = GetIt.instance;
+
 Future<void> initializeDependencies({bool useFirebase = false}) async {
   print('🚀 Initializing Dependencies...');
   print('📱 Firebase Mode: ${useFirebase ? "ENABLED ✅" : "DISABLED ❌ (Static Data)"}');
@@ -13,7 +18,6 @@ Future<void> initializeDependencies({bool useFirebase = false}) async {
   // ==================== EXTERNAL DEPENDENCIES ====================
   if (useFirebase) {
     try {
-      // Firebase Firestore instance
       final firestore = FirebaseFirestore.instance;
       getIt.registerLazySingleton<FirebaseFirestore>(() => firestore);
       print('✅ Firebase Firestore registered');
@@ -25,9 +29,15 @@ Future<void> initializeDependencies({bool useFirebase = false}) async {
     print('⚠️ Firebase not initialized - Using static data');
   }
 
-  // ==================== DATA SOURCES ====================
+  // ====================  DATA SOURCES ====================
   getIt.registerLazySingleton<BlogRemoteDataSource>(
     () => BlogRemoteDataSourceImpl(
+      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
+    ),
+  );
+
+  getIt.registerLazySingleton<CommentRemoteDataSource>(
+    () => CommentRemoteDataSourceImpl(
       firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
     ),
   );
@@ -37,10 +47,16 @@ Future<void> initializeDependencies({bool useFirebase = false}) async {
     () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useFirebase: useFirebase),
   );
 
-  // ==================== PROVIDERS (State Management) ====================
+  getIt.registerLazySingleton<CommentRepository>(
+    () => CommentRepositoryImpl(remoteDataSource: getIt<CommentRemoteDataSource>(), useFirebase: useFirebase),
+  );
+
+  // ==================== PROVIDERS ====================
   getIt.registerFactory<BlogProvider>(() => BlogProvider(repository: getIt<BlogRepository>()));
 
-  print('✅ All Providers registered');
+  getIt.registerFactory<CommentProvider>(() => CommentProvider(repository: getIt<CommentRepository>()));
+
+  print('✅ All Dependencies registered');
   print('🎉 Dependency Injection setup complete!\n');
 }
 

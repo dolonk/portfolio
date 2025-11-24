@@ -50,7 +50,7 @@ class PaymentMethodsCard extends StatelessWidget {
     ).animate().fadeIn(duration: 600.ms, delay: 600.ms).slideY(begin: 0.2, duration: 600.ms, delay: 600.ms);
   }
 
-  Widget _buildMethodsGrid(List<PaymentMethod> methods, AppFonts fonts, DSizes s) {
+  Widget _buildMethodsGrid(List<PaymentMethod> methods, DFontSizes fonts, DSizes s) {
     return Wrap(
       spacing: s.paddingMd,
       runSpacing: s.paddingMd,

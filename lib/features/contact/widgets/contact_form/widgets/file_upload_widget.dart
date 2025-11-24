@@ -106,7 +106,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
     );
   }
 
-  Widget _buildUploadPrompt(AppFonts fonts, DSizes s) {
+  Widget _buildUploadPrompt(DFontSizes fonts, DSizes s) {
     return Column(
       children: [
         Icon(Icons.cloud_upload_outlined, size: 40, color: DColors.primaryButton.withAlpha((255 * 0.5).round())),
@@ -120,7 +120,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
     );
   }
 
-  Widget _buildFileInfo(AppFonts fonts, DSizes s) {
+  Widget _buildFileInfo(DFontSizes fonts, DSizes s) {
     return Row(
       children: [
         Container(

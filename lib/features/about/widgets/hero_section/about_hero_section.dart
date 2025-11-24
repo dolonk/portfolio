@@ -79,7 +79,7 @@ class AboutHeroSection extends StatelessWidget {
         decoration: BoxDecoration(shape: BoxShape.circle, color: DColors.background),
         child: ClipOval(
           child: Image.asset(
-            'assets/home/hero_section/dk.png',
+            'assets/home/hero_section/dolon.png',
             width: photoSize,
             height: photoSize,
             errorBuilder: (context, error, stackTrace) => Container(

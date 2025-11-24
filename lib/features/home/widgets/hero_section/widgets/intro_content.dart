@@ -44,7 +44,7 @@ class IntroContent extends StatelessWidget {
   }
 
   /// Name with typewriter animation
-  Widget _buildNameWithAnimation(BuildContext context, AppFonts fonts) {
+  Widget _buildNameWithAnimation(BuildContext context, DFontSizes fonts) {
     return Column(
       crossAxisAlignment: context.isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
       children: [
@@ -76,7 +76,7 @@ class IntroContent extends StatelessWidget {
   }
 
   /// Description with proper constraints
-  Widget _buildDescription(BuildContext context, AppFonts fonts) {
+  Widget _buildDescription(BuildContext context, DFontSizes fonts) {
     const description =
         'Crafting sleek, high-performance apps with clean code and seamless user '
         'experiences. Explore my portfolio to see how I bring ideas to life through '

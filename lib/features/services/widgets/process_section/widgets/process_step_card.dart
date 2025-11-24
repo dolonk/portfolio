@@ -77,7 +77,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
   }
 
   /// Step Number Badge (Circular with gradient)
-  Widget _buildStepBadge(DSizes s, AppFonts fonts) {
+  Widget _buildStepBadge(DSizes s, DFontSizes fonts) {
     return Container(
       width: 50,
       height: 50,
@@ -117,7 +117,7 @@ class _ProcessStepCardState extends State<ProcessStepCard> {
   }
 
   /// Client Receives Item (with checkmark)
-  Widget _buildReceiveItem(String text, DSizes s, AppFonts fonts) {
+  Widget _buildReceiveItem(String text, DSizes s, DFontSizes fonts) {
     return Padding(
       padding: EdgeInsets.only(bottom: s.paddingSm),
       child: Row(

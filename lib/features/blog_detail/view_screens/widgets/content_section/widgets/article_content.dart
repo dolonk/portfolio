@@ -22,7 +22,7 @@ class ArticleContent extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
   }
 
-  List<Widget> _parseContent(String content, BuildContext context, DSizes s, AppFonts fonts) {
+  List<Widget> _parseContent(String content, BuildContext context, DSizes s, DFontSizes fonts) {
     final List<Widget> widgets = [];
     final lines = content.split('\n');
     String codeBuffer = '';
