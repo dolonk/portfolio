@@ -52,7 +52,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   }
 
   @override
-  Future<Either<Failure, List<Project>>> getRecentProjects({int limit = 6}) async {
+  Future<Either<Failure, List<Project>>> getRecentProjects({int limit = 3}) async {
     try {
       if (useFirebase) {
         final projects = await remoteDataSource.getRecentProjects(limit: limit);

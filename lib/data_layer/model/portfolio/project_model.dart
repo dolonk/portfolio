@@ -433,13 +433,48 @@ class ProjectModel extends Project {
         platforms: ['iOS', 'Android'],
         techStack: ['Flutter', 'Firebase', 'Stripe', 'BLoC'],
         category: 'Mobile',
-        projectUrl: 'https://example.com',
+        clientName: 'ShopEase Inc.',
+        launchDate: 'March 2024',
         description:
-            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback.',
-        createdAt: DateTime(2024, 6, 15),
-        updatedAt: DateTime(2024, 8, 20),
-        isFeatured: true,
-        viewCount: 245,
+            'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
+        challenge:
+            'The client needed a scalable e-commerce solution that could handle high traffic during sales events while maintaining fast performance. Key challenges included implementing secure payment processing, managing complex product catalogs with variants, and ensuring smooth user experience across different device sizes and network conditions.',
+        requirements:
+            'The client required a scalable architecture that could handle concurrent users, secure payment processing with PCI compliance, real-time inventory synchronization across platforms, and seamless user experience with fast load times even on slower networks.',
+        constraints:
+            'Key constraints included a tight 12-week timeline for MVP delivery, limited backend infrastructure budget requiring cost-effective solutions, need for cross-platform consistency while maintaining native performance, and integration with existing legacy systems without disrupting current operations.',
+        solution:
+            'We implemented a clean MVVM architecture with BLoC for state management, ensuring separation of concerns and testability. Firebase was chosen for backend services due to its real-time capabilities and scalability. Stripe integration provided secure payment processing with support for multiple payment methods. The app uses efficient caching strategies and image optimization to maintain performance even on slower networks.',
+        keyFeatures: [
+          'User authentication with email/social login',
+          'Product browsing with advanced filters',
+          'Shopping cart with real-time updates',
+          'Secure payment processing via Stripe',
+          'Order tracking and history',
+          'Push notifications for offers',
+          'Wishlist and favorites',
+          'Multi-language support',
+        ],
+        results: {
+          'Downloads': '50,000+',
+          'App Store Rating': '4.8/5.0',
+          'Play Store Rating': '4.7/5.0',
+          'Average Session Time': '8.5 (m)',
+        },
+        clientTestimonial:
+            'The team delivered an exceptional product that exceeded our expectations. The app performance is outstanding, and our customers love the user experience.',
+        galleryImages: [
+          'assets/home/projects/project_2.png',
+          'assets/home/projects/project_3.png',
+          'assets/home/projects/project_4.png',
+          'assets/home/projects/project_5.png',
+        ],
+        demoVideoUrl: 'https://www.youtube.com/watch?v=kPa7bsKwL-c&list=RDkPa7bsKwL-c&start_radio=1',
+        appStoreUrl: 'https://translate.google.com.bd/?hl=bn&sl=auto&tl=bn&op=translate',
+        playStoreUrl: 'https://translate.google.com.bd/?hl=bn&sl=auto&tl=bn&op=translate',
+        githubUrl: "https://github.com/dolonk/grozziie_desktop",
+        createdAt: DateTime(2024, 5, 10),
+        updatedAt: DateTime(2024, 7, 15),
       ),
 
       // Portfolio Website
@@ -568,59 +603,5 @@ class ProjectModel extends Project {
     final list = techStacks.toList();
     list.sort();
     return list;
-  }
-
-
-  static ProjectModel getSampleProject(String projectId) {
-    return ProjectModel(
-      id: 'ecommerce-app',
-      title: 'ShopEase - E-Commerce App',
-      tagline: 'Full-featured shopping app with payment integration',
-      imagePath: 'assets/home/projects/project_1.png',
-      platforms: ['iOS', 'Android'],
-      techStack: ['Flutter', 'Firebase', 'Stripe', 'BLoC'],
-      category: 'Mobile',
-      clientName: 'ShopEase Inc.',
-      launchDate: 'March 2024',
-      description:
-      'ShopEase is a modern e-commerce mobile application designed to provide seamless shopping experience across iOS and Android platforms. Built with Flutter for cross-platform consistency, the app integrates payment processing, real-time inventory management, and personalized recommendations.\n\nThe project was developed over 12 weeks following Agile methodology, with weekly sprints and continuous client feedback. The app successfully launched on both App Store and Play Store, receiving positive reviews for its intuitive UI and smooth performance.',
-      challenge:
-      'The client needed a scalable e-commerce solution that could handle high traffic during sales events while maintaining fast performance. Key challenges included implementing secure payment processing, managing complex product catalogs with variants, and ensuring smooth user experience across different device sizes and network conditions.',
-      requirements:
-      'The client required a scalable architecture that could handle concurrent users, secure payment processing with PCI compliance, real-time inventory synchronization across platforms, and seamless user experience with fast load times even on slower networks.',
-      constraints:
-      'Key constraints included a tight 12-week timeline for MVP delivery, limited backend infrastructure budget requiring cost-effective solutions, need for cross-platform consistency while maintaining native performance, and integration with existing legacy systems without disrupting current operations.',
-      solution:
-      'We implemented a clean MVVM architecture with BLoC for state management, ensuring separation of concerns and testability. Firebase was chosen for backend services due to its real-time capabilities and scalability. Stripe integration provided secure payment processing with support for multiple payment methods. The app uses efficient caching strategies and image optimization to maintain performance even on slower networks.',
-      keyFeatures: [
-        'User authentication with email/social login',
-        'Product browsing with advanced filters',
-        'Shopping cart with real-time updates',
-        'Secure payment processing via Stripe',
-        'Order tracking and history',
-        'Push notifications for offers',
-        'Wishlist and favorites',
-        'Multi-language support',
-      ],
-      results: {
-        'Downloads': '50,000+',
-        'App Store Rating': '4.8/5.0',
-        'Play Store Rating': '4.7/5.0',
-        'Average Session Time': '8.5 (m)',
-      },
-      clientTestimonial:
-      'The team delivered an exceptional product that exceeded our expectations. The app performance is outstanding, and our customers love the user experience.',
-      galleryImages: [
-        'assets/home/projects/project_2.png',
-        'assets/home/projects/project_3.png',
-        'assets/home/projects/project_4.png',
-        'assets/home/projects/project_5.png',
-      ],
-      demoVideoUrl: 'https://www.youtube.com/watch?v=kPa7bsKwL-c&list=RDkPa7bsKwL-c&start_radio=1',
-      appStoreUrl: 'https://translate.google.com.bd/?hl=bn&sl=auto&tl=bn&op=translate',
-      playStoreUrl: 'https://translate.google.com.bd/?hl=bn&sl=auto&tl=bn&op=translate',
-      githubUrl: "https://github.com/dolonk/grozziie_desktop", createdAt: DateTime(2024, 5, 10),
-      updatedAt: DateTime(2024, 7, 15),
-    );
   }
 }

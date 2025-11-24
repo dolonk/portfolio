@@ -2,16 +2,17 @@ import 'widgets/project_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio/route/route_name.dart';
-import '../../../../common_function/widgets/custom_button.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
+import '../../../../common_function/widgets/custom_button.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../data_layer/domain/entities/portfolio/project.dart';
 import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
 
 class RelatedProjectsSection extends StatelessWidget {
-  final ProjectModel project;
+  final Project project;
 
   const RelatedProjectsSection({super.key, required this.project});
 
@@ -50,7 +51,10 @@ class RelatedProjectsSection extends StatelessWidget {
       children: [
         Text('Related Projects', style: fonts.displaySmall),
         SizedBox(height: s.paddingSm),
-        Text('More projects you might be interested in', style: fonts.bodyLarge.rubik(color: DColors.textSecondary)),
+        Text(
+          'More projects you might be interested in',
+          style: fonts.bodyLarge.rubik(color: DColors.textSecondary),
+        ),
       ],
     );
   }
@@ -102,7 +106,9 @@ class RelatedProjectsSection extends StatelessWidget {
     final allProjects = ProjectModel.getAllProjects();
 
     // Filter by same category, exclude current project
-    final relatedProjects = allProjects.where((p) => p.category == project.category && p.id != project.id).toList();
+    final relatedProjects = allProjects
+        .where((p) => p.category == project.category && p.id != project.id)
+        .toList();
 
     // Return max 3 projects
     return relatedProjects.take(3).toList();

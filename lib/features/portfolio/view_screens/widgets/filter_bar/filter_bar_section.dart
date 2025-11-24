@@ -13,8 +13,8 @@ class FilterBarSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.sizes;
     final vm = ProjectViewModel(context);
-    final filters = ['All', ...vm.categories];
-    //final filters = ['All', 'Mobile', 'Web', 'Desktop', 'UI/UX'];
+    //final filters = ['All', ...vm.categories];
+    final filters = ['All', 'Mobile', 'Web', 'Desktop', 'UI/UX'];
 
     return Container(
       width: double.infinity,

@@ -43,7 +43,7 @@ class _LinkButtonState extends State<LinkButton> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
           transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
-          padding: EdgeInsets.all(s.paddingXl),
+          padding: EdgeInsets.all(s.paddingMd),
           decoration: BoxDecoration(
             color: DColors.cardBackground,
             borderRadius: BorderRadius.circular(16),

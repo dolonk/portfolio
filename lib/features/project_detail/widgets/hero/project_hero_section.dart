@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portfolio/data_layer/domain/entities/portfolio/project.dart';
 import '../../../../data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/route/route_name.dart';
 import 'package:portfolio/utility/constants/colors.dart';
@@ -8,7 +9,7 @@ import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 
 class ProjectHeroSection extends StatelessWidget {
-  final ProjectModel project;
+  final Project project;
 
   const ProjectHeroSection({super.key, required this.project});
 

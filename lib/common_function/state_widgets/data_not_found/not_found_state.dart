@@ -31,17 +31,6 @@ class DataNotFoundState extends StatelessWidget {
               style: fonts.bodyMedium.rubik(color: DColors.textSecondary),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: s.spaceBtwItems),
-            ElevatedButton.icon(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back_rounded),
-              label: const Text('Back to Blog'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: DColors.primaryButton,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: s.paddingLg, vertical: s.paddingMd),
-              ),
-            ),
           ],
         ),
       ),

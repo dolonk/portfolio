@@ -45,13 +45,6 @@ class ErrorState extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: s.paddingLg, vertical: s.paddingMd),
               ),
             ),
-            SizedBox(height: s.paddingMd),
-            TextButton.icon(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back_rounded, size: 18),
-              label: const Text('Go Back'),
-              style: TextButton.styleFrom(foregroundColor: DColors.textSecondary),
-            ),
           ],
         ),
       ),

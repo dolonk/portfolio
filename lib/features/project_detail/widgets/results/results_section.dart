@@ -2,14 +2,14 @@ import 'widgets/metric_card.dart';
 import 'widgets/testimonial_box.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../data_layer/domain/entities/portfolio/project.dart';
 
 class ResultsSection extends StatelessWidget {
-  final ProjectModel project;
+  final Project project;
 
   const ResultsSection({super.key, required this.project});
 
@@ -46,7 +46,10 @@ class ResultsSection extends StatelessWidget {
       children: [
         Text('Results & Impact', style: fonts.displaySmall),
         SizedBox(height: s.paddingSm),
-        Text('Measurable outcomes and client feedback', style: fonts.bodyLarge.rubik(color: DColors.textSecondary)),
+        Text(
+          'Measurable outcomes and client feedback',
+          style: fonts.bodyLarge.rubik(color: DColors.textSecondary),
+        ),
       ],
     );
   }
@@ -93,8 +96,7 @@ class ResultsSection extends StatelessWidget {
 
   /// Get Metrics Data
   List<Map<String, dynamic>> _getMetricsData() {
-    final results = project.results ?? {};
-
+    final results = project.results;
     return [
       {
         'icon': Icons.download_rounded,

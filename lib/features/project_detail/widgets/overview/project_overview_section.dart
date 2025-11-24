@@ -2,13 +2,13 @@ import 'widgets/info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../data_layer/domain/entities/portfolio/project.dart';
 
 class ProjectOverviewSection extends StatelessWidget {
-  final ProjectModel project;
+  final Project project;
 
   const ProjectOverviewSection({super.key, required this.project});
 

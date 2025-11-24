@@ -1,16 +1,16 @@
 import ' widgets/link_button.dart';
 import ' widgets/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../data_layer/domain/entities/portfolio/project.dart';
 
 class DemoLinksSection extends StatelessWidget {
-  final ProjectModel project;
+  final Project project;
 
   const DemoLinksSection({super.key, required this.project});
 
@@ -28,7 +28,8 @@ class DemoLinksSection extends StatelessWidget {
           SizedBox(height: s.spaceBtwSections),
 
           // YouTube Video Player - Show only if URL is not null and not empty
-          if (project.demoVideoUrl.isNotEmpty) Center(child: YouTubeVideoPlayer(videoUrl: project.demoVideoUrl)),
+          if (project.demoVideoUrl.isNotEmpty)
+            Center(child: YouTubeVideoPlayer(videoUrl: project.demoVideoUrl)),
           SizedBox(height: s.spaceBtwSections),
 
           // Links Grid
@@ -47,7 +48,10 @@ class DemoLinksSection extends StatelessWidget {
       children: [
         Text('Project Demo & Links', style: fonts.displaySmall),
         SizedBox(height: s.paddingSm),
-        Text('Watch the demo and access the project', style: fonts.bodyLarge.rubik(color: DColors.textSecondary)),
+        Text(
+          'Watch the demo and access the project',
+          style: fonts.bodyLarge.rubik(color: DColors.textSecondary),
+        ),
       ],
     );
   }
@@ -131,7 +135,7 @@ class DemoLinksSection extends StatelessWidget {
   }
 }
 
-void _showRequestSourceCodeDialog(BuildContext context, ProjectModel project) {
+void _showRequestSourceCodeDialog(BuildContext context, Project project) {
   final emailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -139,10 +143,10 @@ void _showRequestSourceCodeDialog(BuildContext context, ProjectModel project) {
     context: context,
     builder: (context) => AlertDialog(
       // --- Dialog Styling Starts ---
-      backgroundColor: DColors.secondaryCard, // ডার্ক ব্যাকগ্রাউন্ড
+      backgroundColor: DColors.secondaryCard,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0), // গোলাকার বর্ডার
-        side: BorderSide(color: DColors.cardBorder, width: 1), // হালকা বর্ডার
+        borderRadius: BorderRadius.circular(16.0),
+        side: BorderSide(color: DColors.cardBorder, width: 1),
       ),
       title: Row(
         children: [
@@ -167,7 +171,7 @@ void _showRequestSourceCodeDialog(BuildContext context, ProjectModel project) {
             SizedBox(height: 20),
             TextFormField(
               controller: emailController,
-              style: TextStyle(color: DColors.textPrimary), // লেখার রঙ
+              style: TextStyle(color: DColors.textPrimary),
               decoration: InputDecoration(
                 labelText: 'Your Email',
                 labelStyle: TextStyle(color: DColors.textSecondary),

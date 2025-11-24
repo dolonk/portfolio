@@ -32,21 +32,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
     }
   }
 
-  /// Build Load More Section
-  Widget _buildLoadMoreSection() {
-    // Only show if there are more projects to load
-    if (!vm.hasMore || vm.displayProjects.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return LoadMoreSection(
-      isLoading: vm.isLoading,
-      displayedCount: vm.displayProjects.length,
-      totalCount: vm.filteredProjectsCount,
-      onLoadMore: () => vm.loadMore(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final filterBar = FilterBarSection(
