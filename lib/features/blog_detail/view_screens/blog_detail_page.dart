@@ -34,67 +34,29 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScreen(backgroundColor: DColors.background, child: _buildContent(context, viewModel));
-  }
+    return BaseScreen(
+      backgroundColor: DColors.background,
+      child: DStateBuilder<BlogPost>(
+        state: viewModel.detailState,
+        onLoading: () => const BlogDetailPageLoading(),
+        onError: (msg) => ErrorState(message: msg, onRetry: () => viewModel.fetchPostById(widget.postId)),
+        onEmpty: () => const DataNotFoundState(),
+        onSuccess: (post) => Column(
+          children: [
+            // Hero + Post Header
+            BlogDetailHero(post: post),
 
-  /// Build content based on state
-  Widget _buildContent(BuildContext context, BlogViewModel viewModel) {
-    return DStateBuilder<BlogPost>(
-      state: viewModel.detailState,
-      onLoading: () => const BlogDetailPageLoading(),
-      onError: (msg) => ErrorState(message: msg, onRetry: () => viewModel.fetchPostById(widget.postId)),
-      onEmpty: () => const DataNotFoundState(),
-      onSuccess: (post) => Column(
-        children: [
-          // Hero + Post Header
-          BlogDetailHero(post: post),
+            // Content
+            ContentSection(post: post),
 
-          // Content
-          ContentSection(post: post),
+            // Comments
+            CommentsSection(post: post),
 
-          // Comments
-          CommentsSection(post: post),
-
-          // Newsletter CTA
-          const NewsletterCtaSection(),
-        ],
+            // Newsletter CTA
+            const NewsletterCtaSection(),
+          ],
+        ),
       ),
     );
-
-    /*// ==================== LOADING STATE ====================
-    if (viewModel.isDetailLoading) {
-      return const BlogDetailPageLoading();
-    }
-
-    // ==================== ERROR STATE ====================
-    if (viewModel.hasDetailError) {
-      return ErrorState(
-        message: viewModel.errorMessage ?? 'Failed to load post',
-        onRetry: () => viewModel.fetchPostById(widget.postId),
-      );
-    }
-
-    // ==================== EMPTY/NOT FOUND STATE ====================
-    final post = viewModel.selectedPost;
-    if (post == null) {
-      return const DataNotFoundState();
-    }
-
-    // ==================== SUCCESS STATE ====================
-    return Column(
-      children: [
-        // Hero + Post Header
-        BlogDetailHero(post: post),
-
-        // Content
-        ContentSection(post: post),
-
-        // Comments
-        CommentsSection(post: post),
-
-        // Newsletter CTA
-        const NewsletterCtaSection(),
-      ],
-    );*/
   }
 }

@@ -3,14 +3,12 @@ import 'package:equatable/equatable.dart';
 /// ============================================================
 /// Generic PaginationState - Project-Wide Pagination Handler
 /// ============================================================
-///
+
 /// Usage Example:
-/// ```dart
 /// final pagination = PaginationState<BlogPost>(itemsPerPage: 6);
 /// pagination.setItems(allPosts);
 /// final displayPosts = pagination.currentItems;
 /// pagination.loadNextPage();
-/// ```
 
 class PaginationState<T> extends Equatable {
   final List<T> _allItems;

@@ -4,23 +4,19 @@ import '../../utility/enum/enum.dart';
 /// ============================================================
 /// Generic DataState - Project-Wide Reusable State Wrapper
 /// ============================================================
-///
+
 /// Usage Example:
-/// ```dart
 /// final DataState<List<BlogPost>> postsState = DataState.initial();
 /// postsState = DataState.loading();
 /// postsState = DataState.success(posts);
 /// postsState = DataState.error('Failed to load');
 /// postsState = DataState.empty();
-/// ```
-///
+
 /// In Widget:
-/// ```dart
 /// if (state.isLoading) return LoadingWidget();
 /// if (state.hasError) return ErrorWidget(state.errorMessage);
 /// if (state.isEmpty) return EmptyWidget();
 /// return SuccessWidget(state.data);
-/// ```
 
 class DataState<T> extends Equatable {
   final GettingStatus status;
@@ -69,8 +65,8 @@ class DataState<T> extends Equatable {
   /// Check if currently fetching (loading or initial)
   bool get isFetching => isInitial || isLoading;
 
-  // ==================== UTILITY METHODS ====================
 
+  // ==================== UTILITY METHODS ====================
   /// Get data or default value
   T dataOrElse(T defaultValue) => data ?? defaultValue;
 
@@ -93,7 +89,6 @@ class DataState<T> extends Equatable {
   }
 
   // ==================== WHEN METHOD (Pattern Matching) ====================
-
   /// Pattern matching for all states - cleaner widget building
   ///
   /// Example:
