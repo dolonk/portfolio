@@ -1,91 +1,35 @@
-// class PortfolioPage extends StatefulWidget {
-//   const PortfolioPage({super.key});
-//
-//   @override
-//   State<PortfolioPage> createState() => _PortfolioPageState();
+// TextFormField(
+// controller: _usernameController,
+// style: context.fonts.bodyMedium.rubik(color: DColors.textPrimary),
+// decoration: InputDecoration(
+// labelText: 'Username',
+// labelStyle: TextStyle(color: DColors.textSecondary),
+// hintText: 'Enter your username',
+// hintStyle: TextStyle(color: DColors.textSecondary),
+// prefixIcon: Icon(Icons.person_rounded, color: DColors.textSecondary),
+// filled: true,
+// fillColor: DColors.background,
+// border: OutlineInputBorder(
+// borderRadius: BorderRadius.circular(s.borderRadiusMd),
+// borderSide: BorderSide(color: DColors.cardBorder),
+// ),
+// enabledBorder: OutlineInputBorder(
+// borderRadius: BorderRadius.circular(s.borderRadiusMd),
+// borderSide: BorderSide(color: DColors.cardBorder),
+// ),
+// focusedBorder: OutlineInputBorder(
+// borderRadius: BorderRadius.circular(s.borderRadiusMd),
+// borderSide: BorderSide(color: DColors.primaryButton, width: 2),
+// ),
+// errorBorder: OutlineInputBorder(
+// borderRadius: BorderRadius.circular(s.borderRadiusMd),
+// borderSide: BorderSide(color: Colors.red.shade400),
+// ),
+// ),
+// validator: (value) {
+// if (value == null || value.trim().isEmpty) {
+// return 'Please enter username';
 // }
-//
-// class _PortfolioPageState extends State<PortfolioPage> {
-//   late final ProjectViewModel vm = ProjectViewModel(context);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final filterBar = FilterBarSection(
-//       selectedFilter: vm.selectedCategory ?? 'All',
-//       onFilterChanged: _handleFilterChange,
-//     );
-//
-//     return BaseScreen(
-//       useCustomScrollView: true,
-//       backgroundColor: DColors.background,
-//       child: RefreshIndicator(
-//         onRefresh: () => vm.refresh(),
-//         child: CustomScrollView(
-//           slivers: [
-//             // Hero Section
-//             const SliverToBoxAdapter(child: PortfolioHeroSection()),
-//
-//             // Filter Bar (Sticky)
-//             SliverPinnedHeader(child: filterBar),
-//
-//             // Project Grid with State Handling
-//             SliverToBoxAdapter(
-//               child: DStateBuilder<List<Project>>(
-//                 state: vm.projectsState,
-//                 onLoading: () => _buildLoadingState(),
-//                 onError: (msg) => _buildErrorState(msg),
-//                 onEmpty: () => _buildEmptyState(),
-//                 onSuccess: (projects) => ProjectGridSection(projects: vm.displayProjects),
-//               ),
-//             ),
-//
-//             // Load More Section
-//             SliverToBoxAdapter(child: _buildLoadMoreSection()),
-//
-//             // Footer
-//             const SliverToBoxAdapter(child: FooterSection()),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   /// Handle filter change
-//   void _handleFilterChange(String filter) {
-//     if (filter == 'All') {
-//       vm.clearFilters();
-//     } else {
-//       vm.filterByCategory(filter);
-//     }
-//   }
-//
-//   /// Build Load More Section
-//   Widget _buildLoadMoreSection() {
-//     // Only show if there are more projects to load
-//     if (!vm.hasMore || vm.displayProjects.isEmpty) {
-//       return const SizedBox.shrink();
-//     }
-//
-//     return LoadMoreSection(
-//       isLoading: vm.isLoading,
-//       displayedCount: vm.displayProjects.length,
-//       totalCount: vm.filteredProjectsCount,
-//       onLoadMore: () => vm.loadMore(),
-//     );
-//   }
-//
-//   /// Loading State
-//   Widget _buildLoadingState() {
-//     return const Padding(padding: EdgeInsets.all(60.0), child: Text("loading"));
-//   }
-//
-//   /// Error State
-//   Widget _buildErrorState(String message) {
-//     return Padding(padding: const EdgeInsets.all(60.0), child: Text("loading"));
-//   }
-//
-//   /// Empty State
-//   Widget _buildEmptyState() {
-//     return Padding(padding: const EdgeInsets.all(60.0), child: Text("loading"));
-//   }
-// }
+// return null;
+// },
+// )

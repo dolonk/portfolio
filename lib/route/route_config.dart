@@ -107,7 +107,7 @@ class RouteConfig {
       // Admin Login
       GoRoute(path: '/admin/login', name: 'adminLogin', builder: (context, state) => const AdminLoginPage()),
 
-      // Admin Dashboard (TODO: Will add in next step)
+      // Admin Dashboard
       GoRoute(
         path: '/admin/dashboard',
         name: 'adminDashboard',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../common_function/widgets/custom_text_field.dart';
 import 'providers/admin_auth_provider.dart';
 import '../../../utility/constants/colors.dart';
 import '../../../utility/default_sizes/font_size.dart';
@@ -17,7 +18,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -30,11 +30,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = context.read<AdminAuthProvider>();
-
     final success = await authProvider.login(_usernameController.text, _passwordController.text);
 
     if (success && mounted) {
-      // Navigate to admin dashboard
       context.go('/admin/dashboard');
     }
   }
@@ -48,7 +46,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       backgroundColor: DColors.background,
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(s.paddingLg),
           child: Container(
             constraints: const BoxConstraints(maxWidth: 450),
             child: Card(
@@ -59,7 +56,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 side: BorderSide(color: DColors.cardBorder),
               ),
               child: Padding(
-                padding: EdgeInsets.all(s.paddingXl * 2),
+                padding: EdgeInsets.all(s.paddingXl),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -73,23 +70,15 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                           color: DColors.primaryButton.withAlpha((255 * 0.1).round()),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.admin_panel_settings_rounded,
-                          size: 48,
-                          color: DColors.primaryButton,
-                        ),
+                        child: Icon(Icons.admin_panel_settings_rounded, size: 48, color: DColors.primaryButton),
                       ),
                       SizedBox(height: s.paddingLg),
 
                       // Title
-                      Text(
-                        'Admin Panel',
-                        style: context.fonts.displaySmall.rajdhani(
-                          fontWeight: FontWeight.bold,
-                          color: DColors.textPrimary,
-                        ),
-                      ),
+                      Text('Admin Panel', style: context.fonts.displaySmall),
                       SizedBox(height: s.paddingSm),
+
+                      // Sub-Title
                       Text(
                         'Sign in to manage your portfolio',
                         style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
@@ -98,34 +87,13 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       SizedBox(height: s.paddingXl),
 
                       // Username Field
-                      TextFormField(
+                      CustomTextField(
                         controller: _usernameController,
-                        style: context.fonts.bodyMedium.rubik(color: DColors.textPrimary),
-                        decoration: InputDecoration(
-                          labelText: 'Username',
-                          labelStyle: TextStyle(color: DColors.textSecondary),
-                          hintText: 'Enter your username',
-                          hintStyle: TextStyle(color: DColors.textSecondary),
-                          prefixIcon: Icon(Icons.person_rounded, color: DColors.textSecondary),
-                          filled: true,
-                          fillColor: DColors.background,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: DColors.cardBorder),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: DColors.cardBorder),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: DColors.primaryButton, width: 2),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: Colors.red.shade400),
-                          ),
-                        ),
+                        label: 'Username',
+                        borderRadius: s.borderRadiusMd,
+                        useInlineLabel: true,
+                        hint: 'Enter your username',
+                        prefixIcon: Icon(Icons.person_rounded, color: DColors.textSecondary),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter username';
@@ -136,44 +104,14 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       SizedBox(height: s.paddingMd),
 
                       // Password Field
-                      TextFormField(
+                      CustomTextField(
                         controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        style: context.fonts.bodyMedium.rubik(color: DColors.textPrimary),
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: TextStyle(color: DColors.textSecondary),
-                          hintText: 'Enter your password',
-                          hintStyle: TextStyle(color: DColors.textSecondary),
-                          prefixIcon: Icon(Icons.lock_rounded, color: DColors.textSecondary),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword ? Icons.visibility_rounded : Icons.visibility_off_rounded,
-                              color: DColors.textSecondary,
-                            ),
-                            onPressed: () {
-                              setState(() => _obscurePassword = !_obscurePassword);
-                            },
-                          ),
-                          filled: true,
-                          fillColor: DColors.background,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: DColors.cardBorder),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: DColors.cardBorder),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: DColors.primaryButton, width: 2),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            borderSide: BorderSide(color: Colors.red.shade400),
-                          ),
-                        ),
+                        label: 'Password',
+                        useInlineLabel: true,
+                        hint: 'Enter your username',
+                        borderRadius: s.borderRadiusMd,
+                        obscureText: true,
+                        prefixIcon: Icon(Icons.lock_rounded, color: DColors.textSecondary),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter password';
@@ -186,7 +124,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       ),
                       SizedBox(height: s.paddingMd),
 
-                      // Error Message
+                      // Error Message form server side
                       if (authProvider.errorMessage != null)
                         Container(
                           width: double.infinity,
@@ -221,9 +159,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                             backgroundColor: DColors.primaryButton,
                             foregroundColor: Colors.white,
                             disabledBackgroundColor: DColors.primaryButton.withAlpha((255 * 0.6).round()),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(s.borderRadiusMd)),
                           ),
                           child: authProvider.isLoading
                               ? SizedBox(
@@ -234,10 +170,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 )
-                              : Text(
-                                  'Sign In',
-                                  style: context.fonts.bodyLarge.rubik(fontWeight: FontWeight.bold),
-                                ),
+                              : Text('Sign In', style: context.fonts.bodyLarge.rubik(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       SizedBox(height: s.paddingLg),
@@ -245,7 +178,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       // Back to Home
                       TextButton.icon(
                         onPressed: () => context.go('/'),
-                        icon: Icon(Icons.arrow_back_rounded, size: 18),
+                        icon: Icon(Icons.arrow_back_rounded, size: 24),
                         label: Text('Back to Home'),
                         style: TextButton.styleFrom(foregroundColor: DColors.textSecondary),
                       ),

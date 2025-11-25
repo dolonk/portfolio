@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'widgets/custom_dropdown.dart';
+import 'widgets/file_upload_widget.dart';
+import 'widgets/form_submit_button.dart';
+import 'widgets/platform_checkbox_group.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
@@ -6,12 +10,8 @@ import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
 import 'package:portfolio/data_layer/model/contact/contact_form_model.dart';
+import '../../../../common_function/widgets/custom_text_field.dart';
 import '../../../../common_function/widgets/section_header.dart';
-import 'widgets/custom_text_field.dart';
-import 'widgets/custom_dropdown.dart';
-import 'widgets/platform_checkbox_group.dart';
-import 'widgets/file_upload_widget.dart';
-import 'widgets/form_submit_button.dart';
 
 class ContactFormSection extends StatefulWidget {
   const ContactFormSection({super.key});
