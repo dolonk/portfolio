@@ -109,13 +109,6 @@ class BlogRepositoryImpl implements BlogRepository {
   @override
   Future<Either<Failure, void>> createPost(BlogPost post) async {
     try {
-      if (!useSupabase) {
-        throw ServerException(
-          'Supabase not configured. Cannot create post.',
-          code: 'SUPABASE_NOT_CONFIGURED',
-        );
-      }
-
       await remoteDataSource.createPost(post as BlogPostModel);
       return const Right(null);
     } catch (e) {
@@ -127,13 +120,6 @@ class BlogRepositoryImpl implements BlogRepository {
   @override
   Future<Either<Failure, void>> updatePost(BlogPost post) async {
     try {
-      if (!useSupabase) {
-        throw ServerException(
-          'Supabase not configured. Cannot update post.',
-          code: 'SUPABASE_NOT_CONFIGURED',
-        );
-      }
-
       await remoteDataSource.updatePost(post as BlogPostModel);
       return const Right(null);
     } catch (e) {
@@ -145,13 +131,6 @@ class BlogRepositoryImpl implements BlogRepository {
   @override
   Future<Either<Failure, void>> deletePost(String id) async {
     try {
-      if (!useSupabase) {
-        throw ServerException(
-          'Supabase not configured. Cannot delete post.',
-          code: 'SUPABASE_NOT_CONFIGURED',
-        );
-      }
-
       await remoteDataSource.deletePost(id);
       return const Right(null);
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'failures.dart';
+import 'supabase_error_mapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,10 +15,6 @@ abstract class AppException implements Exception {
 }
 
 // ==================== PUBLIC EXCEPTIONS ====================
-class ServerException extends AppException {
-  ServerException(super.message, {super.code, super.originalError});
-}
-
 class ValidationException extends AppException {
   ValidationException(super.message, {super.code, super.originalError});
 }
@@ -27,6 +24,10 @@ class NotFoundException extends AppException {
 }
 
 // ==================== PRIVATE EXCEPTIONS ====================
+class _ServerException extends AppException {
+  _ServerException(super.message, {super.code, super.originalError});
+}
+
 class _DatabaseException extends AppException {
   _DatabaseException(super.message, {super.code, super.originalError});
 }
@@ -67,6 +68,11 @@ class ExceptionHandler {
     // ==================== SUPABASE POSTGREST EXCEPTION ====================
     if (error is PostgrestException) {
       return _handlePostgrestException(error, context);
+    }
+
+    // ==================== SUPABASE STORAGE EXCEPTION ====================
+    if (error is StorageException) {
+      return _handleStorageException(error, context);
     }
 
     // ==================== CUSTOM APP EXCEPTIONS ====================
@@ -111,7 +117,7 @@ class ExceptionHandler {
     }
 
     // ==================== UNKNOWN ERRORS ====================
-    return ServerException(
+    return _ServerException(
       'An unexpected error occurred during $context. Please try again later.',
       code: 'UNKNOWN_ERROR',
       originalError: error,
@@ -123,7 +129,7 @@ class ExceptionHandler {
     final exception = parse(error, context: context);
 
     switch (exception.runtimeType) {
-      case ServerException _:
+      case _ServerException _:
         return ServerFailure(message: exception.message, code: exception.code);
       case _DatabaseException _:
         return DatabaseFailure(message: exception.message, code: exception.code);
@@ -170,107 +176,60 @@ class ExceptionHandler {
         errorString.contains('json');
   }
 
-  // ==================== AUTH EXCEPTION HANDLER ====================
-  static _AuthenticationException _handleAuthException(AuthException error, String context) {
-    final message = error.message.toLowerCase();
-    String userMessage;
-    String? code;
+  // ==================== SUPABASE EXCEPTION HANDLERS ====================
 
-    if (message.contains('invalid login credentials')) {
-      userMessage = "Incorrect email or password. Please try again.";
-      code = 'INVALID_CREDENTIALS';
-    } else if (message.contains('email not confirmed')) {
-      userMessage = "Your email is not confirmed yet. Please verify your email.";
-      code = 'EMAIL_NOT_CONFIRMED';
-    } else if (message.contains('user already registered')) {
-      userMessage = "This email is already registered.";
-      code = 'USER_EXISTS';
-    } else if (message.contains('invalid email')) {
-      userMessage = "The email address is invalid.";
-      code = 'INVALID_EMAIL';
-    } else if (message.contains('weak password')) {
-      userMessage = "Password is too weak. Please use a stronger password.";
-      code = 'WEAK_PASSWORD';
-    } else if (message.contains('user not found')) {
-      userMessage = "User account not found.";
-      code = 'USER_NOT_FOUND';
-    } else {
-      userMessage = "Authentication failed. Please try again.";
-      code = 'AUTH_ERROR';
-    }
+  /// Handle AuthException using SupabaseErrorMapper
+  static _AuthenticationException _handleAuthException(AuthException error, String context) {
+    final userMessage = SupabaseErrorMapper.getAuthErrorMessage(error);
+    final code = error.code ?? 'AUTH_ERROR';
 
     return _AuthenticationException(userMessage, code: code, originalError: error);
   }
 
-  // ==================== POSTGREST EXCEPTION HANDLER ====================
+  /// Handle PostgrestException using SupabaseErrorMapper
   static AppException _handlePostgrestException(PostgrestException error, String context) {
-    final code = error.code;
-    final message = error.message.toLowerCase();
-    String userMessage;
-    String? errorCode;
+    final userMessage = SupabaseErrorMapper.getPostgrestErrorMessage(error);
+    final code = error.code ?? 'DB_ERROR';
 
-    // RLS Policy Violations
-    if (code == '42501' || message.contains('rls') || message.contains('policy')) {
-      userMessage = "Access denied. You don't have permission to perform this action.";
-      errorCode = 'RLS_POLICY_VIOLATION';
-      return _PermissionException(userMessage, code: errorCode, originalError: error);
+    // Determine exception type based on error code using mapper logic
+    if (code == '42501' ||
+        error.message.toLowerCase().contains('rls') ||
+        error.message.toLowerCase().contains('policy')) {
+      return _PermissionException(userMessage, code: code, originalError: error);
+    } else if (code == '23505' ||
+        error.message.toLowerCase().contains('duplicate') ||
+        error.message.toLowerCase().contains('unique')) {
+      return _DatabaseException(userMessage, code: code, originalError: error);
+    } else if (code == '23503' || error.message.toLowerCase().contains('foreign key')) {
+      return _DatabaseException(userMessage, code: code, originalError: error);
+    } else if (code == '23502' || error.message.toLowerCase().contains('not null')) {
+      return ValidationException(userMessage, code: code, originalError: error);
+    } else if (code == '22P02' || error.message.toLowerCase().contains('invalid input')) {
+      return ValidationException(userMessage, code: code, originalError: error);
+    } else if (code == 'PGRST116' || error.message.toLowerCase().contains('not found')) {
+      return NotFoundException(userMessage, code: code, originalError: error);
+    } else if (SupabaseErrorMapper.isNetworkError(error)) {
+      return _NetworkException(userMessage, code: code, originalError: error);
     }
 
-    // Duplicate Entry
-    if (code == '23505' || message.contains('duplicate') || message.contains('unique constraint')) {
-      userMessage = "This entry already exists. Please use a different value.";
-      errorCode = 'DUPLICATE_ENTRY';
-      return _DatabaseException(userMessage, code: errorCode, originalError: error);
+    return _DatabaseException(userMessage, code: code, originalError: error);
+  }
+
+  /// Handle StorageException using SupabaseErrorMapper
+  static AppException _handleStorageException(StorageException error, String context) {
+    final userMessage = SupabaseErrorMapper.getStorageErrorMessage(error);
+    final code = error.statusCode?.toString() ?? 'STORAGE_ERROR';
+
+    final int? statusCodeInt = int.tryParse(error.statusCode!);
+    if (statusCodeInt == 403 || statusCodeInt == 401) {
+      return _PermissionException(userMessage, code: code, originalError: error);
+    } else if (statusCodeInt == 404) {
+      return NotFoundException(userMessage, code: code, originalError: error);
+    } else if (statusCodeInt != null && statusCodeInt >= 500) {
+      return _ServerException(userMessage, code: code, originalError: error);
     }
 
-    // Foreign Key Violation
-    if (code == '23503' || message.contains('foreign key')) {
-      userMessage = "Cannot perform this action due to related data constraints.";
-      errorCode = 'FOREIGN_KEY_VIOLATION';
-      return _DatabaseException(userMessage, code: errorCode, originalError: error);
-    }
-
-    // Not Null Violation
-    if (code == '23502' || message.contains('not null')) {
-      userMessage = "Required field is missing. Please provide all required information.";
-      errorCode = 'NOT_NULL_VIOLATION';
-      return ValidationException(userMessage, code: errorCode, originalError: error);
-    }
-
-    // Data Type Error
-    if (code == '22P02' || message.contains('invalid input syntax')) {
-      userMessage = "Invalid data type provided. Please check your input.";
-      errorCode = 'INVALID_DATA_TYPE';
-      return ValidationException(userMessage, code: errorCode, originalError: error);
-    }
-
-    // Out of Range
-    if (code == '22003' || message.contains('out of range')) {
-      userMessage = "Data value is out of acceptable range.";
-      errorCode = 'OUT_OF_RANGE';
-      return ValidationException(userMessage, code: errorCode, originalError: error);
-    }
-
-    // Not Found
-    if (code == 'PGRST116' || message.contains('not found')) {
-      userMessage = "Requested data not found.";
-      errorCode = 'NOT_FOUND';
-      return NotFoundException(userMessage, code: errorCode, originalError: error);
-    }
-
-    // Connection Error
-    if (message.contains('connection') || message.contains('could not connect')) {
-      userMessage = "Database connection failed. Please try again.";
-      errorCode = 'CONNECTION_ERROR';
-      return _NetworkException(userMessage, code: errorCode, originalError: error);
-    }
-
-    // Generic Database Error
-    return _DatabaseException(
-      "Database operation failed. Please try again.",
-      code: code ?? 'DB_ERROR',
-      originalError: error,
-    );
+    return _ServerException(userMessage, code: code, originalError: error);
   }
 
   // ==================== PUBLIC HELPER METHODS ====================
@@ -278,9 +237,13 @@ class ExceptionHandler {
     return parse(error, context: context).message;
   }
 
+  static String? getErrorCode(Object error, {String context = 'Operation'}) {
+    return parse(error, context: context).code;
+  }
+
   static bool isNetworkError(Object error) {
     final parsed = error is AppException ? error : parse(error);
-    return parsed is _NetworkException;
+    return parsed is _NetworkException || SupabaseErrorMapper.isNetworkError(error);
   }
 
   static bool isPermissionError(Object error) {
@@ -301,5 +264,13 @@ class ExceptionHandler {
   static bool isAuthError(Object error) {
     final parsed = error is AppException ? error : parse(error);
     return parsed is _AuthenticationException;
+  }
+
+  /// Check if error is recoverable using SupabaseErrorMapper
+  static bool isRecoverableError(Object error) {
+    if (error is AuthException || error is PostgrestException) {
+      return SupabaseErrorMapper.isRecoverableError(error);
+    }
+    return true;
   }
 }
