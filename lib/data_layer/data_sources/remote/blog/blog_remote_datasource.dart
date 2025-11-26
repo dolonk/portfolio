@@ -1,8 +1,7 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../model/blog/blog_post_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Blog Remote DataSource Interface
 abstract class BlogRemoteDataSource {
   Future<List<BlogPostModel>> getAllPosts();
   Future<List<BlogPostModel>> getFeaturedPosts();
@@ -17,10 +16,8 @@ abstract class BlogRemoteDataSource {
   Future<List<BlogPostModel>> getRecentPosts({int limit = 5});
 }
 
-/// Blog Remote DataSource Implementation
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final SupabaseClient? supabase;
-
   BlogRemoteDataSourceImpl({this.supabase});
 
   // ==================== GET ALL POSTS ====================
@@ -52,7 +49,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
-      throw ServerException('Failed to fetch featured posts: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Fetching featured blog posts');
     }
   }
 
@@ -63,12 +60,13 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       final response = await supabase!.from('blog_posts').select().eq('id', id).maybeSingle();
 
       if (response == null) {
-        throw ServerException('Post not found');
+        throw NotFoundException('Blog post with ID "$id" not found');
       }
 
       return BlogPostModel.fromSupabase(response);
     } catch (e) {
-      throw ServerException('Failed to fetch post: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Fetching blog post by ID');
     }
   }
 
@@ -85,7 +83,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
-      throw ServerException('Failed to fetch posts by tag: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Fetching posts by tag "$tag"');
     }
   }
 
@@ -104,7 +102,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       return tags.toList()..sort();
     } catch (e) {
-      throw ServerException('Failed to fetch tags: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Fetching blog tags');
     }
   }
 
@@ -114,7 +112,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     try {
       await supabase!.from('blog_posts').insert(post.toSupabase());
     } catch (e) {
-      throw ServerException('Failed to create post: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Creating blog post');
     }
   }
 
@@ -122,9 +120,18 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> updatePost(BlogPostModel post) async {
     try {
-      await supabase!.from('blog_posts').update(post.toSupabase()).eq('id', post.id);
+      final response = await supabase!
+          .from('blog_posts')
+          .update(post.toSupabase())
+          .eq('id', post.id)
+          .select();
+
+      if (response.isEmpty) {
+        throw NotFoundException('Blog post with ID "${post.id}" not found');
+      }
     } catch (e) {
-      throw ServerException('Failed to update post: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Updating blog post');
     }
   }
 
@@ -132,9 +139,14 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> deletePost(String id) async {
     try {
-      await supabase!.from('blog_posts').delete().eq('id', id);
+      final response = await supabase!.from('blog_posts').delete().eq('id', id).select();
+
+      if (response.isEmpty) {
+        throw NotFoundException('Blog post with ID "$id" not found');
+      }
     } catch (e) {
-      throw ServerException('Failed to delete post: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Deleting blog post');
     }
   }
 
@@ -142,17 +154,18 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> incrementViewCount(String id) async {
     try {
-      // Get current view count
       final response = await supabase!.from('blog_posts').select('view_count').eq('id', id).maybeSingle();
 
-      if (response != null) {
-        final currentCount = response['view_count'] as int? ?? 0;
-
-        // Increment and update
-        await supabase!.from('blog_posts').update({'view_count': currentCount + 1}).eq('id', id);
+      if (response == null) {
+        throw NotFoundException('Blog post with ID "$id" not found');
       }
+
+      final currentCount = response['view_count'] as int? ?? 0;
+
+      await supabase!.from('blog_posts').update({'view_count': currentCount + 1}).eq('id', id);
     } catch (e) {
-      throw ServerException('Failed to increment view count: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Incrementing view count');
     }
   }
 
@@ -160,9 +173,13 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogPostModel>> searchPosts(String query) async {
     try {
+      if (query.trim().isEmpty) {
+        throw ValidationException('Search query cannot be empty');
+      }
+
       final response = await supabase!.from('blog_posts').select().eq('is_published', true);
 
-      final searchQuery = query.toLowerCase();
+      final searchQuery = query.toLowerCase().trim();
 
       final filtered = (response as List).where((post) {
         final title = (post['title'] ?? '').toString().toLowerCase();
@@ -176,7 +193,8 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       return filtered.map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
-      throw ServerException('Failed to search posts: ${e.toString()}');
+      if (e is ValidationException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Searching blog posts');
     }
   }
 
@@ -184,6 +202,10 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogPostModel>> getRecentPosts({int limit = 5}) async {
     try {
+      if (limit <= 0) {
+        throw ValidationException('Limit must be greater than 0');
+      }
+
       final response = await supabase!
           .from('blog_posts')
           .select()
@@ -193,7 +215,8 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
-      throw ServerException('Failed to fetch recent posts: ${e.toString()}');
+      if (e is ValidationException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Fetching recent blog posts');
     }
   }
 }

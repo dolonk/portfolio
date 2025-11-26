@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:portfolio/core/config/supabase_config.dart';
+import '../../../../core/error/exceptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../../../core/error/supabase_exception_handler.dart';
+import 'package:portfolio/core/config/supabase_config.dart';
 
 class AdminAuthProvider with ChangeNotifier {
   final SupabaseClient? supabase;
-
   AdminAuthProvider({this.supabase});
 
   // ==================== STATE ====================
@@ -43,7 +41,6 @@ class AdminAuthProvider with ChangeNotifier {
         _errorMessage = 'Invalid username or password';
         _isLoading = false;
         notifyListeners();
-        debugPrint('❌ Login failed: Username not found');
         return false;
       }
 
@@ -66,25 +63,16 @@ class AdminAuthProvider with ChangeNotifier {
 
       debugPrint('✅ Admin logged in: ${response['display_name']}');
       return true;
-    } on PostgrestException catch (e) {
-      _errorMessage = SupabaseExceptionHandler.parse(e);
-      _isLoading = false;
-      notifyListeners();
-      debugPrint('❌ Postgrest Error: ${e.code} - ${e.message}');
-      return false;
-    } on AuthException catch (e) {
-      // Auth specific errors
-      _errorMessage = SupabaseExceptionHandler.parse(e);
-      _isLoading = false;
-      notifyListeners();
-      debugPrint('❌ Auth Error: ${e.message}');
-      return false;
     } catch (e) {
-      // Generic errors
-      _errorMessage = SupabaseExceptionHandler.parse(e);
+      final failure = ExceptionHandler.parseToFailure(e, context: 'Admin login');
       _isLoading = false;
       notifyListeners();
-      debugPrint('❌ Login error: $e');
+
+      debugPrint('''❌ Login Error:
+    Type: ${failure.runtimeType}
+    Message: ${failure.message}
+    Code: ${failure.code}''');
+
       return false;
     }
   }

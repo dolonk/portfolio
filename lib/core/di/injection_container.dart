@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/cupertino.dart';
 import '../config/supabase_config.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/blog/providers/blog_provider.dart';
 import '../../features/portfolio/providers/project_provider.dart';
@@ -40,30 +39,26 @@ Future<void> initializeDependencies({bool useSupabase = false}) async {
 
   /// ====================  DATA SOURCES ====================
   getIt.registerLazySingleton<BlogRemoteDataSource>(
-    () => BlogRemoteDataSourceImpl(
-      firestore: useSupabase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
-    ),
+    () => BlogRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 
   getIt.registerLazySingleton<CommentRemoteDataSource>(
-    () => CommentRemoteDataSourceImpl(
-      firestore: useSupabase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
-    ),
+    () =>
+        CommentRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 
   getIt.registerLazySingleton<ProjectRemoteDataSource>(
-    () => ProjectRemoteDataSourceImpl(
-      firestore: useSupabase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
-    ),
+    () =>
+        ProjectRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 
   /// ==================== REPOSITORIES ====================
   getIt.registerLazySingleton<BlogRepository>(
-    () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useFirebase: useSupabase),
+    () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useSupabase: useSupabase),
   );
 
   getIt.registerLazySingleton<CommentRepository>(
-    () => CommentRepositoryImpl(remoteDataSource: getIt<CommentRemoteDataSource>(), useFirebase: useSupabase),
+    () => CommentRepositoryImpl(remoteDataSource: getIt<CommentRemoteDataSource>(), useSupabase: useSupabase),
   );
 
   getIt.registerLazySingleton<ProjectRepository>(

@@ -1,8 +1,9 @@
-import 'package:fpdart/fpdart.dart';
 import 'project_repository.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:flutter/material.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/error/exceptions.dart';
 import '../../entities/portfolio/project.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../../model/portfolio/project_model.dart';
 import '../../../data_sources/remote/portfolio/project_remote_datasource.dart';
 
@@ -24,12 +25,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
         await Future.delayed(const Duration(milliseconds: 500));
         return Right(projects);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load projects: ${e.toString()}'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all projects'));
     }
   }
 
@@ -44,10 +41,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(projects);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load featured projects'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching featured projects'));
     }
   }
 
@@ -67,10 +62,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
         await Future.delayed(const Duration(milliseconds: 200));
         return Right(recentProjects);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load recent projects'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching recent projects'));
     }
   }
 
@@ -84,15 +77,13 @@ class ProjectRepositoryImpl implements ProjectRepository {
         final projects = ProjectModel.getAllProjects();
         final project = projects.firstWhere(
           (p) => p.id == id,
-          orElse: () => throw ServerException('Project not found'),
+          orElse: () => throw NotFoundException('Project not found'),
         );
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(project);
       }
-    } on ServerException catch (e) {
-      return Left(NotFoundFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load project'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching project $id'));
     }
   }
 
@@ -107,10 +98,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(projects);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load projects by category'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching projects by category: $category'));
     }
   }
 
@@ -125,10 +114,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(projects);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load projects by platform'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching projects by platform: $platform'));
     }
   }
 
@@ -144,7 +131,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
         return Right(categories);
       }
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load categories'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all categories'));
     }
   }
 
@@ -160,7 +147,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
         return Right(platforms);
       }
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load platforms'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all platforms'));
     }
   }
 
@@ -176,7 +163,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
         return Right(techStacks);
       }
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load tech stacks'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all tech stacks'));
     }
   }
 
@@ -204,7 +191,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
         return Right(filteredProjects);
       }
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to search projects'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Searching projects: $query'));
     }
   }
 
@@ -216,6 +203,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
       }
       return const Right(null);
     } catch (e) {
+      debugPrint('Failed to increment view count: $e');
       return const Right(null);
     }
   }
@@ -228,10 +216,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
       }
       await remoteDataSource.createProject(ProjectModel.fromEntity(project));
       return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to create project'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Creating project: ${project.title}'));
     }
   }
 
@@ -243,10 +229,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
       }
       await remoteDataSource.updateProject(ProjectModel.fromEntity(project));
       return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to update project'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Updating project: ${project.id}'));
     }
   }
 
@@ -258,10 +242,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
       }
       await remoteDataSource.deleteProject(id);
       return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to delete project'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Deleting project: $id'));
     }
   }
 }

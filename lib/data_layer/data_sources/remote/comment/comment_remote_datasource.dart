@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../model/blog/comment_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class CommentRemoteDataSource {
   Future<List<CommentModel>> getCommentsByPostId(String postId);
@@ -16,182 +16,225 @@ abstract class CommentRemoteDataSource {
 }
 
 class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
-  final FirebaseFirestore? firestore;
+  final SupabaseClient? supabase;
+  CommentRemoteDataSourceImpl({this.supabase});
 
-  CommentRemoteDataSourceImpl({this.firestore});
-
-  CollectionReference? get _commentsCollection => firestore?.collection('comments');
-
-  void _checkFirebaseAvailable() {
-    if (firestore == null || _commentsCollection == null) {
-      throw ServerException('Firebase not initialized');
-    }
-  }
-
+  // ==================== GET COMMENTS BY POST ID ====================
   @override
   Future<List<CommentModel>> getCommentsByPostId(String postId) async {
     try {
-      _checkFirebaseAvailable();
-
-      // Get parent comments (no parentId)
-      final querySnapshot = await _commentsCollection!
-          .where('postId', isEqualTo: postId)
-          .where('isApproved', isEqualTo: true)
-          .where('parentId', isNull: true)
-          .orderBy('timestamp', descending: true)
-          .get();
+      // Get parent comments (no parent_id)
+      final response = await supabase!
+          .from('comments')
+          .select()
+          .eq('post_id', postId)
+          .eq('is_approved', true)
+          .filter('parent_id', 'is', null)
+          .order('timestamp', ascending: false);
 
       final comments = <CommentModel>[];
 
-      for (final doc in querySnapshot.docs) {
-        final comment = CommentModel.fromFirestore(doc);
+      for (final commentJson in response as List) {
+        final comment = CommentModel.fromSupabase(commentJson);
 
         // Load replies for this comment
-        final repliesSnapshot = await _commentsCollection!
-            .where('parentId', isEqualTo: comment.id)
-            .where('isApproved', isEqualTo: true)
-            .orderBy('timestamp', descending: false)
-            .get();
+        final repliesResponse = await supabase!
+            .from('comments')
+            .select()
+            .eq('parent_id', comment.id)
+            .eq('is_approved', true)
+            .order('timestamp', ascending: true);
 
-        final replies = repliesSnapshot.docs.map((d) => CommentModel.fromFirestore(d)).toList();
+        final replies = (repliesResponse as List).map((json) => CommentModel.fromSupabase(json)).toList();
 
         comments.add(comment.copyWith(replies: replies));
       }
 
       return comments;
     } catch (e) {
-      throw ServerException('Failed to fetch comments: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Fetching comments for post "$postId"');
     }
   }
 
+  // ==================== GET COMMENT BY ID ====================
   @override
   Future<CommentModel> getCommentById(String commentId) async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!.from('comments').select().eq('id', commentId).maybeSingle();
 
-      final doc = await _commentsCollection!.doc(commentId).get();
-
-      if (!doc.exists) {
-        throw ServerException('Comment not found');
+      if (response == null) {
+        throw NotFoundException('Comment with ID "$commentId" not found');
       }
 
-      return CommentModel.fromFirestore(doc);
+      return CommentModel.fromSupabase(response);
     } catch (e) {
-      throw ServerException('Failed to fetch comment: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Fetching comment by ID');
     }
   }
 
+  // ==================== ADD COMMENT ====================
   @override
   Future<CommentModel> addComment(CommentModel comment) async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!.from('comments').insert(comment.toSupabase()).select().single();
 
-      final docRef = await _commentsCollection!.add(comment.toFirestore());
-      final newDoc = await docRef.get();
-
-      return CommentModel.fromFirestore(newDoc);
+      return CommentModel.fromSupabase(response);
     } catch (e) {
-      throw ServerException('Failed to add comment: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Adding comment');
     }
   }
 
+  // ==================== ADD REPLY ====================
   @override
   Future<CommentModel> addReply({required String parentId, required CommentModel reply}) async {
     try {
-      _checkFirebaseAvailable();
+      // Verify parent comment exists
+      final parentExists = await supabase!.from('comments').select('id').eq('id', parentId).maybeSingle();
+
+      if (parentExists == null) {
+        throw NotFoundException('Parent comment with ID "$parentId" not found');
+      }
 
       final replyWithParent = reply.copyWith(parentId: parentId);
-      final docRef = await _commentsCollection!.add(replyWithParent.toFirestore());
-      final newDoc = await docRef.get();
 
-      return CommentModel.fromFirestore(newDoc);
+      final response = await supabase!
+          .from('comments')
+          .insert(replyWithParent.toSupabase())
+          .select()
+          .single();
+
+      return CommentModel.fromSupabase(response);
     } catch (e) {
-      throw ServerException('Failed to add reply: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Adding reply to comment');
     }
   }
 
+  // ==================== UPDATE COMMENT ====================
   @override
   Future<void> updateComment(CommentModel comment) async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!
+          .from('comments')
+          .update(comment.toSupabase())
+          .eq('id', comment.id)
+          .select();
 
-      await _commentsCollection!.doc(comment.id).update(comment.toFirestore());
+      if (response.isEmpty) {
+        throw NotFoundException('Comment with ID "${comment.id}" not found');
+      }
     } catch (e) {
-      throw ServerException('Failed to update comment: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Updating comment');
     }
   }
 
+  // ==================== DELETE COMMENT ====================
   @override
   Future<void> deleteComment(String commentId) async {
     try {
-      _checkFirebaseAvailable();
+      // Delete all replies first (cascade delete)
+      await supabase!.from('comments').delete().eq('parent_id', commentId);
 
-      // Delete comment
-      await _commentsCollection!.doc(commentId).delete();
+      // Delete the comment itself
+      final response = await supabase!.from('comments').delete().eq('id', commentId).select();
 
-      // Delete all replies
-      final repliesSnapshot = await _commentsCollection!.where('parentId', isEqualTo: commentId).get();
-
-      for (final doc in repliesSnapshot.docs) {
-        await doc.reference.delete();
+      if (response.isEmpty) {
+        throw NotFoundException('Comment with ID "$commentId" not found');
       }
     } catch (e) {
-      throw ServerException('Failed to delete comment: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Deleting comment');
     }
   }
 
+  // ==================== LIKE COMMENT ====================
   @override
   Future<void> likeComment(String commentId) async {
     try {
-      _checkFirebaseAvailable();
+      // Get current likes count
+      final response = await supabase!.from('comments').select('likes').eq('id', commentId).maybeSingle();
 
-      await _commentsCollection!.doc(commentId).update({'likes': FieldValue.increment(1)});
+      if (response == null) {
+        throw NotFoundException('Comment with ID "$commentId" not found');
+      }
+
+      final currentLikes = response['likes'] as int? ?? 0;
+
+      // Increment likes
+      await supabase!.from('comments').update({'likes': currentLikes + 1}).eq('id', commentId);
     } catch (e) {
-      throw ServerException('Failed to like comment: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Liking comment');
     }
   }
 
+  // ==================== UNLIKE COMMENT ====================
   @override
   Future<void> unlikeComment(String commentId) async {
     try {
-      _checkFirebaseAvailable();
+      // Get current likes count
+      final response = await supabase!.from('comments').select('likes').eq('id', commentId).maybeSingle();
 
-      await _commentsCollection!.doc(commentId).update({'likes': FieldValue.increment(-1)});
+      if (response == null) {
+        throw NotFoundException('Comment with ID "$commentId" not found');
+      }
+
+      final currentLikes = response['likes'] as int? ?? 0;
+
+      // Decrement likes (don't go below 0)
+      final newLikes = currentLikes > 0 ? currentLikes - 1 : 0;
+
+      await supabase!.from('comments').update({'likes': newLikes}).eq('id', commentId);
     } catch (e) {
-      throw ServerException('Failed to unlike comment: ${e.toString()}');
+      if (e is NotFoundException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Unliking comment');
     }
   }
 
+  // ==================== GET COMMENT COUNT ====================
   @override
   Future<int> getCommentCount(String postId) async {
     try {
-      _checkFirebaseAvailable();
+      final count = await supabase!
+          .from('comments')
+          .select()
+          .eq('post_id', postId)
+          .eq('is_approved', true)
+          .count(CountOption.exact);
 
-      final snapshot = await _commentsCollection!
-          .where('postId', isEqualTo: postId)
-          .where('isApproved', isEqualTo: true)
-          .count()
-          .get();
-
-      return snapshot.count ?? 0;
+      return count.count;
     } catch (e) {
-      throw ServerException('Failed to get comment count: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Getting comment count');
     }
   }
 
+  // ==================== REPORT COMMENT ====================
   @override
   Future<void> reportComment({required String commentId, required String reason}) async {
     try {
-      _checkFirebaseAvailable();
+      if (reason.trim().isEmpty) {
+        throw ValidationException('Report reason cannot be empty');
+      }
 
-      await firestore!.collection('comment_reports').add({
-        'commentId': commentId,
-        'reason': reason,
-        'timestamp': Timestamp.now(),
+      // Verify comment exists
+      final commentExists = await supabase!.from('comments').select('id').eq('id', commentId).maybeSingle();
+
+      if (commentExists == null) {
+        throw NotFoundException('Comment with ID "$commentId" not found');
+      }
+
+      // Insert report
+      await supabase!.from('comment_reports').insert({
+        'comment_id': commentId,
+        'reason': reason.trim(),
+        'timestamp': DateTime.now().toIso8601String(),
         'status': 'pending',
       });
     } catch (e) {
-      throw ServerException('Failed to report comment: ${e.toString()}');
+      if (e is NotFoundException || e is ValidationException) rethrow;
+      throw ExceptionHandler.parse(e, context: 'Reporting comment');
     }
   }
 }

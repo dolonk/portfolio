@@ -1,5 +1,4 @@
 import '../../domain/entities/blog/comment.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommentModel extends Comment {
   const CommentModel({
@@ -19,39 +18,39 @@ class CommentModel extends Comment {
 
   // ==================== FIREBASE CONVERSION ====================
 
-  /// Firebase Document to Model
-  factory CommentModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-
+  /// Create CommentModel from Supabase response
+  factory CommentModel.fromSupabase(Map<String, dynamic> json) {
     return CommentModel(
-      id: doc.id,
-      postId: data['postId'] ?? '',
-      authorName: data['authorName'] ?? 'Anonymous',
-      authorEmail: data['authorEmail'] ?? '',
-      authorImage: data['authorImage'] ?? 'assets/home/hero/default_avatar.png',
-      content: data['content'] ?? '',
-      timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      likes: data['likes'] ?? 0,
-      parentId: data['parentId'],
-      isApproved: data['isApproved'] ?? true,
-      isAuthorReply: data['isAuthorReply'] ?? false,
+      id: json['id'] as String,
+      postId: json['post_id'] as String,
+      parentId: json['parent_id'] as String?,
+      authorName: json['author_name'] as String,
+      authorEmail: json['author_email'] as String,
+      authorImage: json['author_image'] as String? ?? '',
+      content: json['content'] as String,
+      likes: json['likes'] as int? ?? 0,
+      isApproved: json['is_approved'] as bool? ?? false,
+      isAuthorReply: json['is_author_reply'] as bool? ?? false,
+      timestamp: json['timestamp'] != null ? DateTime.parse(json['timestamp'] as String) : DateTime.now(),
       replies: [], // Replies loaded separately
     );
   }
 
-  /// Model to Firebase Map
-  Map<String, dynamic> toFirestore() {
+  /// Convert CommentModel to Supabase JSON
+  Map<String, dynamic> toSupabase() {
     return {
-      'postId': postId,
-      'authorName': authorName,
-      'authorEmail': authorEmail,
-      'authorImage': authorImage,
+      'id': id,
+      'post_id': postId,
+      'parent_id': parentId,
+      'author_name': authorName,
+      'author_email': authorEmail,
+      'author_image': authorImage,
       'content': content,
-      'timestamp': Timestamp.fromDate(timestamp),
       'likes': likes,
-      'parentId': parentId,
-      'isApproved': isApproved,
-      'isAuthorReply': isAuthorReply,
+      'is_approved': isApproved,
+      'is_author_reply': isAuthorReply,
+      'timestamp': timestamp.toIso8601String(),
+      'created_at': DateTime.now().toIso8601String(),
     };
   }
 

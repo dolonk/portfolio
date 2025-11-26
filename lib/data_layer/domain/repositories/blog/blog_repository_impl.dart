@@ -8,39 +8,32 @@ import '../../../data_sources/remote/blog/blog_remote_datasource.dart';
 
 class BlogRepositoryImpl implements BlogRepository {
   final BlogRemoteDataSource remoteDataSource;
-  final bool useFirebase;
+  final bool useSupabase;
 
-  BlogRepositoryImpl({required this.remoteDataSource, this.useFirebase = false});
+  BlogRepositoryImpl({required this.remoteDataSource, this.useSupabase = false});
 
+  // ==================== GET ALL POSTS ====================
   @override
   Future<Either<Failure, List<BlogPost>>> getAllPosts() async {
     try {
-      if (useFirebase) {
-        // Firebase থেকে data fetch
+      if (useSupabase) {
         final posts = await remoteDataSource.getAllPosts();
-        print('get firebase data dolon');
         return Right(posts);
       } else {
-        // Static data use
         final posts = BlogPostModel.getStaticPosts();
-        print('get static data dolon');
-        // Simulate network delay
         await Future.delayed(const Duration(milliseconds: 500));
         return Right(posts);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
-    } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load posts: ${e.toString()}'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Getting all blog posts'));
     }
   }
 
+  // ==================== GET FEATURED POSTS ====================
   @override
   Future<Either<Failure, List<BlogPost>>> getFeaturedPosts() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final posts = await remoteDataSource.getFeaturedPosts();
         return Right(posts);
       } else {
@@ -48,36 +41,37 @@ class BlogRepositoryImpl implements BlogRepository {
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(posts);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load featured posts'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Getting featured posts'));
     }
   }
 
+  // ==================== GET POST BY ID ====================
   @override
   Future<Either<Failure, BlogPost>> getPostById(String id) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final post = await remoteDataSource.getPostById(id);
         return Right(post);
       } else {
         final posts = BlogPostModel.getStaticPosts();
-        final post = posts.firstWhere((p) => p.id == id, orElse: () => throw ServerException('Post not found'));
+        final post = posts.firstWhere(
+          (p) => p.id == id,
+          orElse: () => throw NotFoundException('Post with ID "$id" not found'),
+        );
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(post);
       }
-    } on ServerException catch (e) {
-      return Left(NotFoundFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load post'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Getting post by ID'));
     }
   }
 
+  // ==================== GET POSTS BY TAG ====================
   @override
   Future<Either<Failure, List<BlogPost>>> getPostsByTag(String tag) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final posts = await remoteDataSource.getPostsByTag(tag);
         return Right(posts);
       } else {
@@ -85,21 +79,19 @@ class BlogRepositoryImpl implements BlogRepository {
         await Future.delayed(const Duration(milliseconds: 300));
         return Right(posts);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load posts by tag'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Getting posts by tag'));
     }
   }
 
+  // ==================== GET ALL TAGS ====================
   @override
   Future<Either<Failure, List<String>>> getAllTags() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final tags = await remoteDataSource.getAllTags();
         return Right(tags);
       } else {
-        // Static data থেকে unique tags extract
         final posts = BlogPostModel.getStaticPosts();
         final allTags = <String>{};
         for (var post in posts) {
@@ -109,76 +101,86 @@ class BlogRepositoryImpl implements BlogRepository {
         return Right(allTags.toList()..sort());
       }
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load tags'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Getting all tags'));
     }
   }
 
-  /// Admin section
+  // ==================== CREATE POST ====================
   @override
   Future<Either<Failure, void>> createPost(BlogPost post) async {
     try {
-      if (!useFirebase) {
-        return Left(ServerFailure(message: 'Firebase not configured. Cannot create post.'));
+      if (!useSupabase) {
+        throw ServerException(
+          'Supabase not configured. Cannot create post.',
+          code: 'SUPABASE_NOT_CONFIGURED',
+        );
       }
+
       await remoteDataSource.createPost(post as BlogPostModel);
       return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to create post'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Creating blog post'));
     }
   }
 
+  // ==================== UPDATE POST ====================
   @override
   Future<Either<Failure, void>> updatePost(BlogPost post) async {
     try {
-      if (!useFirebase) {
-        return Left(ServerFailure(message: 'Firebase not configured. Cannot update post.'));
+      if (!useSupabase) {
+        throw ServerException(
+          'Supabase not configured. Cannot update post.',
+          code: 'SUPABASE_NOT_CONFIGURED',
+        );
       }
+
       await remoteDataSource.updatePost(post as BlogPostModel);
       return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to update post'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Updating blog post'));
     }
   }
 
+  // ==================== DELETE POST ====================
   @override
   Future<Either<Failure, void>> deletePost(String id) async {
     try {
-      if (!useFirebase) {
-        return Left(ServerFailure(message: 'Firebase not configured. Cannot delete post.'));
+      if (!useSupabase) {
+        throw ServerException(
+          'Supabase not configured. Cannot delete post.',
+          code: 'SUPABASE_NOT_CONFIGURED',
+        );
       }
+
       await remoteDataSource.deletePost(id);
       return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to delete post'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Deleting blog post'));
     }
   }
 
+  // ==================== INCREMENT VIEW COUNT ====================
   @override
   Future<Either<Failure, void>> incrementViewCount(String id) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         await remoteDataSource.incrementViewCount(id);
       }
       return const Right(null);
     } catch (e) {
+      // Silently fail for view count (non-critical)
       return const Right(null);
     }
   }
 
+  // ==================== SEARCH POSTS ====================
   @override
   Future<Either<Failure, List<BlogPost>>> searchPosts(String query) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final posts = await remoteDataSource.searchPosts(query);
         return Right(posts);
       } else {
-        // Static data তে search
         final allPosts = BlogPostModel.getStaticPosts();
         final searchQuery = query.toLowerCase();
 
@@ -193,32 +195,26 @@ class BlogRepositoryImpl implements BlogRepository {
         return Right(filteredPosts);
       }
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to search posts'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Searching posts'));
     }
   }
 
+  // ==================== GET RECENT POSTS ====================
   @override
   Future<Either<Failure, List<BlogPost>>> getRecentPosts({int limit = 5}) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final posts = await remoteDataSource.getRecentPosts(limit: limit);
         return Right(posts);
       } else {
-        // Static data - sort by date and take limit
         final allPosts = BlogPostModel.getStaticPosts();
-
-        // Sort by createdAt descending (newest first)
         allPosts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-
         final recentPosts = allPosts.take(limit).toList();
-
         await Future.delayed(const Duration(milliseconds: 200));
         return Right(recentPosts);
       }
-    } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Failed to load recent posts'));
+      return Left(ExceptionHandler.parseToFailure(e, context: 'Getting recent posts'));
     }
   }
 }

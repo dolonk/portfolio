@@ -1,7 +1,7 @@
+import 'failures.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Base exception class
 abstract class AppException implements Exception {
   final String message;
   final String? code;
@@ -13,44 +13,38 @@ abstract class AppException implements Exception {
   String toString() => '$runtimeType: $message${code != null ? ' (Code: $code)' : ''}';
 }
 
-/// Server/API related errors
-class _ServerException extends AppException {
+// ==================== PUBLIC EXCEPTIONS ====================
+class ServerException extends AppException {
   ServerException(super.message, {super.code, super.originalError});
 }
 
-/// Database/Supabase errors
+class ValidationException extends AppException {
+  ValidationException(super.message, {super.code, super.originalError});
+}
+
+class NotFoundException extends AppException {
+  NotFoundException(super.message, {super.code, super.originalError});
+}
+
+// ==================== PRIVATE EXCEPTIONS ====================
 class _DatabaseException extends AppException {
   _DatabaseException(super.message, {super.code, super.originalError});
 }
 
-/// Authentication errors
 class _AuthenticationException extends AppException {
   _AuthenticationException(super.message, {super.code, super.originalError});
 }
 
-/// Network connectivity errors
-class NetworkException extends AppException {
-  NetworkException(super.message, {super.code, super.originalError});
+class _NetworkException extends AppException {
+  _NetworkException(super.message, {super.code, super.originalError});
 }
 
-/// Cache related errors
 class _CacheException extends AppException {
   _CacheException(super.message, {super.code, super.originalError});
 }
 
-/// Validation errors
-class _ValidationException extends AppException {
-  _ValidationException(super.message, {super.code, super.originalError});
-}
-
-/// Permission/Authorization errors
 class _PermissionException extends AppException {
   _PermissionException(super.message, {super.code, super.originalError});
-}
-
-/// Data not found errors
-class _NotFoundException extends AppException {
-  _NotFoundException(super.message, {super.code, super.originalError});
 }
 
 // ==================== EXCEPTION HANDLER ====================
@@ -77,14 +71,21 @@ class ExceptionHandler {
 
     // ==================== CUSTOM APP EXCEPTIONS ====================
     if (error is AppException) {
-      return error; // Already handled, return as-is
+      return error;
+    }
+
+    // ==================== CACHE/STORAGE ERRORS ====================
+    if (_isCacheError(errorString)) {
+      return _CacheException(
+        'Local storage error. Please clear app data and try again.',
+        code: 'CACHE_ERROR',
+        originalError: error,
+      );
     }
 
     // ==================== NETWORK ERRORS ====================
-    if (errorString.contains('socketexception') ||
-        errorString.contains('failed host lookup') ||
-        errorString.contains('network')) {
-      return NetworkException(
+    if (_isNetworkError(errorString)) {
+      return _NetworkException(
         'No internet connection. Please check your network and try again.',
         code: 'NETWORK_ERROR',
         originalError: error,
@@ -93,7 +94,7 @@ class ExceptionHandler {
 
     // ==================== TIMEOUT ERRORS ====================
     if (errorString.contains('timeout')) {
-      return NetworkException(
+      return _NetworkException(
         'Request timeout. Please check your connection and try again.',
         code: 'TIMEOUT',
         originalError: error,
@@ -101,8 +102,8 @@ class ExceptionHandler {
     }
 
     // ==================== FORMAT ERRORS ====================
-    if (errorString.contains('formatexception') || errorString.contains('invalid format')) {
-      return _ValidationException(
+    if (_isFormatError(errorString)) {
+      return ValidationException(
         'Invalid data format received. Please try again.',
         code: 'FORMAT_ERROR',
         originalError: error,
@@ -115,6 +116,58 @@ class ExceptionHandler {
       code: 'UNKNOWN_ERROR',
       originalError: error,
     );
+  }
+
+  // ==================== PARSE TO FAILURE ====================
+  static Failure parseToFailure(Object error, {String context = 'Operation'}) {
+    final exception = parse(error, context: context);
+
+    switch (exception.runtimeType) {
+      case ServerException _:
+        return ServerFailure(message: exception.message, code: exception.code);
+      case _DatabaseException _:
+        return DatabaseFailure(message: exception.message, code: exception.code);
+      case _NetworkException _:
+        return NetworkFailure(message: exception.message, code: exception.code);
+      case _AuthenticationException _:
+        return AuthFailure(message: exception.message, code: exception.code);
+      case _PermissionException _:
+        return PermissionFailure(message: exception.message, code: exception.code);
+      case NotFoundException _:
+        return NotFoundFailure(message: exception.message, code: exception.code);
+      case ValidationException _:
+        return ValidationFailure(message: exception.message, code: exception.code);
+      case _CacheException _:
+        return CacheFailure(message: exception.message, code: exception.code);
+      default:
+        return ServerFailure(message: exception.message, code: exception.code);
+    }
+  }
+
+  // ==================== PRIVATE HELPER METHODS ====================
+  static bool _isCacheError(String errorString) {
+    return errorString.contains('cache') ||
+        errorString.contains('storage') ||
+        errorString.contains('hive') ||
+        errorString.contains('shared preferences') ||
+        errorString.contains('local storage') ||
+        errorString.contains('filenotfound') ||
+        errorString.contains('permission denied') ||
+        errorString.contains('storage full');
+  }
+
+  static bool _isNetworkError(String errorString) {
+    return errorString.contains('socketexception') ||
+        errorString.contains('failed host lookup') ||
+        errorString.contains('network') ||
+        errorString.contains('connection');
+  }
+
+  static bool _isFormatError(String errorString) {
+    return errorString.contains('formatexception') ||
+        errorString.contains('invalid format') ||
+        errorString.contains('type') ||
+        errorString.contains('json');
   }
 
   // ==================== AUTH EXCEPTION HANDLER ====================
@@ -142,7 +195,7 @@ class ExceptionHandler {
       userMessage = "User account not found.";
       code = 'USER_NOT_FOUND';
     } else {
-      userMessage = error.message;
+      userMessage = "Authentication failed. Please try again.";
       code = 'AUTH_ERROR';
     }
 
@@ -181,57 +234,72 @@ class ExceptionHandler {
     if (code == '23502' || message.contains('not null')) {
       userMessage = "Required field is missing. Please provide all required information.";
       errorCode = 'NOT_NULL_VIOLATION';
-      return _ValidationException(userMessage, code: errorCode, originalError: error);
+      return ValidationException(userMessage, code: errorCode, originalError: error);
     }
 
     // Data Type Error
     if (code == '22P02' || message.contains('invalid input syntax')) {
       userMessage = "Invalid data type provided. Please check your input.";
       errorCode = 'INVALID_DATA_TYPE';
-      return _ValidationException(userMessage, code: errorCode, originalError: error);
+      return ValidationException(userMessage, code: errorCode, originalError: error);
     }
 
     // Out of Range
     if (code == '22003' || message.contains('out of range')) {
       userMessage = "Data value is out of acceptable range.";
       errorCode = 'OUT_OF_RANGE';
-      return _ValidationException(userMessage, code: errorCode, originalError: error);
+      return ValidationException(userMessage, code: errorCode, originalError: error);
     }
 
     // Not Found
     if (code == 'PGRST116' || message.contains('not found')) {
       userMessage = "Requested data not found.";
       errorCode = 'NOT_FOUND';
-      return _NotFoundException(userMessage, code: errorCode, originalError: error);
+      return NotFoundException(userMessage, code: errorCode, originalError: error);
     }
 
     // Connection Error
     if (message.contains('connection') || message.contains('could not connect')) {
       userMessage = "Database connection failed. Please try again.";
       errorCode = 'CONNECTION_ERROR';
-      return NetworkException(userMessage, code: errorCode, originalError: error);
+      return _NetworkException(userMessage, code: errorCode, originalError: error);
     }
 
     // Generic Database Error
-    return _DatabaseException(error.message, code: code ?? 'DB_ERROR', originalError: error);
+    return _DatabaseException(
+      "Database operation failed. Please try again.",
+      code: code ?? 'DB_ERROR',
+      originalError: error,
+    );
   }
 
-  /// Quick method to get user-friendly message only
+  // ==================== PUBLIC HELPER METHODS ====================
   static String getMessage(Object error, {String context = 'Operation'}) {
     return parse(error, context: context).message;
   }
 
-  /// Check if error is network related
   static bool isNetworkError(Object error) {
-    return error is NetworkException ||
-        error.toString().toLowerCase().contains('network') ||
-        error.toString().toLowerCase().contains('socket');
+    final parsed = error is AppException ? error : parse(error);
+    return parsed is _NetworkException;
   }
 
-  /// Check if error is permission related
   static bool isPermissionError(Object error) {
-    return error is _PermissionException ||
-        error.toString().toLowerCase().contains('rls') ||
-        error.toString().toLowerCase().contains('permission');
+    final parsed = error is AppException ? error : parse(error);
+    return parsed is _PermissionException;
+  }
+
+  static bool isCacheError(Object error) {
+    final parsed = error is AppException ? error : parse(error);
+    return parsed is _CacheException;
+  }
+
+  static bool isValidationError(Object error) {
+    final parsed = error is AppException ? error : parse(error);
+    return parsed is ValidationException;
+  }
+
+  static bool isAuthError(Object error) {
+    final parsed = error is AppException ? error : parse(error);
+    return parsed is _AuthenticationException;
   }
 }
