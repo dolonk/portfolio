@@ -1,6 +1,7 @@
 import '../../../../core/error/exceptions.dart';
 import '../../../model/portfolio/project_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:portfolio/core/config/supabase_config.dart';
 
 abstract class ProjectRemoteDataSource {
   Future<List<ProjectModel>> getAllProjects();
@@ -28,7 +29,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   Future<List<ProjectModel>> getAllProjects() async {
     try {
       final response = await supabase!
-          .from('projects')
+          .from(SupabaseConfig.projectsTable)
           .select()
           .eq('is_published', true)
           .order('updated_at', ascending: false);
@@ -44,7 +45,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   Future<List<ProjectModel>> getFeaturedProjects() async {
     try {
       final response = await supabase!
-          .from('projects')
+          .from(SupabaseConfig.projectsTable)
           .select()
           .eq('is_published', true)
           .eq('is_featured', true)
@@ -65,7 +66,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
       }
 
       final response = await supabase!
-          .from('projects')
+          .from(SupabaseConfig.projectsTable)
           .select()
           .eq('is_published', true)
           .order('updated_at', ascending: false)
@@ -82,7 +83,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<ProjectModel> getProjectById(String id) async {
     try {
-      final response = await supabase!.from('projects').select().eq('id', id).maybeSingle();
+      final response = await supabase!.from(SupabaseConfig.projectsTable).select().eq('id', id).maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Project with ID "$id" not found');
@@ -104,7 +105,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
       }
 
       final response = await supabase!
-          .from('projects')
+          .from(SupabaseConfig.projectsTable)
           .select()
           .eq('is_published', true)
           .eq('category', category.trim())
@@ -127,7 +128,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
 
       // PostgresSQL array contains operator
       final response = await supabase!
-          .from('projects')
+          .from(SupabaseConfig.projectsTable)
           .select()
           .eq('is_published', true)
           .contains('platforms', [platform.trim()])
@@ -144,7 +145,10 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<List<String>> getAllCategories() async {
     try {
-      final response = await supabase!.from('projects').select('category').eq('is_published', true);
+      final response = await supabase!
+          .from(SupabaseConfig.projectsTable)
+          .select('category')
+          .eq('is_published', true);
 
       final Set<String> categories = {};
 
@@ -165,7 +169,10 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<List<String>> getAllPlatforms() async {
     try {
-      final response = await supabase!.from('projects').select('platforms').eq('is_published', true);
+      final response = await supabase!
+          .from(SupabaseConfig.projectsTable)
+          .select('platforms')
+          .eq('is_published', true);
 
       final Set<String> platforms = {};
 
@@ -184,7 +191,10 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<List<String>> getAllTechStacks() async {
     try {
-      final response = await supabase!.from('projects').select('tech_stack').eq('is_published', true);
+      final response = await supabase!
+          .from(SupabaseConfig.projectsTable)
+          .select('tech_stack')
+          .eq('is_published', true);
 
       final Set<String> techStacks = {};
 
@@ -208,7 +218,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
       }
 
       // Fetch all published projects (client-side filtering)
-      final response = await supabase!.from('projects').select().eq('is_published', true);
+      final response = await supabase!.from(SupabaseConfig.projectsTable).select().eq('is_published', true);
 
       final searchQuery = query.toLowerCase().trim();
 
@@ -240,7 +250,11 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   Future<void> incrementViewCount(String id) async {
     try {
       // Get current view count
-      final response = await supabase!.from('projects').select('view_count').eq('id', id).maybeSingle();
+      final response = await supabase!
+          .from(SupabaseConfig.projectsTable)
+          .select('view_count')
+          .eq('id', id)
+          .maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Project with ID "$id" not found');
@@ -249,7 +263,10 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
       final currentCount = response['view_count'] as int? ?? 0;
 
       // Increment and update
-      await supabase!.from('projects').update({'view_count': currentCount + 1}).eq('id', id);
+      await supabase!
+          .from(SupabaseConfig.projectsTable)
+          .update({'view_count': currentCount + 1})
+          .eq('id', id);
     } catch (e) {
       if (e is NotFoundException) rethrow;
       throw ExceptionHandler.parse(e, context: 'Incrementing view count');
@@ -260,7 +277,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<void> createProject(ProjectModel project) async {
     try {
-      await supabase!.from('projects').insert(project.toSupabase());
+      await supabase!.from(SupabaseConfig.projectsTable).insert(project.toSupabase());
     } catch (e) {
       throw ExceptionHandler.parse(e, context: 'Creating project');
     }
@@ -271,7 +288,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   Future<void> updateProject(ProjectModel project) async {
     try {
       final response = await supabase!
-          .from('projects')
+          .from(SupabaseConfig.projectsTable)
           .update(project.toSupabase())
           .eq('id', project.id)
           .select();
@@ -289,7 +306,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<void> deleteProject(String id) async {
     try {
-      final response = await supabase!.from('projects').delete().eq('id', id).select();
+      final response = await supabase!.from(SupabaseConfig.projectsTable).delete().eq('id', id).select();
 
       if (response.isEmpty) {
         throw NotFoundException('Project with ID "$id" not found');

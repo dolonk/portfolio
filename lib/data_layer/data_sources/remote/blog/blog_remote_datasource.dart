@@ -1,3 +1,4 @@
+import 'package:portfolio/core/config/supabase_config.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../model/blog/blog_post_model.dart';
@@ -25,7 +26,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   Future<List<BlogPostModel>> getAllPosts() async {
     try {
       final response = await supabase!
-          .from('blog_posts')
+          .from(SupabaseConfig.blogPostsTable)
           .select()
           .eq('is_published', true)
           .order('created_at', ascending: false);
@@ -41,7 +42,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   Future<List<BlogPostModel>> getFeaturedPosts() async {
     try {
       final response = await supabase!
-          .from('blog_posts')
+          .from(SupabaseConfig.blogPostsTable)
           .select()
           .eq('is_published', true)
           .eq('is_featured', true)
@@ -57,7 +58,11 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<BlogPostModel> getPostById(String id) async {
     try {
-      final response = await supabase!.from('blog_posts').select().eq('id', id).maybeSingle();
+      final response = await supabase!
+          .from(SupabaseConfig.blogPostsTable)
+          .select()
+          .eq('id', id)
+          .maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Blog post with ID "$id" not found');
@@ -75,7 +80,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   Future<List<BlogPostModel>> getPostsByTag(String tag) async {
     try {
       final response = await supabase!
-          .from('blog_posts')
+          .from(SupabaseConfig.blogPostsTable)
           .select()
           .eq('is_published', true)
           .contains('tags', [tag])
@@ -91,7 +96,10 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<String>> getAllTags() async {
     try {
-      final response = await supabase!.from('blog_posts').select('tags').eq('is_published', true);
+      final response = await supabase!
+          .from(SupabaseConfig.blogPostsTable)
+          .select('tags')
+          .eq('is_published', true);
 
       final Set<String> tags = {};
 
@@ -110,7 +118,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> createPost(BlogPostModel post) async {
     try {
-      await supabase!.from('blog_posts').insert(post.toSupabase());
+      await supabase!.from(SupabaseConfig.blogPostsTable).insert(post.toSupabase());
     } catch (e) {
       throw ExceptionHandler.parse(e, context: 'Creating blog post');
     }
@@ -121,7 +129,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   Future<void> updatePost(BlogPostModel post) async {
     try {
       final response = await supabase!
-          .from('blog_posts')
+          .from(SupabaseConfig.blogPostsTable)
           .update(post.toSupabase())
           .eq('id', post.id)
           .select();
@@ -139,7 +147,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> deletePost(String id) async {
     try {
-      final response = await supabase!.from('blog_posts').delete().eq('id', id).select();
+      final response = await supabase!.from(SupabaseConfig.blogPostsTable).delete().eq('id', id).select();
 
       if (response.isEmpty) {
         throw NotFoundException('Blog post with ID "$id" not found');
@@ -154,7 +162,11 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<void> incrementViewCount(String id) async {
     try {
-      final response = await supabase!.from('blog_posts').select('view_count').eq('id', id).maybeSingle();
+      final response = await supabase!
+          .from(SupabaseConfig.blogPostsTable)
+          .select('view_count')
+          .eq('id', id)
+          .maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Blog post with ID "$id" not found');
@@ -162,7 +174,10 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
 
       final currentCount = response['view_count'] as int? ?? 0;
 
-      await supabase!.from('blog_posts').update({'view_count': currentCount + 1}).eq('id', id);
+      await supabase!
+          .from(SupabaseConfig.blogPostsTable)
+          .update({'view_count': currentCount + 1})
+          .eq('id', id);
     } catch (e) {
       if (e is NotFoundException) rethrow;
       throw ExceptionHandler.parse(e, context: 'Incrementing view count');
@@ -177,7 +192,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
         throw ValidationException('Search query cannot be empty');
       }
 
-      final response = await supabase!.from('blog_posts').select().eq('is_published', true);
+      final response = await supabase!.from(SupabaseConfig.blogPostsTable).select().eq('is_published', true);
 
       final searchQuery = query.toLowerCase().trim();
 
@@ -207,7 +222,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       }
 
       final response = await supabase!
-          .from('blog_posts')
+          .from(SupabaseConfig.blogPostsTable)
           .select()
           .eq('is_published', true)
           .order('created_at', ascending: false)

@@ -1,3 +1,5 @@
+import 'package:portfolio/core/config/supabase_config.dart';
+
 import '../../../../core/error/exceptions.dart';
 import '../../../model/blog/comment_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -25,7 +27,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
     try {
       // Get parent comments (no parent_id)
       final response = await supabase!
-          .from('comments')
+          .from(SupabaseConfig.commentsTable)
           .select()
           .eq('post_id', postId)
           .eq('is_approved', true)
@@ -39,7 +41,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
 
         // Load replies for this comment
         final repliesResponse = await supabase!
-            .from('comments')
+            .from(SupabaseConfig.commentsTable)
             .select()
             .eq('parent_id', comment.id)
             .eq('is_approved', true)
@@ -60,7 +62,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   @override
   Future<CommentModel> getCommentById(String commentId) async {
     try {
-      final response = await supabase!.from('comments').select().eq('id', commentId).maybeSingle();
+      final response = await supabase!.from(SupabaseConfig.commentsTable).select().eq('id', commentId).maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Comment with ID "$commentId" not found');
@@ -77,7 +79,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   @override
   Future<CommentModel> addComment(CommentModel comment) async {
     try {
-      final response = await supabase!.from('comments').insert(comment.toSupabase()).select().single();
+      final response = await supabase!.from(SupabaseConfig.commentsTable).insert(comment.toSupabase()).select().single();
 
       return CommentModel.fromSupabase(response);
     } catch (e) {
@@ -90,7 +92,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   Future<CommentModel> addReply({required String parentId, required CommentModel reply}) async {
     try {
       // Verify parent comment exists
-      final parentExists = await supabase!.from('comments').select('id').eq('id', parentId).maybeSingle();
+      final parentExists = await supabase!.from(SupabaseConfig.commentsTable).select('id').eq('id', parentId).maybeSingle();
 
       if (parentExists == null) {
         throw NotFoundException('Parent comment with ID "$parentId" not found');
@@ -99,7 +101,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
       final replyWithParent = reply.copyWith(parentId: parentId);
 
       final response = await supabase!
-          .from('comments')
+          .from(SupabaseConfig.commentsTable)
           .insert(replyWithParent.toSupabase())
           .select()
           .single();
@@ -116,7 +118,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   Future<void> updateComment(CommentModel comment) async {
     try {
       final response = await supabase!
-          .from('comments')
+          .from(SupabaseConfig.commentsTable)
           .update(comment.toSupabase())
           .eq('id', comment.id)
           .select();
@@ -135,10 +137,10 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   Future<void> deleteComment(String commentId) async {
     try {
       // Delete all replies first (cascade delete)
-      await supabase!.from('comments').delete().eq('parent_id', commentId);
+      await supabase!.from(SupabaseConfig.commentsTable).delete().eq('parent_id', commentId);
 
       // Delete the comment itself
-      final response = await supabase!.from('comments').delete().eq('id', commentId).select();
+      final response = await supabase!.from(SupabaseConfig.commentsTable).delete().eq('id', commentId).select();
 
       if (response.isEmpty) {
         throw NotFoundException('Comment with ID "$commentId" not found');
@@ -154,7 +156,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   Future<void> likeComment(String commentId) async {
     try {
       // Get current likes count
-      final response = await supabase!.from('comments').select('likes').eq('id', commentId).maybeSingle();
+      final response = await supabase!.from(SupabaseConfig.commentsTable).select('likes').eq('id', commentId).maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Comment with ID "$commentId" not found');
@@ -163,7 +165,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
       final currentLikes = response['likes'] as int? ?? 0;
 
       // Increment likes
-      await supabase!.from('comments').update({'likes': currentLikes + 1}).eq('id', commentId);
+      await supabase!.from(SupabaseConfig.commentsTable).update({'likes': currentLikes + 1}).eq('id', commentId);
     } catch (e) {
       if (e is NotFoundException) rethrow;
       throw ExceptionHandler.parse(e, context: 'Liking comment');
@@ -175,7 +177,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   Future<void> unlikeComment(String commentId) async {
     try {
       // Get current likes count
-      final response = await supabase!.from('comments').select('likes').eq('id', commentId).maybeSingle();
+      final response = await supabase!.from(SupabaseConfig.commentsTable).select('likes').eq('id', commentId).maybeSingle();
 
       if (response == null) {
         throw NotFoundException('Comment with ID "$commentId" not found');
@@ -186,7 +188,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
       // Decrement likes (don't go below 0)
       final newLikes = currentLikes > 0 ? currentLikes - 1 : 0;
 
-      await supabase!.from('comments').update({'likes': newLikes}).eq('id', commentId);
+      await supabase!.from(SupabaseConfig.commentsTable).update({'likes': newLikes}).eq('id', commentId);
     } catch (e) {
       if (e is NotFoundException) rethrow;
       throw ExceptionHandler.parse(e, context: 'Unliking comment');
@@ -198,7 +200,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
   Future<int> getCommentCount(String postId) async {
     try {
       final count = await supabase!
-          .from('comments')
+          .from(SupabaseConfig.commentsTable)
           .select()
           .eq('post_id', postId)
           .eq('is_approved', true)
@@ -219,7 +221,7 @@ class CommentRemoteDataSourceImpl implements CommentRemoteDataSource {
       }
 
       // Verify comment exists
-      final commentExists = await supabase!.from('comments').select('id').eq('id', commentId).maybeSingle();
+      final commentExists = await supabase!.from(SupabaseConfig.commentsTable).select('id').eq('id', commentId).maybeSingle();
 
       if (commentExists == null) {
         throw NotFoundException('Comment with ID "$commentId" not found');
