@@ -1,5 +1,14 @@
 import 'package:get_it/get_it.dart';
+import 'package:flutter/cupertino.dart';
+import '../config/supabase_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../features/blog/providers/blog_provider.dart';
+import '../../features/portfolio/providers/project_provider.dart';
+import '../../features/blog_detail/providers/comment_provider.dart';
+import '../../data_layer/domain/repositories/blog/blog_repository.dart';
+import '../../data_layer/domain/repositories/blog/blog_repository_impl.dart';
+import '../../data_layer/data_sources/remote/blog/blog_remote_datasource.dart';
 import '../../data_layer/data_sources/remote/comment/comment_remote_datasource.dart';
 import '../../data_layer/data_sources/remote/portfolio/project_remote_datasource.dart';
 import '../../data_layer/domain/repositories/comment/comment_repository.dart';
@@ -7,63 +16,58 @@ import '../../data_layer/domain/repositories/comment/comment_repository_impl.dar
 import '../../data_layer/domain/repositories/portfolio/project_repository.dart';
 import '../../data_layer/domain/repositories/portfolio/project_repository_impl.dart';
 import '../../features/admin_section/auth/providers/admin_auth_provider.dart';
-import '../../features/blog/providers/blog_provider.dart';
-import '../../data_layer/domain/repositories/blog/blog_repository.dart';
-import '../../data_layer/domain/repositories/blog/blog_repository_impl.dart';
-import '../../data_layer/data_sources/remote/blog/blog_remote_datasource.dart';
-import '../../features/blog_detail/providers/comment_provider.dart';
-import '../../features/portfolio/providers/project_provider.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> initializeDependencies({bool useFirebase = false}) async {
-  print('🚀 Initializing Dependencies...');
-  print('📱 Firebase Mode: ${useFirebase ? "ENABLED ✅" : "DISABLED ❌ (Static Data)"}');
+Future<void> initializeDependencies({bool useSupabase = false}) async {
+  debugPrint('🚀 Initializing Dependencies...');
+  debugPrint('📱 Supabase Mode: ${useSupabase ? "ENABLED ✅" : "DISABLED ❌ (Static Data)"}');
 
-  // ==================== EXTERNAL DEPENDENCIES ====================
-  if (useFirebase) {
+  if (useSupabase) {
     try {
-      final firestore = FirebaseFirestore.instance;
-      getIt.registerLazySingleton<FirebaseFirestore>(() => firestore);
-      print('✅ Firebase Firestore registered');
+      await SupabaseConfig.initialize();
+      debugPrint('URL: ${SupabaseConfig.supabaseUrl}');
+
+      final supabase = SupabaseConfig.client;
+      getIt.registerLazySingleton<SupabaseClient>(() => supabase);
+      debugPrint('✅ Supabase client registered');
     } catch (e) {
-      print('⚠️ Firebase registration failed: $e');
-      print('⚠️ Falling back to static data');
+      debugPrint('❌ Supabase initialization failed: $e');
     }
   } else {
-    print('⚠️ Firebase not initialized - Using static data');
+    debugPrint('⚠️ Supabase not initialized - Using static data');
   }
 
   /// ====================  DATA SOURCES ====================
   getIt.registerLazySingleton<BlogRemoteDataSource>(
     () => BlogRemoteDataSourceImpl(
-      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
+      firestore: useSupabase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
     ),
   );
 
   getIt.registerLazySingleton<CommentRemoteDataSource>(
     () => CommentRemoteDataSourceImpl(
-      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
+      firestore: useSupabase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
     ),
   );
 
   getIt.registerLazySingleton<ProjectRemoteDataSource>(
     () => ProjectRemoteDataSourceImpl(
-      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
+      firestore: useSupabase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
     ),
   );
 
   /// ==================== REPOSITORIES ====================
   getIt.registerLazySingleton<BlogRepository>(
-    () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useFirebase: useFirebase),
+    () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useFirebase: useSupabase),
   );
 
   getIt.registerLazySingleton<CommentRepository>(
-    () => CommentRepositoryImpl(remoteDataSource: getIt<CommentRemoteDataSource>(), useFirebase: useFirebase),
+    () => CommentRepositoryImpl(remoteDataSource: getIt<CommentRemoteDataSource>(), useFirebase: useSupabase),
   );
 
   getIt.registerLazySingleton<ProjectRepository>(
-    () => ProjectRepositoryImpl(remoteDataSource: getIt<ProjectRemoteDataSource>(), useFirebase: useFirebase),
+    () => ProjectRepositoryImpl(remoteDataSource: getIt<ProjectRemoteDataSource>(), useFirebase: useSupabase),
   );
 
   /// ==================== PROVIDERS ====================
@@ -75,9 +79,7 @@ Future<void> initializeDependencies({bool useFirebase = false}) async {
 
   /// ====================  Admin Provider ====================
   getIt.registerFactory<AdminAuthProvider>(
-    () => AdminAuthProvider(
-      firestore: useFirebase && getIt.isRegistered<FirebaseFirestore>() ? getIt<FirebaseFirestore>() : null,
-    ),
+    () => AdminAuthProvider(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 
   print('✅ All Dependencies registered');

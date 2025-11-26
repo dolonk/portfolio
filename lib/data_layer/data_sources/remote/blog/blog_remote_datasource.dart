@@ -1,6 +1,6 @@
 import '../../../../core/error/exceptions.dart';
 import '../../../model/blog/blog_post_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Blog Remote DataSource Interface
 abstract class BlogRemoteDataSource {
@@ -19,97 +19,86 @@ abstract class BlogRemoteDataSource {
 
 /// Blog Remote DataSource Implementation
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
-  final FirebaseFirestore? firestore;
-  BlogRemoteDataSourceImpl({this.firestore});
+  final SupabaseClient? supabase;
 
-  // Collection reference (with null check)
-  CollectionReference? get _postsCollection => firestore?.collection('blog_posts');
+  BlogRemoteDataSourceImpl({this.supabase});
 
-  // ==================== HELPER: Check Firebase availability ====================
-  void _checkFirebaseAvailable() {
-    if (firestore == null || _postsCollection == null) {
-      throw ServerException('Firebase not initialized. Please use static data instead.');
-    }
-  }
-
+  // ==================== GET ALL POSTS ====================
   @override
   Future<List<BlogPostModel>> getAllPosts() async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!
+          .from('blog_posts')
+          .select()
+          .eq('is_published', true)
+          .order('created_at', ascending: false);
 
-      final querySnapshot = await _postsCollection!
-          .where('isPublished', isEqualTo: true)
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      return querySnapshot.docs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
+      return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
-      throw ServerException('Failed to fetch posts: ${e.toString()}');
+      throw ExceptionHandler.parse(e, context: 'Fetching all blog posts');
     }
   }
 
+  // ==================== GET FEATURED POSTS ====================
   @override
   Future<List<BlogPostModel>> getFeaturedPosts() async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!
+          .from('blog_posts')
+          .select()
+          .eq('is_published', true)
+          .eq('is_featured', true)
+          .order('created_at', ascending: false);
 
-      final querySnapshot = await _postsCollection!
-          .where('isPublished', isEqualTo: true)
-          .where('isFeatured', isEqualTo: true)
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      return querySnapshot.docs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
+      return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
       throw ServerException('Failed to fetch featured posts: ${e.toString()}');
     }
   }
 
+  // ==================== GET POST BY ID ====================
   @override
   Future<BlogPostModel> getPostById(String id) async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!.from('blog_posts').select().eq('id', id).maybeSingle();
 
-      final doc = await _postsCollection!.doc(id).get();
-
-      if (!doc.exists) {
+      if (response == null) {
         throw ServerException('Post not found');
       }
 
-      return BlogPostModel.fromFirestore(doc);
+      return BlogPostModel.fromSupabase(response);
     } catch (e) {
       throw ServerException('Failed to fetch post: ${e.toString()}');
     }
   }
 
+  // ==================== GET POSTS BY TAG ====================
   @override
   Future<List<BlogPostModel>> getPostsByTag(String tag) async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!
+          .from('blog_posts')
+          .select()
+          .eq('is_published', true)
+          .contains('tags', [tag])
+          .order('created_at', ascending: false);
 
-      final querySnapshot = await _postsCollection!
-          .where('isPublished', isEqualTo: true)
-          .where('tags', arrayContains: tag)
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      return querySnapshot.docs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
+      return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
       throw ServerException('Failed to fetch posts by tag: ${e.toString()}');
     }
   }
 
+  // ==================== GET ALL TAGS ====================
   @override
   Future<List<String>> getAllTags() async {
     try {
-      _checkFirebaseAvailable();
-
-      final querySnapshot = await _postsCollection!.where('isPublished', isEqualTo: true).get();
+      final response = await supabase!.from('blog_posts').select('tags').eq('is_published', true);
 
       final Set<String> tags = {};
-      for (var doc in querySnapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
-        final postTags = List<String>.from(data['tags'] ?? []);
+
+      for (var post in response as List) {
+        final postTags = List<String>.from(post['tags'] ?? []);
         tags.addAll(postTags);
       }
 
@@ -119,88 +108,90 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     }
   }
 
+  // ==================== CREATE POST ====================
   @override
   Future<void> createPost(BlogPostModel post) async {
     try {
-      _checkFirebaseAvailable();
-
-      await _postsCollection!.doc(post.id).set(post.toFirestore());
+      await supabase!.from('blog_posts').insert(post.toSupabase());
     } catch (e) {
       throw ServerException('Failed to create post: ${e.toString()}');
     }
   }
 
+  // ==================== UPDATE POST ====================
   @override
   Future<void> updatePost(BlogPostModel post) async {
     try {
-      _checkFirebaseAvailable();
-
-      await _postsCollection!.doc(post.id).update(post.toFirestore());
+      await supabase!.from('blog_posts').update(post.toSupabase()).eq('id', post.id);
     } catch (e) {
       throw ServerException('Failed to update post: ${e.toString()}');
     }
   }
 
+  // ==================== DELETE POST ====================
   @override
   Future<void> deletePost(String id) async {
     try {
-      _checkFirebaseAvailable();
-
-      await _postsCollection!.doc(id).delete();
+      await supabase!.from('blog_posts').delete().eq('id', id);
     } catch (e) {
       throw ServerException('Failed to delete post: ${e.toString()}');
     }
   }
 
+  // ==================== INCREMENT VIEW COUNT ====================
   @override
   Future<void> incrementViewCount(String id) async {
     try {
-      _checkFirebaseAvailable();
+      // Get current view count
+      final response = await supabase!.from('blog_posts').select('view_count').eq('id', id).maybeSingle();
 
-      await _postsCollection!.doc(id).update({'viewCount': FieldValue.increment(1)});
+      if (response != null) {
+        final currentCount = response['view_count'] as int? ?? 0;
+
+        // Increment and update
+        await supabase!.from('blog_posts').update({'view_count': currentCount + 1}).eq('id', id);
+      }
     } catch (e) {
       throw ServerException('Failed to increment view count: ${e.toString()}');
     }
   }
 
+  // ==================== SEARCH POSTS ====================
   @override
   Future<List<BlogPostModel>> searchPosts(String query) async {
     try {
-      _checkFirebaseAvailable();
-
-      final querySnapshot = await _postsCollection!.where('isPublished', isEqualTo: true).get();
+      final response = await supabase!.from('blog_posts').select().eq('is_published', true);
 
       final searchQuery = query.toLowerCase();
 
-      final filteredDocs = querySnapshot.docs.where((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        final title = (data['title'] ?? '').toLowerCase();
-        final excerpt = (data['excerpt'] ?? '').toLowerCase();
-        final tags = List<String>.from(data['tags'] ?? []);
+      final filtered = (response as List).where((post) {
+        final title = (post['title'] ?? '').toString().toLowerCase();
+        final excerpt = (post['excerpt'] ?? '').toString().toLowerCase();
+        final tags = List<String>.from(post['tags'] ?? []);
 
         return title.contains(searchQuery) ||
             excerpt.contains(searchQuery) ||
             tags.any((tag) => tag.toLowerCase().contains(searchQuery));
-      });
+      }).toList();
 
-      return filteredDocs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
+      return filtered.map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
       throw ServerException('Failed to search posts: ${e.toString()}');
     }
   }
 
+  // ==================== GET RECENT POSTS ====================
   @override
   Future<List<BlogPostModel>> getRecentPosts({int limit = 5}) async {
     try {
-      _checkFirebaseAvailable();
+      final response = await supabase!
+          .from('blog_posts')
+          .select()
+          .eq('is_published', true)
+          .order('created_at', ascending: false)
+          .limit(limit);
 
-      final querySnapshot = await _postsCollection!
-          .where('isPublished', isEqualTo: true)
-          .orderBy('createdAt', descending: true)
-          .limit(limit)
-          .get();
-
-      return querySnapshot.docs.map((doc) => BlogPostModel.fromFirestore(doc)).toList();
+      return (response as List).map((json) => BlogPostModel.fromSupabase(json)).toList();
     } catch (e) {
       throw ServerException('Failed to fetch recent posts: ${e.toString()}');
     }

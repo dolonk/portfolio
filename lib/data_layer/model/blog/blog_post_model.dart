@@ -1,5 +1,4 @@
 import '../../domain/entities/blog/blog_post.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BlogPostModel extends BlogPost {
   const BlogPostModel({
@@ -32,67 +31,74 @@ class BlogPostModel extends BlogPost {
     super.isPublished,
   });
 
-  /// Firebase to Model
-  factory BlogPostModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-
+  /// Supabase to Model
+  factory BlogPostModel.fromSupabase(Map<String, dynamic> json) {
     return BlogPostModel(
-      id: doc.id,
-      title: data['title'] ?? '',
-      excerpt: data['excerpt'] ?? '',
-      imagePath: data['imagePath'] ?? '',
-      tags: List<String>.from(data['tags'] ?? []),
-      publishedDate: data['publishedDate'] ?? '',
-      readingTime: data['readingTime'] ?? '',
-      category: data['category'] ?? 'Flutter',
-      isFeatured: data['isFeatured'] ?? false,
-      author: data['author'] ?? 'Dolon Kumar',
-      authorImage: data['authorImage'] ?? 'assets/home/hero/dolon.png',
-      authorBio: data['authorBio'] ?? 'Flutter Developer | Cross-Platform Expert with 2.6+ years experience.',
-      viewCount: data['viewCount'] ?? 0,
-      content: data['content'] ?? '',
-      videoUrl: data['videoUrl'],
-      contentImages: List<String>.from(data['contentImages'] ?? []),
-      authorSocialLinks: Map<String, String>.from(
-        data['authorSocialLinks'] ??
-            {
-              'github': 'https://github.com/dolonkumar',
-              'linkedin': 'https://linkedin.com/in/dolonkumar',
-              'twitter': 'https://twitter.com/dolonkumar',
-            },
-      ),
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      isPublished: data['isPublished'] ?? true,
+      id: json['id'] as String,
+      title: json['title'] as String? ?? '',
+      excerpt: json['excerpt'] as String? ?? '',
+      imagePath: json['image_path'] as String? ?? '',
+      tags: (json['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [], // Parse PostgresSQL arrays
+      publishedDate: json['published_date'] as String? ?? '',
+      readingTime: json['reading_time'] as String? ?? '',
+      category: json['category'] as String? ?? 'Flutter',
+      isFeatured: json['is_featured'] as bool? ?? false,
+      author: json['author'] as String? ?? 'Dolon Kumar',
+      authorImage: json['author_image'] as String? ?? 'assets/home/hero/dolon.png',
+      authorBio:
+          json['author_bio'] as String? ?? 'Flutter Developer | Cross-Platform Expert with 2.6+ years experience.',
+      viewCount: json['view_count'] as int? ?? 0,
+      content: json['content'] as String? ?? '',
+      videoUrl: json['video_url'] as String?,
+
+      // Parse content images array
+      contentImages: (json['content_images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+
+      // Parse JSONB author_social_links
+      authorSocialLinks:
+          (json['author_social_links'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(key, value.toString()),
+          ) ??
+          {
+            'github': 'https://github.com/dolonkumar',
+            'linkedin': 'https://linkedin.com/in/dolonkumar',
+            'twitter': 'https://twitter.com/dolonkumar',
+          },
+
+      // Parse timestamps
+      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : DateTime.now(),
+      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : DateTime.now(),
+      isPublished: json['is_published'] as bool? ?? true,
     );
   }
 
-  /// Model to Firebase
-  Map<String, dynamic> toFirestore() {
+  /// Model to Supabase
+  Map<String, dynamic> toSupabase() {
     return {
+      'id': id,
       'title': title,
       'excerpt': excerpt,
-      'imagePath': imagePath,
+      'image_path': imagePath,
       'category': category,
-      'tags': tags,
-      'isFeatured': isFeatured,
+      'tags': tags, // PostgresSQL text[] array
+      'is_featured': isFeatured,
       'author': author,
-      'authorImage': authorImage,
-      'authorBio': authorBio,
-      'publishedDate': publishedDate,
-      'readingTime': readingTime,
-      'viewCount': viewCount,
+      'author_image': authorImage,
+      'author_bio': authorBio,
+      'published_date': publishedDate,
+      'reading_time': readingTime,
+      'view_count': viewCount,
       'content': content,
-      'videoUrl': videoUrl,
-      'contentImages': contentImages,
-      'authorSocialLinks': authorSocialLinks,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
-      'isPublished': isPublished,
+      'video_url': videoUrl,
+      'content_images': contentImages, // PostgresSQL text[] array
+      'author_social_links': authorSocialLinks, // PostgresSQL jsonb
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+      'is_published': isPublished,
     };
   }
 
-  /// JSON to Model (for static data)
+  ///  ================================== JSON to Model (for static data) ==================================
   factory BlogPostModel.fromJson(Map<String, dynamic> json) {
     return BlogPostModel(
       id: json['id'] ?? '',

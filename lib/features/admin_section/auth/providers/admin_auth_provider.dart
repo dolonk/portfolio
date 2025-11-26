@@ -1,22 +1,21 @@
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
-import 'dart:convert';
+import 'package:portfolio/core/config/supabase_config.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../../core/error/supabase_exception_handler.dart';
 
 class AdminAuthProvider with ChangeNotifier {
-  final FirebaseFirestore? firestore;
+  final SupabaseClient? supabase;
 
-  AdminAuthProvider({this.firestore});
+  AdminAuthProvider({this.supabase});
 
   // ==================== STATE ====================
-
   bool _isAuthenticated = false;
   bool _isLoading = false;
   String? _errorMessage;
   Map<String, dynamic>? _currentAdmin;
 
   // ==================== GETTERS ====================
-
   bool get isAuthenticated => _isAuthenticated;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -25,34 +24,22 @@ class AdminAuthProvider with ChangeNotifier {
   String? get adminId => _currentAdmin?['id'];
 
   // ==================== LOGIN ====================
-
-  /// Login with username and password
   Future<bool> login(String username, String password) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      // Check if Firebase is available
-      if (firestore == null) {
-        _errorMessage = 'Firebase not initialized. Please check configuration.';
-        _isLoading = false;
-        notifyListeners();
-        return false;
-      }
+      // Query Supabase for admin with username
+      final response = await supabase!
+          .from(SupabaseConfig.adminsTable)
+          .select()
+          .eq('username', username.trim().toLowerCase())
+          .eq('is_active', true)
+          .maybeSingle();
 
-      // Hash password (SHA256)
-      final hashedPassword = _hashPassword(password);
-
-      // Query Firestore for admin with username
-      final querySnapshot = await firestore!
-          .collection('admins')
-          .where('username', isEqualTo: username.trim().toLowerCase())
-          .where('isActive', isEqualTo: true)
-          .limit(1)
-          .get();
-
-      if (querySnapshot.docs.isEmpty) {
+      // Check if admin found
+      if (response == null) {
         _errorMessage = 'Invalid username or password';
         _isLoading = false;
         notifyListeners();
@@ -60,11 +47,8 @@ class AdminAuthProvider with ChangeNotifier {
         return false;
       }
 
-      final adminDoc = querySnapshot.docs.first;
-      final adminData = adminDoc.data();
-
       // Check password (compare hashed)
-      if (adminData['password'] != hashedPassword) {
+      if (response['password'] != password) {
         _errorMessage = 'Invalid username or password';
         _isLoading = false;
         notifyListeners();
@@ -74,16 +58,30 @@ class AdminAuthProvider with ChangeNotifier {
 
       // Success - Save admin data
       _isAuthenticated = true;
-      _currentAdmin = {'id': adminDoc.id, ...adminData};
+      _currentAdmin = response;
       _errorMessage = null;
 
       _isLoading = false;
       notifyListeners();
 
-      debugPrint('✅ Admin logged in: ${adminData['displayName']}');
+      debugPrint('✅ Admin logged in: ${response['display_name']}');
       return true;
+    } on PostgrestException catch (e) {
+      _errorMessage = SupabaseExceptionHandler.parse(e);
+      _isLoading = false;
+      notifyListeners();
+      debugPrint('❌ Postgrest Error: ${e.code} - ${e.message}');
+      return false;
+    } on AuthException catch (e) {
+      // Auth specific errors
+      _errorMessage = SupabaseExceptionHandler.parse(e);
+      _isLoading = false;
+      notifyListeners();
+      debugPrint('❌ Auth Error: ${e.message}');
+      return false;
     } catch (e) {
-      _errorMessage = 'Login failed: ${e.toString()}';
+      // Generic errors
+      _errorMessage = SupabaseExceptionHandler.parse(e);
       _isLoading = false;
       notifyListeners();
       debugPrint('❌ Login error: $e');
@@ -92,7 +90,6 @@ class AdminAuthProvider with ChangeNotifier {
   }
 
   // ==================== LOGOUT ====================
-
   Future<void> logout() async {
     _isAuthenticated = false;
     _currentAdmin = null;
@@ -102,16 +99,7 @@ class AdminAuthProvider with ChangeNotifier {
     debugPrint('👋 Admin logged out');
   }
 
-  // ==================== PASSWORD HASHING ====================
-
-  String _hashPassword(String password) {
-    final bytes = utf8.encode(password);
-    final digest = sha256.convert(bytes);
-    return digest.toString();
-  }
-
   // ==================== UTILITY ====================
-
   /// Clear error message
   void clearError() {
     _errorMessage = null;

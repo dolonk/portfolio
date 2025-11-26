@@ -40,6 +40,8 @@ dependencies:
   equatable: ^2.0.7
 
   # Backend Package
+  crypto: ^3.0.7
+  supabase_flutter: ^2.10.3
   firebase_core: ^4.2.1
   cloud_firestore: ^6.1.0
   firebase_storage: ^13.0.4
