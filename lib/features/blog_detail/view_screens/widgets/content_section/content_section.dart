@@ -6,7 +6,7 @@ import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
 import '../../../../../data_layer/domain/entities/blog/blog_post.dart';
 import '../../../../project_detail/widgets/gallery/gallery_section.dart';
-import '../../../../project_detail/widgets/demo_links/ widgets/video_player.dart';
+import '../../../../project_detail/widgets/demo_links/widgets/video_player.dart';
 
 class ContentSection extends StatefulWidget {
   final BlogPost post;

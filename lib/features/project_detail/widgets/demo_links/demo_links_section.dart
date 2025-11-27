@@ -1,5 +1,4 @@
-import ' widgets/link_button.dart';
-import ' widgets/video_player.dart';
+import 'widgets/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,6 +7,7 @@ import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
 import '../../../../data_layer/domain/entities/portfolio/project.dart';
+import 'package:portfolio/features/project_detail/widgets/demo_links/widgets/link_button.dart';
 
 class DemoLinksSection extends StatelessWidget {
   final Project project;
@@ -28,8 +28,7 @@ class DemoLinksSection extends StatelessWidget {
           SizedBox(height: s.spaceBtwSections),
 
           // YouTube Video Player - Show only if URL is not null and not empty
-          if (project.demoVideoUrl.isNotEmpty)
-            Center(child: YouTubeVideoPlayer(videoUrl: project.demoVideoUrl)),
+          if (project.demoVideoUrl.isNotEmpty) Center(child: YouTubeVideoPlayer(videoUrl: project.demoVideoUrl)),
           SizedBox(height: s.spaceBtwSections),
 
           // Links Grid
@@ -48,10 +47,7 @@ class DemoLinksSection extends StatelessWidget {
       children: [
         Text('Project Demo & Links', style: fonts.displaySmall),
         SizedBox(height: s.paddingSm),
-        Text(
-          'Watch the demo and access the project',
-          style: fonts.bodyLarge.rubik(color: DColors.textSecondary),
-        ),
+        Text('Watch the demo and access the project', style: fonts.bodyLarge.rubik(color: DColors.textSecondary)),
       ],
     );
   }
