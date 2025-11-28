@@ -1,4 +1,7 @@
 import '../features/admin_section/auth/login_page.dart';
+import '../features/admin_section/dashboard/admin_dashboard_page.dart';
+import '../features/admin_section/projects/all_projects/project_list_page.dart';
+import '../features/admin_section/projects/project_editor/project_editor_page.dart';
 import '../features/blog_detail/view_screens/blog_detail_page.dart';
 import '../features/pricing/pricing_page.dart';
 import '../features/project_detail/project_detail_page.dart';
@@ -111,9 +114,28 @@ class RouteConfig {
       GoRoute(
         path: '/admin/dashboard',
         name: 'adminDashboard',
+        builder: (context, state) => const AdminDashboardPage(),
+      ),
+
+      // Add routes after admin dashboard
+      GoRoute(
+        path: '/admin/projects',
+        name: 'adminProjects',
+        builder: (context, state) => const ProjectListPage(),
+      ),
+
+      GoRoute(
+        path: '/admin/projects/create',
+        name: 'adminProjectCreate',
+        builder: (context, state) => const ProjectEditorPage(),
+      ),
+
+      GoRoute(
+        path: '/admin/projects/edit/:projectId',
+        name: 'adminProjectEdit',
         builder: (context, state) {
-          // TODO: Check authentication
-          return const Scaffold(body: Center(child: Text('Admin Dashboard - Coming Soon')));
+          final projectId = state.pathParameters['projectId'];
+          return ProjectEditorPage(projectId: projectId);
         },
       ),
     ],
