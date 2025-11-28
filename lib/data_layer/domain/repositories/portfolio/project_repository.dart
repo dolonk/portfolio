@@ -36,12 +36,10 @@ abstract class ProjectRepository {
   /// Increment view count
   Future<Either<Failure, void>> incrementViewCount(String id);
 
-  /// Create new project (Admin only)
+  ///=================================== ADMIN SECTION ==========================================
   Future<Either<Failure, void>> createProject(Project project);
 
-  /// Update project (Admin only)
   Future<Either<Failure, void>> updateProject(Project project);
 
-  /// Delete project (Admin only)
   Future<Either<Failure, void>> deleteProject(String id);
 }

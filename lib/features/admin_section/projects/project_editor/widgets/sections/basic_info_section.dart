@@ -3,6 +3,7 @@ import '../../../../../../../utility/constants/colors.dart';
 import '../../../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../../../../common_function/widgets/custom_text_field.dart';
+import '../../../../../../common_function/widgets/custom_dropdown.dart';
 
 class BasicInfoSection extends StatelessWidget {
   final TextEditingController titleController;
@@ -76,7 +77,25 @@ class BasicInfoSection extends StatelessWidget {
           SizedBox(height: s.paddingMd),
 
           // Category Dropdown
-          _buildCategoryDropdown(context, s),
+          CustomDropdown<String>(
+            label: 'Category',
+            hint: 'Select category',
+            value: category,
+            items: const [
+              'Mobile App',
+              'Web Application',
+              'Desktop App',
+              'Full Stack',
+              'UI/UX Design',
+              'API Development',
+              'Other',
+            ],
+            itemLabel: (cat) => cat,
+            onChanged: (value) {
+              if (value != null) onCategoryChanged(value);
+            },
+            isRequired: true,
+          ),
           SizedBox(height: s.paddingMd),
 
           // Cover Image Picker (Placeholder)
@@ -113,65 +132,6 @@ class BasicInfoSection extends StatelessWidget {
         Text(
           'Basic Information',
           style: context.fonts.titleLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCategoryDropdown(BuildContext context, DSizes s) {
-    final categories = [
-      'Mobile App',
-      'Web Application',
-      'Desktop App',
-      'Full Stack',
-      'UI/UX Design',
-      'API Development',
-      'Other',
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            text: 'Category',
-            style: context.fonts.bodyMedium.rubik(fontWeight: FontWeight.w600, color: DColors.textPrimary),
-            children: [
-              TextSpan(
-                text: ' *',
-                style: TextStyle(color: Colors.red.shade400),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: s.paddingSm),
-        DropdownButtonFormField<String>(
-          initialValue: category,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: DColors.secondaryBackground,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(s.borderRadiusSm),
-              borderSide: BorderSide(color: DColors.cardBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(s.borderRadiusSm),
-              borderSide: BorderSide(color: DColors.cardBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(s.borderRadiusSm),
-              borderSide: BorderSide(color: DColors.primaryButton, width: 2),
-            ),
-          ),
-          items: categories.map((cat) {
-            return DropdownMenuItem(
-              value: cat,
-              child: Text(cat, style: context.fonts.bodyMedium.rubik(color: DColors.textPrimary)),
-            );
-          }).toList(),
-          onChanged: (value) {
-            if (value != null) onCategoryChanged(value);
-          },
         ),
       ],
     );

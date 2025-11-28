@@ -211,9 +211,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> createProject(Project project) async {
     try {
-      if (!useSupabase) {
-        return Left(ServerFailure(message: 'Firebase not configured. Cannot create project.'));
-      }
       await remoteDataSource.createProject(ProjectModel.fromEntity(project));
       return const Right(null);
     } catch (e) {
@@ -224,9 +221,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> updateProject(Project project) async {
     try {
-      if (!useSupabase) {
-        return Left(ServerFailure(message: 'Firebase not configured. Cannot update project.'));
-      }
       await remoteDataSource.updateProject(ProjectModel.fromEntity(project));
       return const Right(null);
     } catch (e) {
@@ -237,9 +231,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> deleteProject(String id) async {
     try {
-      if (!useSupabase) {
-        return Left(ServerFailure(message: 'Firebase not configured. Cannot delete project.'));
-      }
       await remoteDataSource.deleteProject(id);
       return const Right(null);
     } catch (e) {

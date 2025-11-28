@@ -177,7 +177,6 @@ class ExceptionHandler {
   }
 
   // ==================== SUPABASE EXCEPTION HANDLERS ====================
-
   /// Handle AuthException using SupabaseErrorMapper
   static _AuthenticationException _handleAuthException(AuthException error, String context) {
     final userMessage = SupabaseErrorMapper.getAuthErrorMessage(error);

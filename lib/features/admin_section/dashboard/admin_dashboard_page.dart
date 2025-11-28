@@ -1,8 +1,9 @@
 import 'widgets/stats_card.dart';
 import 'widgets/quick_actions.dart';
+import '../shared/admin_layout.dart';
 import 'widgets/recent_activity.dart';
 import 'package:flutter/material.dart';
-import '../shared/admin_layout.dart';
+import 'view_models/dashboard_view_model.dart';
 import '../../../utility/constants/colors.dart';
 import '../../../utility/default_sizes/font_size.dart';
 import '../../../utility/default_sizes/default_sizes.dart';
@@ -14,32 +15,35 @@ class AdminDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = context.sizes;
+    final viewModel = DashboardViewModel(context);
 
     return AdminLayout(
       title: 'Dashboard',
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(s.paddingLg),
-        child: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 1400),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Welcome Header
-                _buildWelcomeHeader(context, s),
-                SizedBox(height: s.spaceBtwItems),
+      child: viewModel.isDashboardLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: EdgeInsets.all(s.paddingLg),
+              child: Center(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1400),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Welcome Header
+                      _buildWelcomeHeader(context, s),
+                      SizedBox(height: s.spaceBtwItems),
 
-                // Stats Cards
-                _buildStatsSection(context, s),
-                SizedBox(height: s.spaceBtwSections),
+                      // Stats Cards (with real data from ViewModel)
+                      _buildStatsSection(context, s, viewModel),
+                      SizedBox(height: s.spaceBtwSections),
 
-                // Quick Actions + Recent Activity
-                _buildContentSection(context, s),
-              ],
+                      // Quick Actions + Recent Activity
+                      _buildContentSection(context, s),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -61,22 +65,28 @@ class AdminDashboardPage extends StatelessWidget {
     );
   }
 
-  /// Stats Section
-  Widget _buildStatsSection(BuildContext context, DSizes s) {
+  /// Stats Section (Real data from ViewModel)
+  Widget _buildStatsSection(BuildContext context, DSizes s, DashboardViewModel viewModel) {
     final isMobile = context.isMobile;
 
+    // Get stats from ViewModel
+    final projectCount = viewModel.totalProjects.toString();
+    final blogCount = viewModel.totalBlogs.toString();
+    final commentCount = viewModel.totalComments.toString();
+    final viewCount = viewModel.totalViews.toString();
+
+    // Mobile: 2 columns
     if (isMobile) {
-      // Mobile: 2 columns
       return Column(
         children: [
           Row(
             children: [
               Expanded(
-                child: StatsCard(title: 'Projects', value: '12', icon: Icons.work_rounded),
+                child: StatsCard(title: 'Projects', value: projectCount, icon: Icons.work_rounded),
               ),
               SizedBox(width: s.paddingMd),
               Expanded(
-                child: StatsCard(title: 'Blog Posts', value: '8', icon: Icons.article_rounded),
+                child: StatsCard(title: 'Blog Posts', value: blogCount, icon: Icons.article_rounded),
               ),
             ],
           ),
@@ -84,11 +94,11 @@ class AdminDashboardPage extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: StatsCard(title: 'Comments', value: '24', icon: Icons.comment_rounded),
+                child: StatsCard(title: 'Comments', value: commentCount, icon: Icons.comment_rounded),
               ),
               SizedBox(width: s.paddingMd),
               Expanded(
-                child: StatsCard(title: 'Total Views', value: '1.2K', icon: Icons.visibility_rounded),
+                child: StatsCard(title: 'Total Views', value: viewCount, icon: Icons.visibility_rounded),
               ),
             ],
           ),
@@ -100,19 +110,19 @@ class AdminDashboardPage extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: StatsCard(title: 'Projects', value: '12', icon: Icons.work_rounded),
+          child: StatsCard(title: 'Projects', value: projectCount, icon: Icons.work_rounded),
         ),
         SizedBox(width: s.paddingMd),
         Expanded(
-          child: StatsCard(title: 'Blog Posts', value: '8', icon: Icons.article_rounded),
+          child: StatsCard(title: 'Blog Posts', value: blogCount, icon: Icons.article_rounded),
         ),
         SizedBox(width: s.paddingMd),
         Expanded(
-          child: StatsCard(title: 'Comments', value: '24', icon: Icons.comment_rounded),
+          child: StatsCard(title: 'Comments', value: commentCount, icon: Icons.comment_rounded),
         ),
         SizedBox(width: s.paddingMd),
         Expanded(
-          child: StatsCard(title: 'Total Views', value: '1.2K', icon: Icons.visibility_rounded),
+          child: StatsCard(title: 'Total Views', value: viewCount, icon: Icons.visibility_rounded),
         ),
       ],
     );
@@ -122,8 +132,8 @@ class AdminDashboardPage extends StatelessWidget {
   Widget _buildContentSection(BuildContext context, DSizes s) {
     final isMobile = context.isMobile;
 
+    // Mobile: Stacked
     if (isMobile) {
-      // Mobile: Stacked
       return Column(
         children: [
           QuickActions(),

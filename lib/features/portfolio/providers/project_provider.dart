@@ -94,11 +94,11 @@ class ProjectProvider with ChangeNotifier {
       _selectedTechStacks.isNotEmpty ||
       _searchQuery.isNotEmpty;
 
-  // ==================== PUBLIC GETTERS - Utility ====================
+  /// ==================== PUBLIC GETTERS - Utility ====================
   int get filteredProjectsCount => _filteredProjects.length;
   int get totalProjectsCount => _allProjects.length;
 
-  // ==================== INITIALIZATION ====================
+  /// ==================== INITIALIZATION ====================
   Future<void> _initialize() async {
     debugPrint('🔄 ProjectProvider: Initializing...');
 
@@ -114,8 +114,7 @@ class ProjectProvider with ChangeNotifier {
     debugPrint('✅ ProjectProvider: Initialization complete!');
   }
 
-  // ==================== FETCH METHODS ====================
-  /// Fetch all projects
+  /// ==================== FETCH METHODS ====================
   Future<void> fetchAllProjects() async {
     _projectsState = DataState.loading();
     notifyListeners();
@@ -139,7 +138,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch featured projects
   Future<void> fetchFeaturedProjects() async {
     _featuredState = DataState.loading();
     notifyListeners();
@@ -160,7 +158,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch recent projects
   Future<void> fetchRecentProjects({int limit = 6}) async {
     _recentState = DataState.loading();
     notifyListeners();
@@ -181,7 +178,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch categories
   Future<void> fetchCategories() async {
     _categoriesState = DataState.loading();
 
@@ -201,7 +197,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch platforms
   Future<void> fetchPlatforms() async {
     _platformsState = DataState.loading();
 
@@ -221,7 +216,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch tech stacks
   Future<void> fetchTechStacks() async {
     _techStacksState = DataState.loading();
 
@@ -241,7 +235,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Fetch single project by ID
   Future<void> fetchProjectById(String id) async {
     _detailState = DataState.loading();
     notifyListeners();
@@ -264,9 +257,7 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // ==================== SEARCH METHODS ====================
-
-  /// Search projects by query
+  /// ==================== SEARCH METHODS ====================
   Future<void> searchProjects(String query) async {
     debugPrint('🔍 Searching: "$query"');
     _searchQuery = query;
@@ -297,15 +288,13 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Clear search and reset
   void clearSearch() {
     debugPrint('🧹 Clearing search');
     _searchQuery = '';
     _resetToAllProjects();
   }
 
-  // ==================== FILTER METHODS ====================
-  /// Filter projects by category
+  /// ==================== FILTER METHODS ====================
   Future<void> filterByCategory(String? category) async {
     debugPrint('📂 Filtering by category: $category');
     _selectedCategory = category;
@@ -336,7 +325,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Filter projects by platform
   Future<void> filterByPlatform(String? platform) async {
     debugPrint('📱 Filtering by platform: $platform');
     _selectedPlatform = platform;
@@ -367,7 +355,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Toggle tech stack filter
   void toggleTechStackFilter(String techStack) {
     if (_selectedTechStacks.contains(techStack)) {
       _selectedTechStacks.remove(techStack);
@@ -392,7 +379,6 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Clear all filters
   void clearFilters() {
     debugPrint('🧹 Clearing all filters');
     _selectedCategory = null;
@@ -402,8 +388,7 @@ class ProjectProvider with ChangeNotifier {
     _resetToAllProjects();
   }
 
-  // ==================== PAGINATION METHODS ====================
-  /// Load more projects
+  /// ==================== PAGINATION METHODS ====================
   void loadMore() {
     if (!_pagination.hasMore || _projectsState.isLoading) return;
 
@@ -412,14 +397,96 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Reset pagination to first page
   void resetPagination() {
     _pagination = _pagination.reset();
     notifyListeners();
   }
 
-  // ==================== UTILITY METHODS ====================
-  /// Reset to all projects (internal)
+  /// ==================== Admin section ====================
+  Future<bool> createProject(Project project) async {
+    debugPrint('📝 Creating project: ${project.title}');
+
+    try {
+      final result = await repository.createProject(project);
+
+      return result.fold(
+        (failure) {
+          debugPrint('❌ Create failed: ${failure.message}');
+          _projectsState = DataState.error(failure.message);
+          notifyListeners();
+          return false;
+        },
+        (_) {
+          debugPrint('✅ Project created successfully');
+          refresh();
+          return true;
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ Create error: $e');
+      _projectsState = DataState.error(e.toString());
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Update existing project
+  Future<bool> updateProject(Project project) async {
+    debugPrint('📝 Updating project: ${project.id}');
+
+    try {
+      final result = await repository.updateProject(project);
+
+      return result.fold(
+        (failure) {
+          debugPrint('❌ Update failed: ${failure.message}');
+          _projectsState = DataState.error(failure.message);
+          notifyListeners();
+          return false;
+        },
+        (_) {
+          debugPrint('✅ Project updated successfully');
+          refresh();
+          return true;
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ Update error: $e');
+      _projectsState = DataState.error(e.toString());
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> deleteProject(String projectId) async {
+    debugPrint('🗑️ Deleting project: $projectId');
+
+    final result = await repository.deleteProject(projectId);
+
+    return result.fold(
+      (failure) {
+        debugPrint('❌ Project delete failed: ${failure.message}');
+        return false;
+      },
+      (_) {
+        // Remove from local lists
+        _allProjects.removeWhere((p) => p.id == projectId);
+        _filteredProjects.removeWhere((p) => p.id == projectId);
+
+        // Update pagination
+        _pagination = _pagination.setItems(_filteredProjects);
+
+        // Update state
+        _projectsState = _filteredProjects.isEmpty ? DataState.empty() : DataState.success(_filteredProjects);
+
+        notifyListeners();
+        debugPrint('✅ Project deleted successfully');
+        return true;
+      },
+    );
+  }
+
+  /// ==================== UTILITY METHODS ====================
   void _resetToAllProjects() {
     _filteredProjects = _allProjects;
     _pagination = _pagination.setItems(_allProjects);
@@ -427,22 +494,18 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Get project count by category
   int getProjectCountByCategory(String category) {
     return _allProjects.where((p) => p.category == category).length;
   }
 
-  /// Get project count by platform
   int getProjectCountByPlatform(String platform) {
     return _allProjects.where((p) => p.platforms.contains(platform)).length;
   }
 
-  /// Get project count by tech stack
   int getProjectCountByTechStack(String techStack) {
     return _allProjects.where((p) => p.techStack.contains(techStack)).length;
   }
 
-  /// Get filter summary text
   String getFilterSummaryText() {
     final List<String> filters = [];
 
@@ -469,14 +532,12 @@ class ProjectProvider with ChangeNotifier {
     return filters.join(' • ');
   }
 
-  /// Refresh all data
   Future<void> refresh() async {
     debugPrint('🔄 Refreshing all data...');
     clearFilters();
     await _initialize();
   }
 
-  /// Clear selected project (when leaving detail page)
   void clearSelectedProject() {
     _detailState = DataState.initial();
     notifyListeners();

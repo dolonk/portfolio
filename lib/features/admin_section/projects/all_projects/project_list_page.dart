@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portfolio/utility/snackbar_toast/snack_bar.dart';
 import 'package:provider/provider.dart';
 import '../../shared/admin_layout.dart';
 import '../../../../utility/constants/colors.dart';
@@ -22,7 +23,7 @@ class ProjectListPage extends StatefulWidget {
 }
 
 class _ProjectListPageState extends State<ProjectListPage> {
-  String _statusFilter = 'all'; // all, published, draft
+  String _statusFilter = 'all';
   String _searchQuery = '';
 
   @override
@@ -61,9 +62,59 @@ class _ProjectListPageState extends State<ProjectListPage> {
                 // Projects Table/List
                 DStateBuilder<List<Project>>(
                   state: projectProvider.projectsState,
-                  onLoading: () => _buildLoadingState(),
-                  onError: (msg) => _buildErrorState(msg),
-                  onEmpty: () => _buildEmptyState(),
+                  onLoading: () => Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(60.0),
+                      child: DLoadingWidget(message: 'Loading projects...'),
+                    ),
+                  ),
+                  onError: (msg) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(60.0),
+                      child: DErrorWidget(
+                        message: msg,
+                        onRetry: () {
+                          context.read<ProjectProvider>().refresh();
+                        },
+                      ),
+                    ),
+                  ),
+                  onEmpty: () => Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(s.paddingXl * 2),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.work_outline_rounded,
+                            size: 80,
+                            color: DColors.textSecondary.withAlpha((255 * 0.5).round()),
+                          ),
+                          SizedBox(height: s.paddingLg),
+                          Text(
+                            'No Projects Yet',
+                            style: context.fonts.titleLarge.rajdhani(
+                              fontWeight: FontWeight.bold,
+                              color: DColors.textPrimary,
+                            ),
+                          ),
+                          SizedBox(height: s.paddingSm),
+                          Text(
+                            'Create your first project to get started',
+                            style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
+                          ),
+                          SizedBox(height: s.paddingLg),
+                          CustomButton(
+                            width: 200,
+                            height: 48,
+                            tittleText: 'Create Project',
+                            icon: Icons.add_rounded,
+                            onPressed: () => context.go('/admin/projects/create'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   onSuccess: (projects) {
                     final filteredProjects = _filterProjects(projects);
 
@@ -73,9 +124,9 @@ class _ProjectListPageState extends State<ProjectListPage> {
 
                     return ProjectDataTable(
                       projects: filteredProjects,
-                      onEdit: (project) => _handleEdit(project),
+                      onEdit: (project) => context.go('/admin/projects/edit/${project.id}'),
                       onDelete: (project) => _handleDelete(project),
-                      onView: (project) => _handleView(project),
+                      onView: (project) => context.go('/portfolio/${project.id}'),
                     );
                   },
                 ),
@@ -111,19 +162,9 @@ class _ProjectListPageState extends State<ProjectListPage> {
     return filtered;
   }
 
-  /// Handle Edit
-  void _handleEdit(Project project) {
-    context.go('/admin/projects/edit/${project.id}');
-  }
-
   /// Handle Delete
   void _handleDelete(Project project) {
     showDialog(context: context, builder: (context) => _buildDeleteDialog(project));
-  }
-
-  /// Handle View
-  void _handleView(Project project) {
-    context.go('/portfolio/${project.id}');
   }
 
   /// Delete Confirmation Dialog
@@ -178,86 +219,25 @@ class _ProjectListPageState extends State<ProjectListPage> {
           onPressed: () => Navigator.pop(context),
           child: Text('Cancel', style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary)),
         ),
-        ElevatedButton(
-          onPressed: () {
-            // TODO: Call delete API
-            Navigator.pop(context);
-            _showDeleteSuccessSnackbar();
+        CustomButton(
+          onPressed: () async {
+            // Call delete API via provider
+            final provider = context.read<ProjectProvider>();
+            final success = await provider.deleteProject(project.id);
+
+            if (mounted) {
+              Navigator.pop(context);
+
+              if (success) {
+                DSnackBar.success(title: 'Project Deleted', message: project.title);
+              } else {
+                DSnackBar.error(title: 'Error Deleting Project', message: project.title);
+              }
+            }
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red.shade400,
-            foregroundColor: Colors.white,
-          ),
-          child: Text('Delete', style: context.fonts.bodyMedium.rubik()),
+          tittleText: 'Delete',
         ),
       ],
-    );
-  }
-
-  /// Loading State
-  Widget _buildLoadingState() {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(60.0),
-        child: DLoadingWidget(message: 'Loading projects...'),
-      ),
-    );
-  }
-
-  /// Error State
-  Widget _buildErrorState(String message) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(60.0),
-        child: DErrorWidget(
-          message: message,
-          onRetry: () {
-            context.read<ProjectProvider>().refresh();
-          },
-        ),
-      ),
-    );
-  }
-
-  /// Empty State
-  Widget _buildEmptyState() {
-    final s = context.sizes;
-
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(s.paddingXl * 2),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.work_outline_rounded,
-              size: 80,
-              color: DColors.textSecondary.withAlpha((255 * 0.5).round()),
-            ),
-            SizedBox(height: s.paddingLg),
-            Text(
-              'No Projects Yet',
-              style: context.fonts.titleLarge.rajdhani(
-                fontWeight: FontWeight.bold,
-                color: DColors.textPrimary,
-              ),
-            ),
-            SizedBox(height: s.paddingSm),
-            Text(
-              'Create your first project to get started',
-              style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
-            ),
-            SizedBox(height: s.paddingLg),
-            CustomButton(
-              width: 200,
-              height: 48,
-              tittleText: 'Create Project',
-              icon: Icons.add_rounded,
-              onPressed: () => context.go('/admin/projects/create'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -305,17 +285,6 @@ class _ProjectListPageState extends State<ProjectListPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  /// Success Snackbar
-  void _showDeleteSuccessSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Project deleted successfully'),
-        backgroundColor: Colors.green.shade400,
-        behavior: SnackBarBehavior.floating,
       ),
     );
   }
