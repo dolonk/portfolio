@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../common_function/widgets/custom_text_field.dart';
 import 'providers/admin_auth_provider.dart';
 import '../../../utility/constants/colors.dart';
 import '../../../utility/default_sizes/font_size.dart';
 import '../../../utility/default_sizes/default_sizes.dart';
+import '../../../common_function/widgets/custom_text_field.dart';
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
@@ -18,6 +18,22 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkExistingSession();
+    });
+  }
+
+  Future<void> _checkExistingSession() async {
+    final authProvider = context.read<AdminAuthProvider>();
+    await authProvider.checkAndRestoreSession();
+    if (authProvider.isAuthenticated && mounted) {
+      context.go('/admin/dashboard');
+    }
+  }
 
   @override
   void dispose() {
@@ -70,7 +86,11 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                           color: DColors.primaryButton.withAlpha((255 * 0.1).round()),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.admin_panel_settings_rounded, size: 48, color: DColors.primaryButton),
+                        child: Icon(
+                          Icons.admin_panel_settings_rounded,
+                          size: 48,
+                          color: DColors.primaryButton,
+                        ),
                       ),
                       SizedBox(height: s.paddingLg),
 
@@ -159,7 +179,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                             backgroundColor: DColors.primaryButton,
                             foregroundColor: Colors.white,
                             disabledBackgroundColor: DColors.primaryButton.withAlpha((255 * 0.6).round()),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(s.borderRadiusMd)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(s.borderRadiusMd),
+                            ),
                           ),
                           child: authProvider.isLoading
                               ? SizedBox(
@@ -170,7 +192,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 )
-                              : Text('Sign In', style: context.fonts.bodyLarge.rubik(fontWeight: FontWeight.bold)),
+                              : Text(
+                                  'Sign In',
+                                  style: context.fonts.bodyLarge.rubik(fontWeight: FontWeight.bold),
+                                ),
                         ),
                       ),
                       SizedBox(height: s.paddingLg),

@@ -62,7 +62,7 @@ Future<void> initializeDependencies({bool useSupabase = false}) async {
   );
 
   getIt.registerLazySingleton<ProjectRepository>(
-    () => ProjectRepositoryImpl(remoteDataSource: getIt<ProjectRemoteDataSource>(), useFirebase: useSupabase),
+    () => ProjectRepositoryImpl(remoteDataSource: getIt<ProjectRemoteDataSource>(), useSupabase: useSupabase),
   );
 
   /// ==================== PROVIDERS ====================
@@ -73,7 +73,7 @@ Future<void> initializeDependencies({bool useSupabase = false}) async {
   getIt.registerFactory<ProjectProvider>(() => ProjectProvider(repository: getIt<ProjectRepository>()));
 
   /// ====================  Admin Provider ====================
-  getIt.registerFactory<AdminAuthProvider>(
+  getIt.registerLazySingleton<AdminAuthProvider>(
     () => AdminAuthProvider(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 

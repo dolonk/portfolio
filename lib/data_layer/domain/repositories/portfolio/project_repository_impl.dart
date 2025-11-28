@@ -9,14 +9,14 @@ import '../../../data_sources/remote/portfolio/project_remote_datasource.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
   final ProjectRemoteDataSource remoteDataSource;
-  final bool useFirebase;
+  final bool useSupabase;
 
-  ProjectRepositoryImpl({required this.remoteDataSource, this.useFirebase = false});
+  ProjectRepositoryImpl({required this.remoteDataSource, this.useSupabase = false});
 
   @override
   Future<Either<Failure, List<Project>>> getAllProjects() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final projects = await remoteDataSource.getAllProjects();
         return Right(projects);
       } else {
@@ -33,7 +33,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getFeaturedProjects() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final projects = await remoteDataSource.getFeaturedProjects();
         return Right(projects);
       } else {
@@ -49,7 +49,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getRecentProjects({int limit = 3}) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final projects = await remoteDataSource.getRecentProjects(limit: limit);
         return Right(projects);
       } else {
@@ -70,7 +70,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, Project>> getProjectById(String id) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final project = await remoteDataSource.getProjectById(id);
         return Right(project);
       } else {
@@ -90,7 +90,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getProjectsByCategory(String category) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final projects = await remoteDataSource.getProjectsByCategory(category);
         return Right(projects);
       } else {
@@ -106,7 +106,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getProjectsByPlatform(String platform) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final projects = await remoteDataSource.getProjectsByPlatform(platform);
         return Right(projects);
       } else {
@@ -122,7 +122,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<String>>> getAllCategories() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final categories = await remoteDataSource.getAllCategories();
         return Right(categories);
       } else {
@@ -138,7 +138,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<String>>> getAllPlatforms() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final platforms = await remoteDataSource.getAllPlatforms();
         return Right(platforms);
       } else {
@@ -154,7 +154,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<String>>> getAllTechStacks() async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final techStacks = await remoteDataSource.getAllTechStacks();
         return Right(techStacks);
       } else {
@@ -170,7 +170,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> searchProjects(String query) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         final projects = await remoteDataSource.searchProjects(query);
         return Right(projects);
       } else {
@@ -198,7 +198,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> incrementViewCount(String id) async {
     try {
-      if (useFirebase) {
+      if (useSupabase) {
         await remoteDataSource.incrementViewCount(id);
       }
       return const Right(null);
@@ -211,7 +211,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> createProject(Project project) async {
     try {
-      if (!useFirebase) {
+      if (!useSupabase) {
         return Left(ServerFailure(message: 'Firebase not configured. Cannot create project.'));
       }
       await remoteDataSource.createProject(ProjectModel.fromEntity(project));
@@ -224,7 +224,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> updateProject(Project project) async {
     try {
-      if (!useFirebase) {
+      if (!useSupabase) {
         return Left(ServerFailure(message: 'Firebase not configured. Cannot update project.'));
       }
       await remoteDataSource.updateProject(ProjectModel.fromEntity(project));
@@ -237,7 +237,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> deleteProject(String id) async {
     try {
-      if (!useFirebase) {
+      if (!useSupabase) {
         return Left(ServerFailure(message: 'Firebase not configured. Cannot delete project.'));
       }
       await remoteDataSource.deleteProject(id);

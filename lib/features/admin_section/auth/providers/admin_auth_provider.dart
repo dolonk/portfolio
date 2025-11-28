@@ -3,6 +3,8 @@ import '../../../../core/error/exceptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:portfolio/core/config/supabase_config.dart';
 
+import '../../../../core/services/secure_storage_service.dart';
+
 class AdminAuthProvider with ChangeNotifier {
   final SupabaseClient? supabase;
   AdminAuthProvider({this.supabase});
@@ -20,6 +22,59 @@ class AdminAuthProvider with ChangeNotifier {
   Map<String, dynamic>? get currentAdmin => _currentAdmin;
   String? get adminName => _currentAdmin?['displayName'];
   String? get adminId => _currentAdmin?['id'];
+
+  // ==================== AUTO-LOGIN ON APP START ====================
+  Future<void> checkAndRestoreSession() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      // Try to get saved session
+      final session = await SecureStorageService.getSession();
+
+      if (session == null) {
+        _isLoading = false;
+        notifyListeners();
+        debugPrint('⚠️ No saved session found');
+        return;
+      }
+      debugPrint('🔍 Checking saved session for: ${session['username']}');
+
+      // Verify admin still exists and is active in Supabase
+      final response = await supabase!
+          .from(SupabaseConfig.adminsTable)
+          .select()
+          .eq('id', session['id']!)
+          .eq('is_active', true)
+          .maybeSingle();
+
+      if (response == null) {
+        await SecureStorageService.clearSession();
+        debugPrint('❌ Admin not found or inactive - session cleared');
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+
+      // Session valid - restore authentication state
+      _isAuthenticated = true;
+      _currentAdmin = response;
+      _errorMessage = null;
+
+      _isLoading = false;
+      notifyListeners();
+
+      final duration = await SecureStorageService.getSessionDuration();
+      debugPrint('✅ Session restored - Admin: ${response['display_name']} (${duration}h ago)');
+    } catch (e) {
+      debugPrint('❌ Session restore failed: $e');
+      await SecureStorageService.clearSession();
+      _errorMessage = 'Session restore failed';
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   // ==================== LOGIN ====================
   Future<bool> login(String username, String password) async {
@@ -53,7 +108,15 @@ class AdminAuthProvider with ChangeNotifier {
         return false;
       }
 
-      // Success - Save admin data
+      // Success - Save session to secure storage
+      await SecureStorageService.saveSession(
+        adminId: response['id'],
+        email: response['email'],
+        username: response['username'],
+        displayName: response['display_name'],
+      );
+
+      // Update authentication state
       _isAuthenticated = true;
       _currentAdmin = response;
       _errorMessage = null;
@@ -61,10 +124,11 @@ class AdminAuthProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
 
-      debugPrint('✅ Admin logged in: ${response['display_name']}');
+      debugPrint('✅ Admin logged in & session saved: ${response['display_name']}');
       return true;
     } catch (e) {
       final failure = ExceptionHandler.parseToFailure(e, context: 'Admin login');
+      _errorMessage = failure.message;
       _isLoading = false;
       notifyListeners();
 
@@ -79,21 +143,14 @@ class AdminAuthProvider with ChangeNotifier {
 
   // ==================== LOGOUT ====================
   Future<void> logout() async {
+    await SecureStorageService.clearSession();
+
+    // Clear provider state
     _isAuthenticated = false;
     _currentAdmin = null;
     _errorMessage = null;
 
     notifyListeners();
-    debugPrint('👋 Admin logged out');
+    debugPrint('👋 Admin logged out & session cleared');
   }
-
-  // ==================== UTILITY ====================
-  /// Clear error message
-  void clearError() {
-    _errorMessage = null;
-    notifyListeners();
-  }
-
-  /// Check if session is valid
-  bool get hasValidSession => _isAuthenticated && _currentAdmin != null;
 }
