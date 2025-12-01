@@ -34,7 +34,6 @@ class ExperienceSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      backgroundColor: DColors.background,
       padding: EdgeInsets.only(top: s.spaceBtwSections, left: s.paddingMd, right: s.paddingMd),
       child: Column(
         children: [

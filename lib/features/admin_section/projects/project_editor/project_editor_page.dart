@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../portfolio/providers/project_provider.dart';
 import '../../../../utility/default_sizes/default_sizes.dart';
-import 'package:portfolio/utility/snackbar_toast/snack_bar.dart';
+import 'package:portfolio/utility/snack_bar_toast/snack_bar.dart';
 import '../../../../common_function/state_widgets/state_builder.dart';
 import '../../../../common_function/state_widgets/state_widgets.dart';
 import '../../../../data_layer/domain/entities/portfolio/project.dart';

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageService {
@@ -24,16 +25,17 @@ class SecureStorageService {
     required String displayName,
   }) async {
     try {
-      // Write all session data in parallel for better performance
-      await Future.wait([
-        _storage.write(key: _keyAdminId, value: adminId),
-        _storage.write(key: _keyAdminEmail, value: email),
-        _storage.write(key: _keyAdminUsername, value: username),
-        _storage.write(key: _keyAdminDisplayName, value: displayName),
-        _storage.write(key: _keyIsAuthenticated, value: 'true'),
-        _storage.write(key: _keyLoginTimestamp, value: DateTime.now().toIso8601String()),
-      ]);
+      // ==================== SEQUENTIAL WRITE FOR WEB ====================
+      await _storage.write(key: _keyAdminId, value: adminId);
+      await _storage.write(key: _keyAdminEmail, value: email);
+      await _storage.write(key: _keyAdminUsername, value: username);
+      await _storage.write(key: _keyAdminDisplayName, value: displayName);
+      await _storage.write(key: _keyIsAuthenticated, value: 'true');
+      await _storage.write(key: _keyLoginTimestamp, value: DateTime.now().toIso8601String());
+
+      debugPrint("✅ Session saved successfully");
     } catch (e) {
+      debugPrint("❌ Save session failed: $e");
       throw Exception('Failed to save session: $e');
     }
   }
@@ -41,13 +43,6 @@ class SecureStorageService {
   // ==================== GET SESSION ====================
   static Future<Map<String, String>?> getSession() async {
     try {
-      // First check if authenticated flag is set
-      final isAuthenticated = await _storage.read(key: _keyIsAuthenticated);
-
-      if (isAuthenticated != 'true') {
-        return null;
-      }
-
       // Read all session data
       final adminId = await _storage.read(key: _keyAdminId);
       final email = await _storage.read(key: _keyAdminEmail);
@@ -57,7 +52,7 @@ class SecureStorageService {
 
       // Validate all required data exists
       if (adminId == null || email == null || username == null) {
-        // Session data corrupted, clear everything
+        debugPrint("❌ Session data incomplete - clearing");
         await clearSession();
         return null;
       }
@@ -70,7 +65,7 @@ class SecureStorageService {
         'login_timestamp': loginTimestamp ?? '',
       };
     } catch (e) {
-      // On any error, clear session to prevent issues
+      debugPrint("❌ Get session error: $e");
       await clearSession();
       return null;
     }
@@ -106,15 +101,6 @@ class SecureStorageService {
       final duration = DateTime.now().difference(loginTime);
 
       return duration.inHours;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // ==================== GET ADMIN ID ====================
-  static Future<String?> getAdminId() async {
-    try {
-      return await _storage.read(key: _keyAdminId);
     } catch (e) {
       return null;
     }

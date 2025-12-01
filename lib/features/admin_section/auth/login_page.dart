@@ -6,6 +6,7 @@ import '../../../utility/constants/colors.dart';
 import '../../../utility/default_sizes/font_size.dart';
 import '../../../utility/default_sizes/default_sizes.dart';
 import '../../../common_function/widgets/custom_text_field.dart';
+import 'package:portfolio/utility/snack_bar_toast/snack_bar.dart';
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
@@ -29,8 +30,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
   Future<void> _checkExistingSession() async {
     final authProvider = context.read<AdminAuthProvider>();
-    await authProvider.checkAndRestoreSession();
-    if (authProvider.isAuthenticated && mounted) {
+    final status = await authProvider.checkSession();
+    if (status && mounted) {
       context.go('/admin/dashboard');
     }
   }
@@ -46,11 +47,17 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = context.read<AdminAuthProvider>();
-    final success = await authProvider.login(_usernameController.text, _passwordController.text);
+    final result = await authProvider.login(_usernameController.text, _passwordController.text);
 
-    if (success && mounted) {
-      context.go('/admin/dashboard');
-    }
+    // Handle the DataState result
+    if (!mounted) return;
+    result.when(
+      success: (adminData) => context.pushReplacement('/admin/dashboard'),
+      error: (errorMessage) => DSnackBar.error(title: errorMessage),
+      initial: () {},
+      loading: () {},
+      empty: () {},
+    );
   }
 
   @override
@@ -86,11 +93,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                           color: DColors.primaryButton.withAlpha((255 * 0.1).round()),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.admin_panel_settings_rounded,
-                          size: 48,
-                          color: DColors.primaryButton,
-                        ),
+                        child: Icon(Icons.admin_panel_settings_rounded, size: 48, color: DColors.primaryButton),
                       ),
                       SizedBox(height: s.paddingLg),
 
@@ -174,14 +177,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: authProvider.isLoading ? null : _handleLogin,
+                          onPressed: _handleLogin,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: DColors.primaryButton,
                             foregroundColor: Colors.white,
                             disabledBackgroundColor: DColors.primaryButton.withAlpha((255 * 0.6).round()),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(s.borderRadiusMd)),
                           ),
                           child: authProvider.isLoading
                               ? SizedBox(
@@ -192,10 +193,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 )
-                              : Text(
-                                  'Sign In',
-                                  style: context.fonts.bodyLarge.rubik(fontWeight: FontWeight.bold),
-                                ),
+                              : Text('Sign In', style: context.fonts.bodyLarge.rubik(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       SizedBox(height: s.paddingLg),

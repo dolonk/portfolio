@@ -79,10 +79,7 @@ class _AdminSidebarState extends State<AdminSidebar> {
               children: [
                 Text(
                   'Admin Panel',
-                  style: context.fonts.titleLarge.rajdhani(
-                    fontWeight: FontWeight.bold,
-                    color: DColors.textPrimary,
-                  ),
+                  style: context.fonts.titleLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
                 ),
                 Text('Portfolio CMS', style: context.fonts.labelSmall.rubik(color: DColors.textSecondary)),
               ],

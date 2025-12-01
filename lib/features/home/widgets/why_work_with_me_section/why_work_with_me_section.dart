@@ -18,7 +18,6 @@ class WhyWorkWithMeSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      backgroundColor: DColors.background,
       padding: EdgeInsets.only(top: s.spaceBtwSections, right: s.paddingMd, bottom: s.spaceBtwSections),
       child: ResponsiveWidget(
         mobile: _buildMobileLayout(context),
@@ -84,11 +83,7 @@ class WhyWorkWithMeSection extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
-              colors: [
-                DColors.primaryButton.withOpacity(0.2),
-                DColors.primaryButton.withOpacity(0.05),
-                Colors.transparent,
-              ],
+              colors: [DColors.primaryButton.withAlpha(51), DColors.primaryButton.withAlpha(12), Colors.transparent],
               stops: const [0.0, 0.6, 1.0],
             ),
           ),
@@ -102,7 +97,7 @@ class WhyWorkWithMeSection extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(color: DColors.cardBorder, width: 3),
             boxShadow: [
-              BoxShadow(color: DColors.primaryButton.withOpacity(0.2), blurRadius: 30, offset: const Offset(0, 10)),
+              BoxShadow(color: DColors.primaryButton.withAlpha(51), blurRadius: 30, offset: const Offset(0, 10)),
             ],
           ),
           child: ClipOval(
@@ -129,7 +124,7 @@ class WhyWorkWithMeSection extends StatelessWidget {
               color: DColors.primaryButton,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(color: DColors.primaryButton.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 5)),
+                BoxShadow(color: DColors.primaryButton.withAlpha(102), blurRadius: 15, offset: const Offset(0, 5)),
               ],
             ),
             child: Text(

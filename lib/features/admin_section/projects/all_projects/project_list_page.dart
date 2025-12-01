@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:portfolio/utility/snackbar_toast/snack_bar.dart';
+import 'package:portfolio/utility/snack_bar_toast/snack_bar.dart';
 import 'package:provider/provider.dart';
 import '../../shared/admin_layout.dart';
 import '../../../../utility/constants/colors.dart';

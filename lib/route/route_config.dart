@@ -1,9 +1,9 @@
 import 'error_page.dart';
 import 'route_name.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../features/about/about_page.dart';
-import '../core/di/injection_container.dart';
 import '../features/contact/contact_page.dart';
 import '../features/pricing/pricing_page.dart';
 import '../features/services/services_page.dart';
@@ -107,25 +107,14 @@ class RouteConfig {
       ),
 
       // ==================== ADMIN ROUTES (PROTECTED) ====================
-      GoRoute(
-        path: '/admin/login',
-        name: 'adminLogin',
-        builder: (context, state) => const AdminLoginPage(),
-        redirect: (context, state) {
-          final authProvider = getIt<AdminAuthProvider>();
-          if (authProvider.isAuthenticated) {
-            return '/admin/dashboard';
-          }
-          return null;
-        },
-      ),
+      GoRoute(path: '/admin/login', name: 'adminLogin', builder: (context, state) => const AdminLoginPage()),
 
       // Admin Dashboard
       GoRoute(
         path: '/admin/dashboard',
         name: 'adminDashboard',
         builder: (context, state) => const AdminDashboardPage(),
-        redirect: (context, state) => _adminAuthGuard(context, state),
+        redirect: _adminAuthGuard,
       ),
 
       // All Projects
@@ -133,7 +122,7 @@ class RouteConfig {
         path: '/admin/projects',
         name: 'adminProjects',
         builder: (context, state) => const ProjectListPage(),
-        redirect: (context, state) => _adminAuthGuard(context, state),
+        redirect: _adminAuthGuard,
       ),
 
       // Create Project
@@ -141,7 +130,7 @@ class RouteConfig {
         path: '/admin/projects/create',
         name: 'adminProjectCreate',
         builder: (context, state) => const ProjectEditorPage(),
-        redirect: (context, state) => _adminAuthGuard(context, state),
+        redirect: _adminAuthGuard,
       ),
 
       // Edit Project
@@ -152,26 +141,38 @@ class RouteConfig {
           final projectId = state.pathParameters['projectId'];
           return ProjectEditorPage(projectId: projectId);
         },
-        redirect: (context, state) => _adminAuthGuard(context, state),
+        redirect: _adminAuthGuard,
       ),
     ],
+
+    // AuthGuard section
+    redirect: (context, state) {
+      final goingToAdmin = state.uri.toString().startsWith('/admin');
+      final goingToLogin = state.uri.toString() == '/admin/login';
+      if (goingToAdmin && !goingToLogin) {
+        return _adminAuthGuard(context, state);
+      }
+
+      return null;
+    },
 
     // 🚫 Error Handler
     errorBuilder: (context, state) => const ErrorPage(),
   );
 
   /// Admin Route Guard
-  static String? _adminAuthGuard(BuildContext context, GoRouterState state) {
-    final authProvider = getIt<AdminAuthProvider>();
+  static Future<String?> _adminAuthGuard(BuildContext context, GoRouterState state) async {
+    final authProvider = Provider.of<AdminAuthProvider>(context, listen: false);
+    final status = await authProvider.checkSession();
 
     // Check if user is authenticated
-    if (!authProvider.isAuthenticated) {
-      debugPrint('🚫Unauthorized access to: ${state.matchedLocation}');
+    if (!status) {
+      debugPrint('🚫 Access denied - Not authenticated');
       return '/admin/login';
+    } else {
+      debugPrint('✅ Access granted - User authenticated');
+      return null;
     }
-
-    debugPrint('✅ Authorized access to: ${state.matchedLocation}');
-    return null;
   }
 
   /// Custom Page Transition

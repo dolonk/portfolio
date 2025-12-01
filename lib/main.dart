@@ -11,12 +11,12 @@ import 'features/admin_section/auth/providers/admin_auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Remove # Url
+
+  // Remove # from URL
   usePathUrlStrategy();
 
   // ==================== DEPENDENCY INJECTION SETUP ====================
-  bool supabaseInitialized = true;
-  await initializeDependencies(useSupabase: supabaseInitialized);
+  await initializeDependencies(useSupabase: true);
 
   runApp(const MyApp());
   //runApp(DevicePreview(enabled: true, builder: (context) => const MyApp()));

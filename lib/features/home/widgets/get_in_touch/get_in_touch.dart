@@ -17,7 +17,6 @@ class GetInTouchSection extends StatelessWidget {
     final s = context.sizes;
 
     return SectionContainer(
-      backgroundColor: DColors.background,
       padding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.spaceBtwSections),
       child: ResponsiveWidget(
         mobile: _buildMobileLayout(context),
