@@ -240,8 +240,6 @@ class _PlatformBadge extends StatelessWidget {
         return {'icon': Icons.window_rounded, 'color': const Color(0xFF0078D4)};
       case 'macos':
         return {'icon': Icons.laptop_mac_rounded, 'color': const Color(0xFF000000)};
-      case 'linux':
-        return {'icon': Icons.computer_rounded, 'color': const Color(0xFFFCC624)};
       default:
         return {'icon': Icons.devices_rounded, 'color': DColors.primaryButton};
     }

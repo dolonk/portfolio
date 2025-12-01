@@ -41,12 +41,6 @@ class ProjectModel extends Project {
       title: json['title'] as String,
       tagline: json['tagline'] as String? ?? '',
       imagePath: json['image_path'] as String? ?? '',
-
-      // Parse PostgreSQL arrays
-      platforms: (json['platforms'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
-      techStack: (json['tech_stack'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
       category: json['category'] as String? ?? '',
       clientName: json['client_name'] as String? ?? '',
       launchDate: json['launch_date'] as String? ?? '',
@@ -55,31 +49,26 @@ class ProjectModel extends Project {
       requirements: json['requirements'] as String? ?? '',
       constraints: json['constraints'] as String? ?? '',
       solution: json['solution'] as String? ?? '',
-
-      keyFeatures: (json['key_features'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
-      // Parse JSONB results
-      results:
-          (json['results'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value.toString())) ??
-          {},
-
-      clientTestimonial: json['client_testimonial'] as String? ?? '',
-
-      galleryImages: (json['gallery_images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
       demoVideoUrl: json['demo_video_url'] as String? ?? '',
       appStoreUrl: json['app_store_url'] as String? ?? '',
       playStoreUrl: json['play_store_url'] as String? ?? '',
       githubUrl: json['github_url'] as String? ?? '',
-
-      // Parse timestamps
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : DateTime.now(),
-
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : DateTime.now(),
-
       isPublished: json['is_published'] as bool? ?? false,
       isFeatured: json['is_featured'] as bool? ?? false,
       viewCount: json['view_count'] as int? ?? 0,
+      clientTestimonial: json['client_testimonial'] as String? ?? '',
+
+      // Parse PostgreSQL arrays
+      platforms: (json['platforms'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      techStack: (json['tech_stack'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      keyFeatures: (json['key_features'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      galleryImages: (json['gallery_images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      // Parse JSONB results
+      results:
+          (json['results'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value.toString())) ??
+          {},
+      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : DateTime.now(),
+      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : DateTime.now(),
     );
   }
 

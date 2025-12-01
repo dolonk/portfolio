@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:portfolio/data_layer/domain/entities/portfolio/project.dart';
-import '../../../../data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/route/route_name.dart';
 import 'package:portfolio/utility/constants/colors.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
+import 'package:portfolio/data_layer/domain/entities/portfolio/project.dart';
 
 class ProjectHeroSection extends StatelessWidget {
   final Project project;
@@ -162,35 +161,15 @@ class _PlatformBadge extends StatelessWidget {
   Map<String, dynamic> _getPlatformData(String platform) {
     switch (platform.toLowerCase()) {
       case 'ios':
-        return {
-          'icon': Icons.apple,
-          'color': const Color(0xFFFFFFFF), // White
-        };
+        return {'icon': Icons.apple, 'color': const Color(0xFFFFFFFF)};
       case 'android':
-        return {
-          'icon': Icons.android_rounded,
-          'color': const Color(0xFF3DDC84), // Android green
-        };
+        return {'icon': Icons.android_rounded, 'color': const Color(0xFF3DDC84)};
       case 'web':
-        return {
-          'icon': Icons.language_rounded,
-          'color': const Color(0xFF4285F4), // Blue
-        };
+        return {'icon': Icons.language_rounded, 'color': const Color(0xFF4285F4)};
       case 'windows':
-        return {
-          'icon': Icons.window_rounded,
-          'color': const Color(0xFF0078D4), // Windows blue
-        };
+        return {'icon': Icons.window_rounded, 'color': const Color(0xFF0078D4)};
       case 'macos':
-        return {
-          'icon': Icons.laptop_mac_rounded,
-          'color': const Color(0xFFFFFFFF), // White
-        };
-      case 'linux':
-        return {
-          'icon': Icons.computer_rounded,
-          'color': const Color(0xFFFCC624), // Yellow
-        };
+        return {'icon': Icons.laptop_mac_rounded, 'color': const Color(0xFFFFFFFF)};
       default:
         return {'icon': Icons.devices_rounded, 'color': DColors.primaryButton};
     }
