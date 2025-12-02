@@ -158,7 +158,7 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchRecentProjects({int limit = 6}) async {
+  Future<void> fetchRecentProjects({int limit = 3}) async {
     _recentState = DataState.loading();
     notifyListeners();
 

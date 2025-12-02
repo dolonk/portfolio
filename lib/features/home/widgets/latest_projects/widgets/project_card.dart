@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio/route/route_name.dart';
-import '../../../../../common_function/widgets/animated_custom_button.dart';
 import '../../../../../utility/constants/colors.dart';
-import '../../../../../data_layer/model/portfolio/project_model.dart';
-import '../../../../../common_function/widgets/hoverable_card.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
+import '../../../../../common_function/widgets/hoverable_card.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import '../../../../../data_layer/domain/entities/portfolio/project.dart';
+import '../../../../../common_function/widgets/animated_custom_button.dart';
 
 class ProjectCard extends StatefulWidget {
-  final ProjectModel project;
+  final Project project;
   const ProjectCard({super.key, required this.project});
   @override
   State<ProjectCard> createState() => _ProjectCardState();

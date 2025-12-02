@@ -7,10 +7,6 @@ class Project extends Equatable {
   final String description;
   final String imagePath;
   final String tagline;
-  final List<String> platforms;
-  final List<String> techStack;
-  final String? projectUrl;
-  final String? caseStudyUrl;
 
   // Additional Detail Fields
   final String clientName;
@@ -19,22 +15,29 @@ class Project extends Equatable {
   final String requirements;
   final String constraints;
   final String solution;
-  final List<String> keyFeatures;
-  final Map<String, String> results;
   final String clientTestimonial;
-  final List<String> galleryImages;
   final String demoVideoUrl;
   final String? liveUrl;
   final String? appStoreUrl;
   final String? playStoreUrl;
   final String githubUrl;
 
+  // List Variable
+  final List<String> platforms;
+  final List<String> techStack;
+  final List<String> keyFeatures;
+  final Map<String, String> results;
+  final List<String> galleryImages;
+  final Map<String, dynamic>? solutionSteps;
+  final List<Map<String, dynamic>>? techStackExtended;
+  final List<Map<String, dynamic>>? keyFeaturesExtended;
+
   // Metadata
-  final DateTime createdAt;
-  final DateTime updatedAt;
   final bool isPublished;
   final bool isFeatured;
   final int viewCount;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const Project({
     required this.id,
@@ -43,30 +46,31 @@ class Project extends Equatable {
     required this.imagePath,
     this.description = '',
     this.tagline = '',
-    this.platforms = const [],
-    this.techStack = const [],
-    this.projectUrl,
-    this.caseStudyUrl,
     this.clientName = '',
     this.launchDate = '',
     this.challenge = '',
     this.requirements = '',
     this.constraints = '',
     this.solution = '',
-    this.keyFeatures = const [],
-    this.results = const {},
     this.clientTestimonial = '',
-    this.galleryImages = const [],
     this.demoVideoUrl = '',
     this.liveUrl,
     this.appStoreUrl,
     this.playStoreUrl,
     this.githubUrl = '',
-    required this.createdAt,
-    required this.updatedAt,
+    this.results = const {},
+    this.platforms = const [],
+    this.techStack = const [],
+    this.galleryImages = const [],
+    this.keyFeatures = const [],
+    this.solutionSteps,
+    this.techStackExtended,
+    this.keyFeaturesExtended,
     this.isPublished = true,
     this.isFeatured = false,
     this.viewCount = 0,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   /// Copy with method
@@ -77,8 +81,6 @@ class Project extends Equatable {
     String? description,
     String? imagePath,
     String? tagline,
-    List<String>? platforms,
-    List<String>? techStack,
     String? projectUrl,
     String? caseStudyUrl,
     String? clientName,
@@ -87,20 +89,25 @@ class Project extends Equatable {
     String? requirements,
     String? constraints,
     String? solution,
-    List<String>? keyFeatures,
-    Map<String, String>? results,
     String? clientTestimonial,
-    List<String>? galleryImages,
     String? demoVideoUrl,
     String? liveUrl,
     String? appStoreUrl,
     String? playStoreUrl,
     String? githubUrl,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    List<String>? platforms,
+    List<String>? techStack,
+    List<String>? keyFeatures,
+    List<String>? galleryImages,
+    Map<String, String>? results,
+    Map<String, dynamic>? solutionSteps,
+    List<Map<String, dynamic>>? techStackExtended,
+    List<Map<String, dynamic>>? keyFeaturesExtended,
     bool? isPublished,
     bool? isFeatured,
     int? viewCount,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return Project(
       id: id ?? this.id,
@@ -111,8 +118,6 @@ class Project extends Equatable {
       tagline: tagline ?? this.tagline,
       platforms: platforms ?? this.platforms,
       techStack: techStack ?? this.techStack,
-      projectUrl: projectUrl ?? this.projectUrl,
-      caseStudyUrl: caseStudyUrl ?? this.caseStudyUrl,
       clientName: clientName ?? this.clientName,
       launchDate: launchDate ?? this.launchDate,
       challenge: challenge ?? this.challenge,
@@ -133,6 +138,9 @@ class Project extends Equatable {
       isPublished: isPublished ?? this.isPublished,
       isFeatured: isFeatured ?? this.isFeatured,
       viewCount: viewCount ?? this.viewCount,
+      solutionSteps: solutionSteps ?? this.solutionSteps,
+      techStackExtended: techStackExtended ?? this.techStackExtended,
+      keyFeaturesExtended: keyFeaturesExtended ?? this.keyFeaturesExtended,
     );
   }
 
@@ -149,5 +157,8 @@ class Project extends Equatable {
     isPublished,
     isFeatured,
     viewCount,
+    solutionSteps,
+    techStackExtended,
+    keyFeaturesExtended,
   ];
 }

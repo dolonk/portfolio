@@ -52,7 +52,7 @@ class SolutionSection extends StatelessWidget {
   }
 
   /// Timeline Steps
-  Widget _buildTimelineSteps(BuildContext context) {
+  /*Widget _buildTimelineSteps(BuildContext context) {
     return Column(
       spacing: context.sizes.spaceBtwItems,
       children: [
@@ -61,8 +61,10 @@ class SolutionSection extends StatelessWidget {
           stepNumber: 1,
           icon: Icons.explore_rounded,
           title: 'Your Approach',
-          description: project.solution,
-          highlights: [
+          description: project.solution.isNotEmpty
+              ? project.solution
+              : 'Clean architecture principles were applied throughout the project.',
+          highlights: const [
             'Clean architecture principles',
             'Modular component design',
             'Test-driven development',
@@ -79,7 +81,7 @@ class SolutionSection extends StatelessWidget {
           title: 'Architecture Decisions',
           description:
               'We implemented a clean MVVM architecture pattern to ensure separation of concerns and maintainability. The codebase is organized into clear layers: presentation, domain, and data. This structure allows for easy testing, scalability, and team collaboration. Each layer has well-defined responsibilities and communicates through abstractions.',
-          highlights: [
+          highlights: const [
             'MVVM pattern for clean separation',
             'Repository pattern for data management',
             'Dependency injection for flexibility',
@@ -96,7 +98,7 @@ class SolutionSection extends StatelessWidget {
           title: 'State Management Choice',
           description:
               'BLoC (Business Logic Component) was chosen for state management due to its predictability and testability. It provides a clear separation between business logic and UI, making the codebase more maintainable. The reactive streams approach ensures efficient state updates and handles complex async operations gracefully.',
-          highlights: [
+          highlights: const [
             'BLoC for predictable state flow',
             'Stream-based reactive updates',
             'Easy testing and debugging',
@@ -113,7 +115,7 @@ class SolutionSection extends StatelessWidget {
           title: 'Why This Tech Stack',
           description:
               'Flutter was selected for cross-platform development efficiency, Firebase for real-time capabilities and scalability, and Stripe for secure payment processing. This tech stack combination provides optimal performance, reduces development time, and ensures a native-like experience on both iOS and Android platforms while maintaining a single codebase.',
-          highlights: [
+          highlights: const [
             'Flutter for cross-platform efficiency',
             'Firebase for real-time sync',
             'Stripe for secure payments',
@@ -122,6 +124,63 @@ class SolutionSection extends StatelessWidget {
           isLast: true,
           stepColor: const Color(0xFFF59E0B),
         ),
+      ],
+    );
+  }*/
+
+  Widget _buildTimelineSteps(BuildContext context) {
+    final steps = project.solutionSteps!;
+
+    return Column(
+      spacing: context.sizes.spaceBtwItems,
+      children: [
+        // Step 1: Your Approach
+        if (steps['step1'] != null)
+          TimelineStep(
+            stepNumber: 1,
+            icon: Icons.explore_rounded,
+            title: 'Your Approach',
+            description: steps['step1']['description'] ?? '',
+            highlights: List<String>.from(steps['step1']['highlights'] ?? []),
+            isLast: false,
+            stepColor: const Color(0xFF8B5CF6),
+          ),
+
+        // Step 2: Architecture Decisions
+        if (steps['step2'] != null)
+          TimelineStep(
+            stepNumber: 2,
+            icon: Icons.psychology_rounded,
+            title: 'Architecture Decisions',
+            description: steps['step2']['description'] ?? '',
+            highlights: List<String>.from(steps['step2']['highlights'] ?? []),
+            isLast: false,
+            stepColor: const Color(0xFF3B82F6),
+          ),
+
+        // Step 3: State Management Choice
+        if (steps['step3'] != null)
+          TimelineStep(
+            stepNumber: 3,
+            icon: Icons.settings_suggest_rounded,
+            title: 'State Management Choice',
+            description: steps['step3']['description'] ?? '',
+            highlights: List<String>.from(steps['step3']['highlights'] ?? []),
+            isLast: false,
+            stepColor: const Color(0xFF10B981),
+          ),
+
+        // Step 4: Why This Tech Stack
+        if (steps['step4'] != null)
+          TimelineStep(
+            stepNumber: 4,
+            icon: Icons.code_rounded,
+            title: 'Why This Tech Stack',
+            description: steps['step4']['description'] ?? '',
+            highlights: List<String>.from(steps['step4']['highlights'] ?? []),
+            isLast: true,
+            stepColor: const Color(0xFFF59E0B),
+          ),
       ],
     );
   }

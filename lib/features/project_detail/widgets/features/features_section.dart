@@ -1,7 +1,8 @@
 import 'widgets/feature_item.dart';
 import 'package:flutter/material.dart';
+import '../../../../utility/helpers/icon_helper.dart';
+import '../../../../utility/helpers/color_helper.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
@@ -54,21 +55,21 @@ class FeaturesSection extends StatelessWidget {
 
   /// Features List
   Widget _buildFeaturesList(BuildContext context) {
-    final features = _getFeaturesData();
+    final features = project.keyFeaturesExtended!;
 
     return Column(
       children: features.map((feature) {
         return FeatureItem(
-          icon: feature['icon'] as IconData,
-          title: feature['title'] as String,
-          description: feature['description'] as String,
-          iconColor: feature['color'] as Color,
+          icon: IconHelper.getFontAwesomeIcon(feature['iconName']),
+          title: feature['title'] ?? '',
+          description: feature['description'] ?? '',
+          iconColor: ColorHelper.fromHex(feature['colorHex']),
         );
       }).toList(),
     );
   }
 
-  /// Get Features Data with FontAwesome Icons
+  /* /// Get Features Data with FontAwesome Icons
   List<Map<String, dynamic>> _getFeaturesData() {
     return [
       {
@@ -120,5 +121,5 @@ class FeaturesSection extends StatelessWidget {
         'color': const Color(0xFF06B6D4), // Cyan
       },
     ];
-  }
+  }*/
 }

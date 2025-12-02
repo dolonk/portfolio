@@ -2,6 +2,7 @@ import 'widgets/filter_chip.dart';
 import 'package:flutter/material.dart';
 import '../../../view_models/project_view_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
+import 'package:portfolio/features/home/widgets/latest_projects/widgets/filter_chip.dart';
 
 class FilterBarSection extends StatelessWidget {
   final String selectedFilter;
@@ -25,11 +26,7 @@ class FilterBarSection extends StatelessWidget {
           runSpacing: s.paddingMd,
           alignment: WrapAlignment.center,
           children: filters.map((filter) {
-            return PortfolioFilterChip(
-              label: filter,
-              isActive: selectedFilter == filter,
-              onTap: () => onFilterChanged(filter),
-            );
+            return DFilterChip(label: filter, isActive: selectedFilter == filter, onTap: () => onFilterChanged(filter));
           }).toList(),
         ),
       ),

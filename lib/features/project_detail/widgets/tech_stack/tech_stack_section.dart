@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
+import '../../../../utility/helpers/icon_helper.dart';
+import '../../../../utility/helpers/color_helper.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
+import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
-import 'package:portfolio/features/project_detail/widgets/tech_stack/widgets/tech_stack.dart';
-
 import '../../../../data_layer/domain/entities/portfolio/project.dart';
+import 'package:portfolio/features/project_detail/widgets/tech_stack/widgets/tech_stack.dart';
 
 class TechStackSection extends StatelessWidget {
   final Project project;
@@ -54,7 +53,7 @@ class TechStackSection extends StatelessWidget {
 
   /// Tech Stack Grid with Wrap Layout
   Widget _buildTechStackGrid(BuildContext context, DSizes s) {
-    final techStackItems = _getTechStackItems();
+    final techStackItems = project.techStackExtended!;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -71,10 +70,10 @@ class TechStackSection extends StatelessWidget {
             return SizedBox(
               width: cardWidth,
               child: TechCard(
-                icon: tech['icon'] as IconData,
-                name: tech['name'] as String,
-                category: tech['category'] as String,
-                iconColor: tech['color'] as Color,
+                icon: IconHelper.getFontAwesomeIcon(tech['iconName']),
+                name: tech['name'] ?? '',
+                category: tech['category'] ?? '',
+                iconColor: ColorHelper.fromHex(tech['colorHex']),
               ),
             );
           }).toList(),
@@ -84,7 +83,7 @@ class TechStackSection extends StatelessWidget {
   }
 
   /// Get Tech Stack Items with FontAwesome Icons and Categories
-  List<Map<String, dynamic>> _getTechStackItems() {
+  /* List<Map<String, dynamic>> _getTechStackItems() {
     return [
       {'icon': FontAwesomeIcons.code, 'name': 'Flutter', 'category': 'Framework', 'color': const Color(0xFF02569B)},
       {'icon': FontAwesomeIcons.code, 'name': 'Dart', 'category': 'Language', 'color': const Color(0xFF0175C2)},
@@ -111,5 +110,5 @@ class TechStackSection extends StatelessWidget {
       {'icon': FontAwesomeIcons.gitAlt, 'name': 'Git', 'category': 'Version Control', 'color': const Color(0xFFF05032)},
       {'icon': FontAwesomeIcons.figma, 'name': 'Figma', 'category': 'Design Tool', 'color': const Color(0xFFF24E1E)},
     ];
-  }
+  }*/
 }

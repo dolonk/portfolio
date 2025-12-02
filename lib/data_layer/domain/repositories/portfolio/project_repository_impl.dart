@@ -9,22 +9,14 @@ import '../../../data_sources/remote/portfolio/project_remote_datasource.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
   final ProjectRemoteDataSource remoteDataSource;
-  final bool useSupabase;
 
-  ProjectRepositoryImpl({required this.remoteDataSource, this.useSupabase = false});
+  ProjectRepositoryImpl({required this.remoteDataSource});
 
   @override
   Future<Either<Failure, List<Project>>> getAllProjects() async {
     try {
-      if (useSupabase) {
-        final projects = await remoteDataSource.getAllProjects();
-        return Right(projects);
-      } else {
-        // Static data
-        final projects = ProjectModel.getAllProjects();
-        await Future.delayed(const Duration(milliseconds: 500));
-        return Right(projects);
-      }
+      final projects = await remoteDataSource.getAllProjects();
+      return Right(projects);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all projects'));
     }
@@ -33,14 +25,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getFeaturedProjects() async {
     try {
-      if (useSupabase) {
-        final projects = await remoteDataSource.getFeaturedProjects();
-        return Right(projects);
-      } else {
-        final projects = ProjectModel.getFeaturedProjects();
-        await Future.delayed(const Duration(milliseconds: 300));
-        return Right(projects);
-      }
+      final projects = await remoteDataSource.getFeaturedProjects();
+      return Right(projects);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching featured projects'));
     }
@@ -49,19 +35,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getRecentProjects({int limit = 3}) async {
     try {
-      if (useSupabase) {
-        final projects = await remoteDataSource.getRecentProjects(limit: limit);
-        return Right(projects);
-      } else {
-        final allProjects = ProjectModel.getAllProjects();
-
-        // Sort by updatedAt descending (most recent first)
-        allProjects.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-
-        final recentProjects = allProjects.take(limit).toList();
-        await Future.delayed(const Duration(milliseconds: 200));
-        return Right(recentProjects);
-      }
+      final projects = await remoteDataSource.getRecentProjects(limit: limit);
+      return Right(projects);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching recent projects'));
     }
@@ -70,18 +45,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, Project>> getProjectById(String id) async {
     try {
-      if (useSupabase) {
-        final project = await remoteDataSource.getProjectById(id);
-        return Right(project);
-      } else {
-        final projects = ProjectModel.getAllProjects();
-        final project = projects.firstWhere(
-          (p) => p.id == id,
-          orElse: () => throw NotFoundException('Project not found'),
-        );
-        await Future.delayed(const Duration(milliseconds: 300));
-        return Right(project);
-      }
+      final project = await remoteDataSource.getProjectById(id);
+      return Right(project);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching project $id'));
     }
@@ -90,14 +55,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getProjectsByCategory(String category) async {
     try {
-      if (useSupabase) {
-        final projects = await remoteDataSource.getProjectsByCategory(category);
-        return Right(projects);
-      } else {
-        final projects = ProjectModel.getProjectsByCategory(category);
-        await Future.delayed(const Duration(milliseconds: 300));
-        return Right(projects);
-      }
+      final projects = await remoteDataSource.getProjectsByCategory(category);
+      return Right(projects);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching projects by category: $category'));
     }
@@ -106,14 +65,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> getProjectsByPlatform(String platform) async {
     try {
-      if (useSupabase) {
-        final projects = await remoteDataSource.getProjectsByPlatform(platform);
-        return Right(projects);
-      } else {
-        final projects = ProjectModel.getProjectsByPlatform(platform);
-        await Future.delayed(const Duration(milliseconds: 300));
-        return Right(projects);
-      }
+      final projects = await remoteDataSource.getProjectsByPlatform(platform);
+      return Right(projects);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching projects by platform: $platform'));
     }
@@ -122,14 +75,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<String>>> getAllCategories() async {
     try {
-      if (useSupabase) {
-        final categories = await remoteDataSource.getAllCategories();
-        return Right(categories);
-      } else {
-        final categories = ProjectModel.getAllCategories();
-        await Future.delayed(const Duration(milliseconds: 200));
-        return Right(categories);
-      }
+      final categories = await remoteDataSource.getAllCategories();
+      return Right(categories);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all categories'));
     }
@@ -138,14 +85,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<String>>> getAllPlatforms() async {
     try {
-      if (useSupabase) {
-        final platforms = await remoteDataSource.getAllPlatforms();
-        return Right(platforms);
-      } else {
-        final platforms = ProjectModel.getAllPlatforms();
-        await Future.delayed(const Duration(milliseconds: 200));
-        return Right(platforms);
-      }
+      final platforms = await remoteDataSource.getAllPlatforms();
+      return Right(platforms);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all platforms'));
     }
@@ -154,14 +95,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<String>>> getAllTechStacks() async {
     try {
-      if (useSupabase) {
-        final techStacks = await remoteDataSource.getAllTechStacks();
-        return Right(techStacks);
-      } else {
-        final techStacks = ProjectModel.getAllTechStacks();
-        await Future.delayed(const Duration(milliseconds: 200));
-        return Right(techStacks);
-      }
+      final techStacks = await remoteDataSource.getAllTechStacks();
+      return Right(techStacks);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Fetching all tech stacks'));
     }
@@ -170,26 +105,8 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, List<Project>>> searchProjects(String query) async {
     try {
-      if (useSupabase) {
-        final projects = await remoteDataSource.searchProjects(query);
-        return Right(projects);
-      } else {
-        // Static data search
-        final allProjects = ProjectModel.getAllProjects();
-        final searchQuery = query.toLowerCase();
-
-        final filteredProjects = allProjects.where((project) {
-          return project.title.toLowerCase().contains(searchQuery) ||
-              project.description.toLowerCase().contains(searchQuery) ||
-              project.tagline.toLowerCase().contains(searchQuery) ||
-              project.category.toLowerCase().contains(searchQuery) ||
-              project.platforms.any((p) => p.toLowerCase().contains(searchQuery)) ||
-              project.techStack.any((t) => t.toLowerCase().contains(searchQuery));
-        }).toList();
-
-        await Future.delayed(const Duration(milliseconds: 300));
-        return Right(filteredProjects);
-      }
+      final projects = await remoteDataSource.searchProjects(query);
+      return Right(projects);
     } catch (e) {
       return Left(ExceptionHandler.parseToFailure(e, context: 'Searching projects: $query'));
     }
@@ -198,9 +115,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<Either<Failure, void>> incrementViewCount(String id) async {
     try {
-      if (useSupabase) {
-        await remoteDataSource.incrementViewCount(id);
-      }
+      await remoteDataSource.incrementViewCount(id);
       return const Right(null);
     } catch (e) {
       debugPrint('Failed to increment view count: $e');

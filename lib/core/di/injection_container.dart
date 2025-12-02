@@ -43,16 +43,18 @@ Future<void> initializeDependencies({bool useSupabase = false}) async {
   );
 
   getIt.registerLazySingleton<CommentRemoteDataSource>(
-    () =>
-        CommentRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
+    () => CommentRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 
   getIt.registerLazySingleton<ProjectRemoteDataSource>(
-    () =>
-        ProjectRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
+    () => ProjectRemoteDataSourceImpl(supabase: SupabaseConfig.isInitialized ? getIt<SupabaseClient>() : null),
   );
 
   /// ==================== REPOSITORIES ====================
+  getIt.registerLazySingleton<ProjectRepository>(
+    () => ProjectRepositoryImpl(remoteDataSource: getIt<ProjectRemoteDataSource>()),
+  );
+
   getIt.registerLazySingleton<BlogRepository>(
     () => BlogRepositoryImpl(remoteDataSource: getIt<BlogRemoteDataSource>(), useSupabase: useSupabase),
   );
@@ -61,16 +63,12 @@ Future<void> initializeDependencies({bool useSupabase = false}) async {
     () => CommentRepositoryImpl(remoteDataSource: getIt<CommentRemoteDataSource>(), useSupabase: useSupabase),
   );
 
-  getIt.registerLazySingleton<ProjectRepository>(
-    () => ProjectRepositoryImpl(remoteDataSource: getIt<ProjectRemoteDataSource>(), useSupabase: useSupabase),
-  );
-
   /// ==================== PROVIDERS ====================
+  getIt.registerFactory<ProjectProvider>(() => ProjectProvider(repository: getIt<ProjectRepository>()));
+
   getIt.registerFactory<BlogProvider>(() => BlogProvider(repository: getIt<BlogRepository>()));
 
   getIt.registerFactory<CommentProvider>(() => CommentProvider(repository: getIt<CommentRepository>()));
-
-  getIt.registerFactory<ProjectProvider>(() => ProjectProvider(repository: getIt<ProjectRepository>()));
 
   /// ====================  Admin Provider ====================
   getIt.registerLazySingleton<AdminAuthProvider>(

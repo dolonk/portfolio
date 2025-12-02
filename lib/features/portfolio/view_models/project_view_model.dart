@@ -96,7 +96,7 @@ class ProjectViewModel {
   Future<void> fetchFeaturedProjects() => _provider.fetchFeaturedProjects();
 
   /// Fetch recent projects
-  Future<void> fetchRecentProjects({int limit = 6}) => _provider.fetchRecentProjects(limit: limit);
+  Future<void> fetchRecentProjects({int limit = 3}) => _provider.fetchRecentProjects(limit: limit);
 
   /// Fetch project by ID
   Future<void> fetchProjectById(String id) => _provider.fetchProjectById(id);

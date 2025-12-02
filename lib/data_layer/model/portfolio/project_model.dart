@@ -5,33 +5,37 @@ class ProjectModel extends Project {
     required super.id,
     required super.title,
     required super.category,
-    required super.imagePath,
     super.description,
+    required super.imagePath,
     super.tagline,
-    super.platforms,
-    super.techStack,
-    super.projectUrl,
-    super.caseStudyUrl,
+
     super.clientName,
     super.launchDate,
     super.challenge,
     super.requirements,
     super.constraints,
     super.solution,
-    super.keyFeatures,
-    super.results,
     super.clientTestimonial,
-    super.galleryImages,
     super.demoVideoUrl,
     super.liveUrl,
     super.appStoreUrl,
     super.playStoreUrl,
     super.githubUrl,
-    required super.createdAt,
-    required super.updatedAt,
+
+    super.platforms,
+    super.techStack,
+    super.keyFeatures,
+    super.results,
+    super.galleryImages,
+    super.solutionSteps,
+    super.techStackExtended,
+    super.keyFeaturesExtended,
+
     super.isPublished,
     super.isFeatured,
     super.viewCount,
+    required super.createdAt,
+    required super.updatedAt,
   });
 
   // ==================== SUPABASE METHODS ====================
@@ -39,47 +43,44 @@ class ProjectModel extends Project {
     return ProjectModel(
       id: json['id'] as String,
       title: json['title'] as String,
-      tagline: json['tagline'] as String? ?? '',
-      imagePath: json['image_path'] as String? ?? '',
-
-      // Parse PostgreSQL arrays
-      platforms: (json['platforms'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
-      techStack: (json['tech_stack'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
       category: json['category'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      imagePath: json['image_path'] as String? ?? '',
+      tagline: json['tagline'] as String? ?? '',
+
       clientName: json['client_name'] as String? ?? '',
       launchDate: json['launch_date'] as String? ?? '',
-      description: json['description'] as String? ?? '',
       challenge: json['challenge'] as String? ?? '',
       requirements: json['requirements'] as String? ?? '',
       constraints: json['constraints'] as String? ?? '',
       solution: json['solution'] as String? ?? '',
-
-      keyFeatures: (json['key_features'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
-      // Parse JSONB results
-      results:
-          (json['results'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value.toString())) ??
-          {},
-
       clientTestimonial: json['client_testimonial'] as String? ?? '',
-
-      galleryImages: (json['gallery_images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-
       demoVideoUrl: json['demo_video_url'] as String? ?? '',
-      appStoreUrl: json['app_store_url'] as String? ?? '',
-      playStoreUrl: json['play_store_url'] as String? ?? '',
+      liveUrl: json['live_url'] as String?,
+      appStoreUrl: json['app_store_url'] as String?,
+      playStoreUrl: json['play_store_url'] as String?,
       githubUrl: json['github_url'] as String? ?? '',
 
-      // Parse timestamps
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : DateTime.now(),
-
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : DateTime.now(),
+      // Parse PostgreSQL arrays
+      platforms: (json['platforms'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      techStack: (json['tech_stack'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      keyFeatures: (json['key_features'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      // Parse JSONB results
+      results: (json['results'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value.toString())) ?? {},
+      galleryImages: (json['gallery_images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      solutionSteps: json['solution_steps'] as Map<String, dynamic>?,
+      techStackExtended: (json['tech_stack_extended'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList(),
+      keyFeaturesExtended: (json['key_features_extended'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList(),
 
       isPublished: json['is_published'] as bool? ?? false,
       isFeatured: json['is_featured'] as bool? ?? false,
       viewCount: json['view_count'] as int? ?? 0,
+      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : DateTime.now(),
+      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at'] as String) : DateTime.now(),
     );
   }
 
@@ -88,31 +89,38 @@ class ProjectModel extends Project {
     return {
       'id': id,
       'title': title,
-      'tagline': tagline,
-      'image_path': imagePath,
-      'platforms': platforms, // PostgreSQL text[] array
-      'tech_stack': techStack, // PostgreSQL text[] array
       'category': category,
+      'description': description,
+      'image_path': imagePath,
+      'tagline': tagline,
+
       'client_name': clientName,
       'launch_date': launchDate,
-      'description': description,
       'challenge': challenge,
       'requirements': requirements,
       'constraints': constraints,
       'solution': solution,
-      'key_features': keyFeatures, // PostgreSQL text[] array
-      'results': results, // PostgreSQL jsonb
       'client_testimonial': clientTestimonial,
-      'gallery_images': galleryImages, // PostgreSQL text[] array
       'demo_video_url': demoVideoUrl,
+      'live_url': liveUrl,
       'app_store_url': appStoreUrl,
       'play_store_url': playStoreUrl,
       'github_url': githubUrl,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
+
+      'platforms': platforms,
+      'tech_stack': techStack,
+      'key_features': keyFeatures,
+      'results': results,
+      'gallery_images': galleryImages,
+      'solution_steps': solutionSteps,
+      'tech_stack_extended': techStackExtended,
+      'key_features_extended': keyFeaturesExtended,
+
       'is_published': isPublished,
       'is_featured': isFeatured,
       'view_count': viewCount,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
     };
   }
 
@@ -122,42 +130,42 @@ class ProjectModel extends Project {
       id: project.id,
       title: project.title,
       category: project.category,
-      imagePath: project.imagePath,
       description: project.description,
+      imagePath: project.imagePath,
       tagline: project.tagline,
-      platforms: project.platforms,
-      techStack: project.techStack,
-      projectUrl: project.projectUrl,
-      caseStudyUrl: project.caseStudyUrl,
+
       clientName: project.clientName,
       launchDate: project.launchDate,
       challenge: project.challenge,
       requirements: project.requirements,
       constraints: project.constraints,
       solution: project.solution,
-      keyFeatures: project.keyFeatures,
-      results: project.results,
       clientTestimonial: project.clientTestimonial,
-      galleryImages: project.galleryImages,
       demoVideoUrl: project.demoVideoUrl,
       liveUrl: project.liveUrl,
       appStoreUrl: project.appStoreUrl,
       playStoreUrl: project.playStoreUrl,
       githubUrl: project.githubUrl,
-      createdAt: project.createdAt,
-      updatedAt: project.updatedAt,
+
+      platforms: project.platforms,
+      techStack: project.techStack,
+      keyFeatures: project.keyFeatures,
+      results: project.results,
+      galleryImages: project.galleryImages,
+      solutionSteps: project.solutionSteps,
+      techStackExtended: project.techStackExtended,
+      keyFeaturesExtended: project.keyFeaturesExtended,
+
       isPublished: project.isPublished,
       isFeatured: project.isFeatured,
       viewCount: project.viewCount,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt,
     );
   }
+}
 
-  // ==================== STATIC DATA (Development) ====================
-  /// Get all sample projects
-  static List<ProjectModel> getAllProjects() {
-    return [
-      // E-Commerce Mobile App
-      ProjectModel(
+/* ProjectModel(
         id: 'ecommerce-app',
         title: 'ShopEase - E-Commerce App',
         tagline: 'Full-featured shopping app with payment integration',
@@ -207,133 +215,113 @@ class ProjectModel extends Project {
         githubUrl: "https://github.com/dolonk/grozziie_desktop",
         createdAt: DateTime(2024, 5, 10),
         updatedAt: DateTime(2024, 7, 15),
-      ),
 
-      // Portfolio Website
-      ProjectModel(
-        id: 'portfolio-web',
-        title: 'Creative Portfolio',
-        tagline: 'Responsive portfolio website with animations',
-        imagePath: 'assets/home/projects/project_2.png',
-        platforms: ['Web'],
-        techStack: ['Flutter Web', 'Firebase', 'Provider'],
-        category: 'Web',
-        description:
-            'A beautiful and responsive portfolio website built with Flutter Web. Features smooth animations, dark mode support, and SEO optimization.',
-        createdAt: DateTime(2024, 5, 10),
-        updatedAt: DateTime(2024, 7, 15),
-        isFeatured: true,
-        viewCount: 189,
-      ),
+        // 🆕 Solution Timeline Steps Data
+        solutionSteps: {
+          'step1': {
+            'description':
+                'Clean architecture principles were applied throughout the project to ensure maintainability and scalability. The codebase follows SOLID principles with clear separation of concerns.',
+            'highlights': [
+              'Clean architecture principles',
+              'Modular component design',
+              'Test-driven development',
+              'Continuous integration pipeline',
+            ],
+          },
+          'step2': {
+            'description':
+                'We implemented a clean MVVM architecture pattern to ensure separation of concerns and maintainability. The codebase is organized into clear layers: presentation, domain, and data.',
+            'highlights': [
+              'MVVM pattern for clean separation',
+              'Repository pattern for data management',
+              'Dependency injection for flexibility',
+              'Clear layer boundaries',
+            ],
+          },
+          'step3': {
+            'description':
+                'BLoC (Business Logic Component) was chosen for state management due to its predictability and testability. It provides clear separation between business logic and UI.',
+            'highlights': [
+              'BLoC for predictable state flow',
+              'Stream-based reactive updates',
+              'Easy testing and debugging',
+              'Separation of concerns',
+            ],
+          },
+          'step4': {
+            'description':
+                'Flutter was selected for cross-platform development efficiency, Firebase for real-time capabilities and scalability, and Stripe for secure payment processing.',
+            'highlights': [
+              'Flutter for cross-platform efficiency',
+              'Firebase for real-time sync',
+              'Stripe for secure payments',
+              'Native performance achieved',
+            ],
+          },
+        },
 
-      // Task Management Desktop
-      ProjectModel(
-        id: 'task-desktop',
-        title: 'TaskMaster Pro',
-        tagline: 'Professional task and project management tool',
-        imagePath: 'assets/home/projects/project_3.png',
-        platforms: ['Windows', 'macOS'],
-        techStack: ['Flutter Desktop', 'Hive', 'Provider'],
-        category: 'Desktop',
-        description:
-            'TaskMaster Pro is a powerful desktop application for managing tasks and projects. Features include real-time collaboration, task dependencies, and Gantt charts.',
-        createdAt: DateTime(2024, 4, 5),
-        updatedAt: DateTime(2024, 6, 10),
-        viewCount: 156,
-      ),
+        // 🆕 Tech Stack Extended Data
+        techStackExtended: [
+          {'iconName': 'flutter', 'name': 'Flutter', 'category': 'Framework', 'colorHex': '#02569B'},
+          {'iconName': 'dart', 'name': 'Dart', 'category': 'Language', 'colorHex': '#0175C2'},
+          {'iconName': 'firebase', 'name': 'Firebase', 'category': 'Backend', 'colorHex': '#FFCA28'},
+          {'iconName': 'bloc', 'name': 'BLoC', 'category': 'State Management', 'colorHex': '#8B5CF6'},
+          {'iconName': 'stripe', 'name': 'Stripe', 'category': 'Payment Gateway', 'colorHex': '#635BFF'},
+          {'iconName': 'rest_api', 'name': 'REST API', 'category': 'Integration', 'colorHex': '#3B82F6'},
+          {'iconName': 'get_it', 'name': 'Get It', 'category': 'Dependency Injection', 'colorHex': '#10B981'},
+          {'iconName': 'git', 'name': 'Git', 'category': 'Version Control', 'colorHex': '#F05032'},
+          {'iconName': 'figma', 'name': 'Figma', 'category': 'Design Tool', 'colorHex': '#F24E1E'},
+        ],
 
-      // Travel Web App
-      ProjectModel(
-        id: 'travel-web',
-        title: 'WanderGuide',
-        tagline: 'Travel planning and booking platform',
-        imagePath: 'assets/home/projects/project_4.png',
-        platforms: ['Web'],
-        techStack: ['Flutter Web', 'REST API', 'BLoC'],
-        category: 'Web',
-        description:
-            'WanderGuide helps travelers plan their perfect vacation with AI-powered recommendations, booking integration, and travel guides.',
-        createdAt: DateTime(2024, 3, 20),
-        updatedAt: DateTime(2024, 5, 25),
-        viewCount: 203,
-      ),
-
-      // Fitness Tracking App
-      ProjectModel(
-        id: 'fitness-app',
-        title: 'FitTrack',
-        tagline: 'Health and fitness tracking with workout plans',
-        imagePath: 'assets/home/projects/project_5.png',
-        platforms: ['iOS', 'Android'],
-        techStack: ['Flutter', 'Firebase', 'Provider'],
-        category: 'Mobile',
-        description:
-            'FitTrack is a comprehensive fitness tracking app with personalized workout plans, nutrition tracking, and progress analytics.',
-        createdAt: DateTime(2024, 2, 14),
-        updatedAt: DateTime(2024, 4, 18),
-        isFeatured: true,
-        viewCount: 312,
-      ),
-
-      // Banking App
-      ProjectModel(
-        id: 'banking-app',
-        title: 'SecureBank Mobile',
-        tagline: 'Secure mobile banking solution',
-        imagePath: 'assets/home/projects/project_6.png',
-        platforms: ['iOS', 'Android'],
-        techStack: ['Flutter', 'Firebase', 'BLoC'],
-        category: 'Mobile',
-        description:
-            'SecureBank Mobile provides a secure and intuitive mobile banking experience with biometric authentication and real-time notifications.',
-        createdAt: DateTime(2024, 1, 8),
-        updatedAt: DateTime(2024, 3, 12),
-        viewCount: 278,
-      ),
-    ];
-  }
-
-  /// Get featured projects
-  static List<ProjectModel> getFeaturedProjects() {
-    return getAllProjects().where((p) => p.isFeatured).toList();
-  }
-
-  /// Get projects by category
-  static List<ProjectModel> getProjectsByCategory(String category) {
-    return getAllProjects().where((p) => p.category == category).toList();
-  }
-
-  /// Get projects by platform
-  static List<ProjectModel> getProjectsByPlatform(String platform) {
-    return getAllProjects().where((p) => p.platforms.contains(platform)).toList();
-  }
-
-  /// Get all unique categories
-  static List<String> getAllCategories() {
-    final categories = getAllProjects().map((p) => p.category).toSet().toList();
-    categories.sort();
-    return categories;
-  }
-
-  /// Get all unique platforms
-  static List<String> getAllPlatforms() {
-    final platforms = <String>{};
-    for (var project in getAllProjects()) {
-      platforms.addAll(project.platforms);
-    }
-    final list = platforms.toList();
-    list.sort();
-    return list;
-  }
-
-  /// Get all unique tech stacks
-  static List<String> getAllTechStacks() {
-    final techStacks = <String>{};
-    for (var project in getAllProjects()) {
-      techStacks.addAll(project.techStack);
-    }
-    final list = techStacks.toList();
-    list.sort();
-    return list;
-  }
-}
+        // 🆕 Key Features Extended Data
+        keyFeaturesExtended: [
+          {
+            'iconName': 'user_check',
+            'title': 'User Authentication',
+            'description': 'Email/social login with secure password management and two-factor authentication',
+            'colorHex': '#8B5CF6',
+          },
+          {
+            'iconName': 'magnifying_glass',
+            'title': 'Product Browsing',
+            'description': 'Advanced filters and search with category navigation and smart recommendations',
+            'colorHex': '#3B82F6',
+          },
+          {
+            'iconName': 'cart_shopping',
+            'title': 'Shopping Cart',
+            'description': 'Real-time cart updates with quantity management and price calculations',
+            'colorHex': '#10B981',
+          },
+          {
+            'iconName': 'credit_card',
+            'title': 'Payment Integration',
+            'description': 'Secure Stripe payments with multiple methods including cards and wallets',
+            'colorHex': '#EF4444',
+          },
+          {
+            'iconName': 'truck_fast',
+            'title': 'Order Tracking',
+            'description': 'Live order status updates and delivery tracking with notifications',
+            'colorHex': '#F59E0B',
+          },
+          {
+            'iconName': 'bell',
+            'title': 'Push Notifications',
+            'description': 'Real-time alerts for offers, order updates, and personalized messages',
+            'colorHex': '#EC4899',
+          },
+          {
+            'iconName': 'heart',
+            'title': 'Wishlist & Favorites',
+            'description': 'Save items for later with quick access and price drop alerts',
+            'colorHex': '#DC2626',
+          },
+          {
+            'iconName': 'language',
+            'title': 'Multi-language Support',
+            'description': 'Support for 5+ languages with RTL layout and automatic detection',
+            'colorHex': '#06B6D4',
+          },
+        ],
+      ),*/

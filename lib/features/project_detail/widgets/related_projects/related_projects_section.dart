@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio/route/route_name.dart';
 import 'package:portfolio/utility/constants/colors.dart';
+import '../../../portfolio/view_models/project_view_model.dart';
 import 'package:portfolio/utility/default_sizes/font_size.dart';
 import '../../../../common_function/widgets/custom_button.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
 import '../../../../data_layer/domain/entities/portfolio/project.dart';
-import 'package:portfolio/data_layer/model/portfolio/project_model.dart';
 
 class RelatedProjectsSection extends StatelessWidget {
   final Project project;
@@ -51,17 +51,14 @@ class RelatedProjectsSection extends StatelessWidget {
       children: [
         Text('Related Projects', style: fonts.displaySmall),
         SizedBox(height: s.paddingSm),
-        Text(
-          'More projects you might be interested in',
-          style: fonts.bodyLarge.rubik(color: DColors.textSecondary),
-        ),
+        Text('More projects you might be interested in', style: fonts.bodyLarge.rubik(color: DColors.textSecondary)),
       ],
     );
   }
 
   /// Related Projects Grid with Wrap Layout
   Widget _buildProjectsGrid(BuildContext context, DSizes s) {
-    final relatedProjects = _getRelatedProjects();
+    final relatedProjects = _getRelatedProjects(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         final cardWidth = context.responsiveValue(
@@ -75,7 +72,7 @@ class RelatedProjectsSection extends StatelessWidget {
           children: relatedProjects.map((relatedProject) {
             return SizedBox(
               width: context.isMobile ? double.infinity : cardWidth,
-              child: RelatedProjectCard(project: relatedProject),
+              child: RelatedProjectCard(project: project),
             );
           }).toList(),
         );
@@ -101,16 +98,15 @@ class RelatedProjectsSection extends StatelessWidget {
   }
 
   /// Get Related Projects (By Category)
-  List<ProjectModel> _getRelatedProjects() {
-    // Get all projects
-    final allProjects = ProjectModel.getAllProjects();
+  List<Project> _getRelatedProjects(BuildContext context) {
+    final vm = ProjectViewModel(context);
+    final allProjects = vm.recentProjects;
 
-    // Filter by same category, exclude current project
     final relatedProjects = allProjects
         .where((p) => p.category == project.category && p.id != project.id)
+        .take(3)
         .toList();
 
-    // Return max 3 projects
-    return relatedProjects.take(3).toList();
+    return relatedProjects;
   }
 }
