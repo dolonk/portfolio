@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         title: 'Portfolio',
         debugShowCheckedModeBanner: false,
         routerConfig: RouteConfig.router,
-        theme: ThemeData(
+        theme: ThemeData(useMaterial3: true,
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: DColors.background,
           scrollbarTheme: ScrollbarThemeData(
@@ -59,8 +59,6 @@ class MyApp extends StatelessWidget {
               return false;
             }),
           ),
-          fontFamily: 'Roboto',
-          useMaterial3: true,
         ),
       ),
     );
