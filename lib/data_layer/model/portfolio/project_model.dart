@@ -66,15 +66,17 @@ class ProjectModel extends Project {
       techStack: (json['tech_stack'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       keyFeatures: (json['key_features'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       // Parse JSONB results
-      results: (json['results'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value.toString())) ?? {},
+      results:
+          (json['results'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value.toString())) ??
+          {},
       galleryImages: (json['gallery_images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-      solutionSteps: json['solution_steps'] as Map<String, dynamic>?,
-      techStackExtended: (json['tech_stack_extended'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
-          .toList(),
-      keyFeaturesExtended: (json['key_features_extended'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
-          .toList(),
+      solutionSteps: json['solution_steps'] as Map<String, dynamic>? ?? {},
+      techStackExtended:
+          (json['tech_stack_extended'] as List<dynamic>?)?.map((e) => e as Map<String, dynamic>).toList() ??
+          [],
+      keyFeaturesExtended:
+          (json['key_features_extended'] as List<dynamic>?)?.map((e) => e as Map<String, dynamic>).toList() ??
+          [],
 
       isPublished: json['is_published'] as bool? ?? false,
       isFeatured: json['is_featured'] as bool? ?? false,

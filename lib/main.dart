@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
         title: 'Portfolio',
         debugShowCheckedModeBanner: false,
         routerConfig: RouteConfig.router,
-        theme: ThemeData(useMaterial3: true,
+        theme: ThemeData(
+          useMaterial3: true,
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: DColors.background,
           scrollbarTheme: ScrollbarThemeData(

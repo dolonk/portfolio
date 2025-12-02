@@ -94,7 +94,7 @@ class _ProjectCardState extends State<ProjectCard> {
 
                 // View Button
                 AnimatedCustomButton(
-                  onPressed: () => context.go(RouteNames.portfolio),
+                  onPressed: () => context.go('${RouteNames.portfolio}/${widget.project.id}'),
                   text: 'View',
                   icon: const Icon(Icons.arrow_forward_rounded, color: DColors.textSecondary, size: 18),
                   width: null,

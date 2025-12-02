@@ -50,54 +50,61 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         onError: (message) =>
             ErrorState(message: message, onRetry: () => vm.fetchProjectById(widget.projectId)),
         onEmpty: () => const DataNotFoundState(),
-        onSuccess: (project) => Column(
-          children: [
-            // Hero Image
-            ProjectHeroSection(project: project),
+        onSuccess: (project) {
+          final relatedProjects = vm.allProjects
+              .where((p) => p.category == project.category && p.id != project.id)
+              .take(3)
+              .toList();
+          return Column(
+            children: [
+              // Hero Image
+              ProjectHeroSection(project: project),
 
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1600),
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    // Project Overview
-                    ProjectOverviewSection(project: project),
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: context.responsiveValue(mobile: double.infinity, tablet: 800, desktop: 1600),
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      // Project Overview
+                      ProjectOverviewSection(project: project),
 
-                    // The Challenge (if available)
-                    if (project.challenge.isNotEmpty) ChallengeSection(project: project),
+                      // The Challenge (if available)
+                      if (project.challenge.isNotEmpty) ChallengeSection(project: project),
 
-                    // The Solution (if available)
-                    if (project.solution.isNotEmpty) SolutionSection(project: project),
+                      // The Solution (if available)
+                      if (project.solutionSteps.isNotEmpty) SolutionSection(project: project),
 
-                    // Tech Stack Used
-                    if (project.techStack.isNotEmpty) TechStackSection(project: project),
+                      // Tech Stack Used
+                      if (project.techStackExtended.isNotEmpty) TechStackSection(project: project),
 
-                    // Key Features (if available)
-                    if (project.keyFeatures.isNotEmpty) FeaturesSection(project: project),
+                      // Key Features (if available)
+                      if (project.techStackExtended.isNotEmpty) FeaturesSection(project: project),
 
-                    // Results & Impact (if available)
-                    if (project.results.isNotEmpty) ResultsSection(project: project),
+                      // Results & Impact (if available)
+                      if (project.results.isNotEmpty) ResultsSection(project: project),
 
-                    // Image Gallery (if available)
-                    if (project.galleryImages.isNotEmpty)
-                      GallerySection(imagesGallery: project.galleryImages),
+                      // Image Gallery (if available)
+                      if (project.galleryImages.isNotEmpty)
+                        GallerySection(imagesGallery: project.galleryImages),
 
-                    // Demo & Links (if any link available)
-                    if (_hasAnyLink(project)) DemoLinksSection(project: project),
+                      // Demo & Links (if any link available)
+                      if (_hasAnyLink(project)) DemoLinksSection(project: project),
 
-                    // Related Projects
-                    RelatedProjectsSection(project: project),
-                  ],
+                      // Related Projects
+                      if (relatedProjects.isNotEmpty)
+                        RelatedProjectsSection(relatedProjects: relatedProjects),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // CTA
-            const CtaSection(),
-          ],
-        ),
+              // CTA
+              const CtaSection(),
+            ],
+          );
+        },
       ),
     );
   }

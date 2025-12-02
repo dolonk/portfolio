@@ -28,9 +28,9 @@ class Project extends Equatable {
   final List<String> keyFeatures;
   final Map<String, String> results;
   final List<String> galleryImages;
-  final Map<String, dynamic>? solutionSteps;
-  final List<Map<String, dynamic>>? techStackExtended;
-  final List<Map<String, dynamic>>? keyFeaturesExtended;
+  final Map<String, dynamic> solutionSteps;
+  final List<Map<String, dynamic>> techStackExtended;
+  final List<Map<String, dynamic>> keyFeaturesExtended;
 
   // Metadata
   final bool isPublished;
@@ -63,9 +63,9 @@ class Project extends Equatable {
     this.techStack = const [],
     this.galleryImages = const [],
     this.keyFeatures = const [],
-    this.solutionSteps,
-    this.techStackExtended,
-    this.keyFeaturesExtended,
+    this.solutionSteps = const {},
+    this.techStackExtended = const [],
+    this.keyFeaturesExtended = const [],
     this.isPublished = true,
     this.isFeatured = false,
     this.viewCount = 0,

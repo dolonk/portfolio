@@ -54,14 +54,19 @@ class _RelatedProjectCardState extends State<RelatedProjectCard> {
               AspectRatio(
                 aspectRatio: 4 / 3,
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
                   child: Image.asset(
                     widget.project.imagePath,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         color: DColors.cardBackground,
-                        child: Center(child: Icon(Icons.image_rounded, size: 64, color: DColors.textSecondary)),
+                        child: Center(
+                          child: Icon(Icons.image_rounded, size: 64, color: DColors.textSecondary),
+                        ),
                       );
                     },
                   ),
@@ -70,7 +75,7 @@ class _RelatedProjectCardState extends State<RelatedProjectCard> {
 
               // Content (Title + Platforms)
               Padding(
-                padding: EdgeInsets.all(s.paddingLg),
+                padding: EdgeInsets.all(s.paddingSm),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -132,7 +137,11 @@ class _PlatformBadge extends StatelessWidget {
           SizedBox(width: s.paddingSm),
           Text(
             platform,
-            style: fonts.labelSmall.rubik(color: platformData['color'], fontWeight: FontWeight.w600, fontSize: 12),
+            style: fonts.labelSmall.rubik(
+              color: platformData['color'],
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
           ),
         ],
       ),
@@ -143,7 +152,7 @@ class _PlatformBadge extends StatelessWidget {
   Map<String, dynamic> _getPlatformData(String platform) {
     switch (platform.toLowerCase()) {
       case 'ios':
-        return {'icon': Icons.apple, 'color': const Color(0xFF000000)};
+        return {'icon': Icons.apple, 'color': const Color(0xFFFFFFFF)};
       case 'android':
         return {'icon': Icons.android_rounded, 'color': const Color(0xFF3DDC84)};
       case 'web':

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio/route/route_name.dart';
+import '../../../portfolio/view_models/project_view_model.dart';
 import '../../../../common_function/widgets/custom_button.dart';
-import '../../../../data_layer/domain/entities/portfolio/project.dart';
-import '../../../../data_layer/model/portfolio/project_model.dart';
 import 'package:portfolio/utility/default_sizes/default_sizes.dart';
 import 'package:portfolio/utility/responsive/responsive_helper.dart';
 import 'package:portfolio/utility/responsive/section_container.dart';
+import '../../../../data_layer/domain/entities/portfolio/project.dart';
 import 'package:portfolio/common_function/widgets/section_header.dart';
 import 'package:portfolio/common_function/widgets/responsive_grid.dart';
 import 'package:portfolio/features/home/widgets/latest_projects/widgets/filter_chip.dart';
 import 'package:portfolio/features/home/widgets/latest_projects/widgets/project_card.dart';
-
-import '../../../blog/view_models/blog_view_model.dart';
-import '../../../portfolio/view_models/project_view_model.dart';
 
 class LatestProjectsSection extends StatefulWidget {
   const LatestProjectsSection({super.key});
@@ -24,8 +21,8 @@ class LatestProjectsSection extends StatefulWidget {
 
 class _LatestProjectsSectionState extends State<LatestProjectsSection> {
   late final ProjectViewModel vm = ProjectViewModel(context);
+
   String _selectedFilter = 'All';
-  //final List<String> _filters = ['All', 'Android App', 'Ios App', 'Web Development', 'Desktop', 'Mac Os'];
   final List<String> _filters = ['All', 'Mobile', 'Web', 'Desktop', 'UI/UX'];
 
   @override
@@ -75,7 +72,7 @@ class _LatestProjectsSectionState extends State<LatestProjectsSection> {
   }
 
   List<Project> _getFilteredProjects() {
-    final allProjects = vm.fe;
+    final allProjects = vm.allProjects.take(6).toList();
     if (_selectedFilter == 'All') return allProjects;
     return allProjects.where((project) => project.category == _selectedFilter).toList();
   }
@@ -100,16 +97,4 @@ class _LatestProjectsSectionState extends State<LatestProjectsSection> {
       }).toList(),
     );
   }
-
-  void _handleFilterChange(ProjectViewModel vm, String filter) {
-    if (filter == 'All') {
-      vm.clearFilters();
-    } else {
-      vm.filterByCategory(filter);
-    }
-  }
-
-  // List<ProjectModel> getAllProjects() {
-  //   return Project.getAllProjects().take(6).toList();
-  // }
 }

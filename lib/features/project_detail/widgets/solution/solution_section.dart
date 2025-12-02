@@ -129,7 +129,7 @@ class SolutionSection extends StatelessWidget {
   }*/
 
   Widget _buildTimelineSteps(BuildContext context) {
-    final steps = project.solutionSteps!;
+    final steps = project.solutionSteps;
 
     return Column(
       spacing: context.sizes.spaceBtwItems,
