@@ -2,9 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter/cupertino.dart';
 import '../config/supabase_config.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../features/blog/providers/blog_provider.dart';
-import '../../features/portfolio/providers/project_provider.dart';
-import '../../features/blog_detail/providers/comment_provider.dart';
 import '../../data_layer/domain/repositories/blog/blog_repository.dart';
 import '../../data_layer/domain/repositories/blog/blog_repository_impl.dart';
 import '../../data_layer/data_sources/remote/blog/blog_remote_datasource.dart';
@@ -14,7 +11,10 @@ import '../../data_layer/domain/repositories/comment/comment_repository.dart';
 import '../../data_layer/domain/repositories/comment/comment_repository_impl.dart';
 import '../../data_layer/domain/repositories/portfolio/project_repository.dart';
 import '../../data_layer/domain/repositories/portfolio/project_repository_impl.dart';
-import '../../features/admin_section/auth/providers/admin_auth_provider.dart';
+import '../../features/admin_panel/auth/providers/admin_auth_provider.dart';
+import '../../features/public_panel/blog/providers/blog_provider.dart';
+import '../../features/public_panel/blog_detail/providers/comment_provider.dart';
+import '../../features/public_panel/portfolio/providers/project_provider.dart';
 
 final getIt = GetIt.instance;
 

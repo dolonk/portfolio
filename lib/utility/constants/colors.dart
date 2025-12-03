@@ -50,6 +50,7 @@ class DColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
+
 }
 
 class DiamondGradiantShape extends StatelessWidget {

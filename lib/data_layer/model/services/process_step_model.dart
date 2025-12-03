@@ -81,4 +81,45 @@ class ProcessStepModel {
       ),
     ];
   }
+
+  // 📊 Process Steps Data
+  static List<ProcessStepModel> getProcessSteps() {
+    return [
+      ProcessStepModel(
+        stepNumber: 1,
+        title: 'Discovery',
+        description:
+            'Understanding your requirements, goals, target audience, and project scope through detailed consultation.',
+        icon: Icons.search_rounded,
+      ),
+      ProcessStepModel(
+        stepNumber: 2,
+        title: 'Design & Planning',
+        description:
+            'Creating wireframes, UI/UX designs, technical architecture, and detailed project roadmap with milestones.',
+        icon: Icons.architecture_rounded,
+      ),
+      ProcessStepModel(
+        stepNumber: 3,
+        title: 'Development',
+        description:
+            'Building robust, scalable applications with clean code, following MVVM architecture and best practices.',
+        icon: Icons.code_rounded,
+      ),
+      ProcessStepModel(
+        stepNumber: 4,
+        title: 'Testing & QA',
+        description:
+            'Comprehensive testing including unit tests, widget tests, integration tests, and manual quality assurance.',
+        icon: Icons.bug_report_rounded,
+      ),
+      ProcessStepModel(
+        stepNumber: 5,
+        title: 'Deployment & Support',
+        description:
+            'Launching your app to production, app stores deployment, and providing post-launch support and maintenance.',
+        icon: Icons.rocket_launch_rounded,
+      ),
+    ];
+  }
 }

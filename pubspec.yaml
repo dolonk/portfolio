@@ -27,7 +27,7 @@ dependencies:
   shimmer_animation: ^2.2.2
 
   # Utility Packages
-  flutter_svg: ^2.2.2
+  flutter_svg: ^2.2.3
   google_fonts: ^6.3.2
   url_launcher: ^6.3.2
   file_picker: ^10.3.3
@@ -64,3 +64,4 @@ flutter:
     - assets/home/hero_section/
     - assets/home/icon/
     - assets/home/projects/
+    - assets/home/icon/tech_icons/

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/di/injection_container.dart';
 import 'package:portfolio/route/route_config.dart';
-import 'features/blog/providers/blog_provider.dart';
 import 'package:portfolio/utility/constants/colors.dart';
-import 'features/portfolio/providers/project_provider.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'features/blog_detail/providers/comment_provider.dart';
-import 'features/admin_section/auth/providers/admin_auth_provider.dart';
+import 'features/admin_panel/auth/providers/admin_auth_provider.dart';
+import 'features/public_panel/blog/providers/blog_provider.dart';
+import 'features/public_panel/blog_detail/providers/comment_provider.dart';
+import 'features/public_panel/portfolio/providers/project_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
