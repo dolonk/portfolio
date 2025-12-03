@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:portfolio/utility/snack_bar_toast/snack_bar.dart';
 import '../../../../../../../utility/constants/colors.dart';
 import '../../../../../../../utility/default_sizes/font_size.dart';
 import '../../../../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../../../../common_function/widgets/custom_text_field.dart';
 import '../../../../../../common_function/widgets/custom_dropdown.dart';
+import '../../../../../../core/config/supabase_config.dart';
+import '../../../../../../utility/helpers/file_picker_helper.dart';
 
 class BasicInfoSection extends StatelessWidget {
   final TextEditingController titleController;
@@ -163,9 +167,31 @@ class BasicInfoSection extends StatelessWidget {
           ),
           child: imagePath.isEmpty
               ? InkWell(
-                  onTap: () {
-                    // TODO: Implement image picker
-                    onImageChanged('assets/portfolio/ecommerce/main.png');
+                  onTap: () async {
+                    final File? imageFile = await FilePickerHelper.pickSingleImage();
+                    if (imageFile == null) return;
+
+                    try {
+                      // TODO: একটি লোডিং ইন্ডিকেটর দেখান
+                      // যেমন: showDialog(context: context, builder: (_) => Center(child: CircularProgressIndicator()));
+
+                      final supabaseUploader = SupabaseConfig();
+                      final String imageUrl = await supabaseUploader.uploadImage(
+                        file: imageFile,
+                        bucketName: SupabaseConfig.projectImagesBucket,
+                        folder: 'project-covers',
+                      );
+
+                      // TODO: লোডিং ইন্ডিকেটর লুকান
+                      // Navigator.of(context).pop();
+
+                      onImageChanged(imageUrl);
+                    } catch (e) {
+                      // TODO: লোডিং ইন্ডিকেটর লুকান (যদি দেখানো হয়)
+                      // Navigator.of(context).pop();
+
+                      DSnackBar.error(title: 'Image upload failed: $e');
+                    }
                   },
                   child: Center(
                     child: Column(

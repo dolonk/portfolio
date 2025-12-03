@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseConfig {
@@ -37,4 +38,42 @@ class SupabaseConfig {
   static const String blogImagesBucket = 'blog-images';
   static const String projectImagesBucket = 'project-images';
   static const String uploadsBucket = 'uploads';
+
+  /// Upload any image to any bucket
+  Future<String> uploadImage({
+    required File file,
+    required String bucketName,
+    required String folder,
+    String? fileName,
+  }) async {
+    try {
+      final String actualName = fileName ?? '${DateTime.now().millisecondsSinceEpoch}.png';
+      final String filePath = '$folder/$actualName';
+
+      // Upload file
+      final uploadRes = await client.storage
+          .from(bucketName)
+          .upload(filePath, file, fileOptions: const FileOptions(upsert: true));
+
+      if (uploadRes.isEmpty) {
+        throw 'Upload failed: Empty response';
+      }
+
+      // Get full public URL
+      final String publicUrl = client.storage.from(bucketName).getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (e) {
+      throw Exception('Supabase Upload Failed: $e');
+    }
+  }
+
+  /// Delete an image from bucket
+  Future<void> deleteImage({required String bucketName, required String filePath}) async {
+    try {
+      await client.storage.from(bucketName).remove([filePath]);
+    } catch (e) {
+      throw Exception('Delete Failed: $e');
+    }
+  }
 }

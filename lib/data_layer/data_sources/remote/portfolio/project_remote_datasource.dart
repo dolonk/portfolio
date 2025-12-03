@@ -273,7 +273,7 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
     }
   }
 
-  // ==================== CREATE PROJECT ====================
+  ///  ==================== Admin section ====================
   @override
   Future<void> createProject(ProjectModel project) async {
     try {
@@ -283,7 +283,6 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
     }
   }
 
-  // ==================== UPDATE PROJECT ====================
   @override
   Future<void> updateProject(ProjectModel project) async {
     try {
@@ -302,7 +301,6 @@ class ProjectRemoteDataSourceImpl implements ProjectRemoteDataSource {
     }
   }
 
-  // ==================== DELETE PROJECT ====================
   @override
   Future<void> deleteProject(String id) async {
     try {
