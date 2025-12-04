@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/utility/snack_bar_toast/snack_bar.dart';
 import '../../../../../../../utility/constants/colors.dart';
@@ -7,9 +7,8 @@ import '../../../../../../../utility/default_sizes/default_sizes.dart';
 import '../../../../../../../common_function/widgets/custom_text_field.dart';
 import '../../../../../../common_function/widgets/custom_dropdown.dart';
 import '../../../../../../core/config/supabase_config.dart';
-import '../../../../../../utility/helpers/file_picker_helper.dart';
 
-class BasicInfoSection extends StatelessWidget {
+class BasicInfoSection extends StatefulWidget {
   final TextEditingController titleController;
   final TextEditingController taglineController;
   final TextEditingController descriptionController;
@@ -28,6 +27,73 @@ class BasicInfoSection extends StatelessWidget {
     required this.onCategoryChanged,
     required this.onImageChanged,
   });
+
+  @override
+  State<BasicInfoSection> createState() => _BasicInfoSectionState();
+}
+
+class _BasicInfoSectionState extends State<BasicInfoSection> {
+  final supabaseUploader = SupabaseConfig();
+  bool _isUploading = false;
+  bool _isDeleting = false;
+
+  /// Handles picking and uploading an image to Supabase.
+  Future<void> _pickAndUploadImage() async {
+    if (_isUploading) return;
+    setState(() => _isUploading = true);
+
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, allowMultiple: false);
+
+      // If user cancels the picker, stop the loading indicator.
+      if (result == null) {
+        if (mounted) setState(() => _isUploading = false);
+        return;
+      }
+
+      final fileBytes = result.files.first.bytes;
+      final fileName = result.files.first.name;
+      if (fileBytes == null) throw Exception('Failed to read file bytes');
+
+      final String imageUrl = await supabaseUploader.uploadImage(
+        fileBytes: fileBytes,
+        bucketName: SupabaseConfig.projectImagesBucket,
+        folder: 'project-covers',
+        fileName: fileName,
+      );
+
+      // Update parent widget with the new image URL
+      widget.onImageChanged(imageUrl);
+    } catch (e) {
+      DSnackBar.error(title: 'Image upload failed: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isUploading = false);
+      }
+    }
+  }
+
+  /// Handles deleting an image from Supabase and updating the UI.
+  Future<void> _deleteImage() async {
+    if (_isDeleting) return;
+    setState(() => _isDeleting = true);
+
+    try {
+      await supabaseUploader.deleteImage(
+        bucketName: SupabaseConfig.projectImagesBucket,
+        imageUrlOrPath: widget.imagePath,
+      );
+      // Notify state
+      widget.onImageChanged('');
+      DSnackBar.success(title: 'Image successfully deleted.');
+    } catch (e) {
+      DSnackBar.error(title: 'Failed to delete image: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isDeleting = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +115,7 @@ class BasicInfoSection extends StatelessWidget {
 
           // Title Field
           CustomTextField(
-            controller: titleController,
+            controller: widget.titleController,
             label: 'Project Title',
             hint: 'Enter project title',
             isRequired: true,
@@ -67,14 +133,12 @@ class BasicInfoSection extends StatelessWidget {
 
           // Tagline Field
           CustomTextField(
-            controller: taglineController,
+            controller: widget.taglineController,
             label: 'Tagline',
             hint: 'Short catchy tagline',
             isRequired: true,
             validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Tagline is required';
-              }
+              if (value == null || value.trim().isEmpty) return 'Tagline is required';
               return null;
             },
           ),
@@ -84,7 +148,7 @@ class BasicInfoSection extends StatelessWidget {
           CustomDropdown<String>(
             label: 'Category',
             hint: 'Select category',
-            value: category,
+            value: widget.category,
             items: const [
               'Mobile App',
               'Web Application',
@@ -96,7 +160,7 @@ class BasicInfoSection extends StatelessWidget {
             ],
             itemLabel: (cat) => cat,
             onChanged: (value) {
-              if (value != null) onCategoryChanged(value);
+              if (value != null) widget.onCategoryChanged(value);
             },
             isRequired: true,
           ),
@@ -108,7 +172,7 @@ class BasicInfoSection extends StatelessWidget {
 
           // Description Field
           CustomTextField(
-            controller: descriptionController,
+            controller: widget.descriptionController,
             label: 'Description',
             hint: 'Write a detailed description',
             maxLines: 5,
@@ -133,10 +197,7 @@ class BasicInfoSection extends StatelessWidget {
       children: [
         Icon(Icons.info_outline_rounded, color: DColors.primaryButton, size: 24),
         SizedBox(width: 8),
-        Text(
-          'Basic Information',
-          style: context.fonts.titleLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
-        ),
+        Text('Basic Information', style: context.fonts.titleLarge),
       ],
     );
   }
@@ -160,70 +221,66 @@ class BasicInfoSection extends StatelessWidget {
         SizedBox(height: s.paddingSm),
         Container(
           height: 150,
+          width: double.infinity,
           decoration: BoxDecoration(
             color: DColors.background,
             borderRadius: BorderRadius.circular(s.borderRadiusMd),
             border: Border.all(color: DColors.cardBorder, width: 2),
           ),
-          child: imagePath.isEmpty
-              ? InkWell(
-                  onTap: () async {
-                    final File? imageFile = await FilePickerHelper.pickSingleImage();
-                    if (imageFile == null) return;
-
-                    try {
-                      // TODO: একটি লোডিং ইন্ডিকেটর দেখান
-                      // যেমন: showDialog(context: context, builder: (_) => Center(child: CircularProgressIndicator()));
-
-                      final supabaseUploader = SupabaseConfig();
-                      final String imageUrl = await supabaseUploader.uploadImage(
-                        file: imageFile,
-                        bucketName: SupabaseConfig.projectImagesBucket,
-                        folder: 'project-covers',
-                      );
-
-                      // TODO: লোডিং ইন্ডিকেটর লুকান
-                      // Navigator.of(context).pop();
-
-                      onImageChanged(imageUrl);
-                    } catch (e) {
-                      // TODO: লোডিং ইন্ডিকেটর লুকান (যদি দেখানো হয়)
-                      // Navigator.of(context).pop();
-
-                      DSnackBar.error(title: 'Image upload failed: $e');
-                    }
-                  },
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.cloud_upload_rounded, size: 48, color: DColors.textSecondary),
-                        SizedBox(height: s.paddingSm),
-                        Text(
-                          'Click to upload image',
-                          style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
+          child: widget.imagePath.isEmpty
+              ? _isUploading
+                    ? const Center(child: CircularProgressIndicator())
+                    : InkWell(
+                        onTap: _pickAndUploadImage,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.cloud_upload_rounded, size: 48, color: DColors.textSecondary),
+                              SizedBox(height: s.paddingSm),
+                              Text(
+                                'Click to upload image',
+                                style: context.fonts.bodyMedium.rubik(color: DColors.textSecondary),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                )
+                      )
               : Stack(
+                  fit: StackFit.expand,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(s.borderRadiusMd),
-                      child: Image.asset(
-                        imagePath,
-                        width: double.infinity,
-                        height: double.infinity,
+                      borderRadius: BorderRadius.circular(s.borderRadiusMd - 2),
+                      child: Image.network(
+                        widget.imagePath,
                         fit: BoxFit.cover,
+                        // Shows a progress indicator while the image is loading from the network
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Center(child: Icon(Icons.error, color: Colors.red)),
                       ),
                     ),
                     Positioned(
                       top: 8,
                       right: 8,
                       child: IconButton(
-                        onPressed: () => onImageChanged(''),
-                        icon: Icon(Icons.close_rounded, color: Colors.white),
+                        onPressed: _isDeleting ? null : _deleteImage,
+                        icon: _isDeleting
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.0),
+                              )
+                            : const Icon(Icons.close_rounded, color: Colors.white),
                         style: IconButton.styleFrom(backgroundColor: Colors.red.shade400),
                       ),
                     ),

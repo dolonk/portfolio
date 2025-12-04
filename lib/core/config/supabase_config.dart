@@ -1,4 +1,6 @@
-import 'dart:io';
+import 'dart:typed_data';
+import '../error/exceptions.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseConfig {
@@ -41,39 +43,56 @@ class SupabaseConfig {
 
   /// Upload any image to any bucket
   Future<String> uploadImage({
-    required File file,
+    required Uint8List fileBytes,
     required String bucketName,
     required String folder,
     String? fileName,
   }) async {
     try {
-      final String actualName = fileName ?? '${DateTime.now().millisecondsSinceEpoch}.png';
-      final String filePath = '$folder/$actualName';
+      final String filePath = '$folder/$fileName';
+      debugPrint('📤 Uploading to: $bucketName/$filePath');
 
       // Upload file
       final uploadRes = await client.storage
           .from(bucketName)
-          .upload(filePath, file, fileOptions: const FileOptions(upsert: true));
-
-      if (uploadRes.isEmpty) {
-        throw 'Upload failed: Empty response';
-      }
+          .uploadBinary(filePath, fileBytes, fileOptions: const FileOptions(upsert: true, contentType: 'image/png'));
+      debugPrint('✅ Upload response: $uploadRes');
 
       // Get full public URL
       final String publicUrl = client.storage.from(bucketName).getPublicUrl(filePath);
+      debugPrint('✅ Public URL: $publicUrl');
 
       return publicUrl;
     } catch (e) {
-      throw Exception('Supabase Upload Failed: $e');
+      throw ExceptionHandler.parse(e, context: 'Supabase Upload Failed:');
     }
   }
 
   /// Delete an image from bucket
-  Future<void> deleteImage({required String bucketName, required String filePath}) async {
+
+  Future<void> deleteImage({required String bucketName, required String imageUrlOrPath}) async {
     try {
-      await client.storage.from(bucketName).remove([filePath]);
+      // Extract file path from URL if needed
+      String filePath = imageUrlOrPath;
+
+      // Check if it's a full URL
+      if (imageUrlOrPath.contains('storage/v1/object/public/$bucketName/')) {
+        // Extract path after bucket name
+        filePath = imageUrlOrPath.split('storage/v1/object/public/$bucketName/').last;
+      } else if (imageUrlOrPath.contains(bucketName)) {
+        // Handle other URL formats
+        filePath = imageUrlOrPath.split('$bucketName/').last;
+      }
+
+      debugPrint('🗑️ Deleting from bucket: $bucketName');
+      debugPrint('📄 File path: $filePath');
+
+      // Delete from Supabase Storage
+      final response = await client.storage.from(bucketName).remove([filePath]);
+
+      debugPrint('✅ Delete response: $response');
     } catch (e) {
-      throw Exception('Delete Failed: $e');
+      throw ExceptionHandler.parse(e, context: 'Delete image from storage');
     }
   }
 }
