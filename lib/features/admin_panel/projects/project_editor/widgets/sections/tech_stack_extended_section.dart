@@ -8,15 +8,10 @@ class TechStackExtendedSection extends StatefulWidget {
   final List<Map<String, dynamic>> techStackExtended;
   final ValueChanged<List<Map<String, dynamic>>> onChanged;
 
-  const TechStackExtendedSection({
-    super.key,
-    required this.techStackExtended,
-    required this.onChanged,
-  });
+  const TechStackExtendedSection({super.key, required this.techStackExtended, required this.onChanged});
 
   @override
-  State<TechStackExtendedSection> createState() =>
-      _TechStackExtendedSectionState();
+  State<TechStackExtendedSection> createState() => _TechStackExtendedSectionState();
 }
 
 class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
@@ -25,17 +20,9 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
     {'name': 'flutter', 'icon': FontAwesomeIcons.flutter, 'label': 'Flutter'},
     {'name': 'dart', 'icon': FontAwesomeIcons.code, 'label': 'Dart'},
     {'name': 'firebase', 'icon': FontAwesomeIcons.fire, 'label': 'Firebase'},
-    {
-      'name': 'supabase',
-      'icon': FontAwesomeIcons.database,
-      'label': 'Supabase',
-    },
+    {'name': 'supabase', 'icon': FontAwesomeIcons.database, 'label': 'Supabase'},
     {'name': 'bloc', 'icon': FontAwesomeIcons.cubes, 'label': 'BLoC'},
-    {
-      'name': 'provider',
-      'icon': FontAwesomeIcons.layerGroup,
-      'label': 'Provider',
-    },
+    {'name': 'provider', 'icon': FontAwesomeIcons.layerGroup, 'label': 'Provider'},
     {'name': 'rest_api', 'icon': FontAwesomeIcons.plug, 'label': 'REST API'},
     {'name': 'graphql', 'icon': FontAwesomeIcons.gratipay, 'label': 'GraphQL'},
     {'name': 'git', 'icon': FontAwesomeIcons.git, 'label': 'Git'},
@@ -149,10 +136,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
         SizedBox(width: 8),
         Text(
           'Tech Stack Extended',
-          style: context.fonts.titleLarge.rajdhani(
-            fontWeight: FontWeight.bold,
-            color: DColors.textPrimary,
-          ),
+          style: context.fonts.titleLarge.rajdhani(fontWeight: FontWeight.bold, color: DColors.textPrimary),
         ),
         Spacer(),
         Container(
@@ -163,10 +147,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
           ),
           child: Text(
             '${widget.techStackExtended.length} items',
-            style: context.fonts.bodySmall.rubik(
-              color: DColors.primaryButton,
-              fontWeight: FontWeight.w600,
-            ),
+            style: context.fonts.bodySmall.rubik(color: DColors.primaryButton, fontWeight: FontWeight.w600),
           ),
         ),
       ],
@@ -186,10 +167,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
         children: [
           Text(
             'Add New Technology',
-            style: context.fonts.bodyMedium.rubik(
-              fontWeight: FontWeight.w600,
-              color: DColors.textPrimary,
-            ),
+            style: context.fonts.bodyMedium.rubik(fontWeight: FontWeight.w600, color: DColors.textPrimary),
           ),
           SizedBox(height: s.paddingMd),
 
@@ -202,12 +180,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Icon',
-                      style: context.fonts.bodySmall.rubik(
-                        color: DColors.textSecondary,
-                      ),
-                    ),
+                    Text('Icon', style: context.fonts.bodySmall.rubik(color: DColors.textSecondary)),
                     SizedBox(height: 4),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: s.paddingSm),
@@ -226,24 +199,17 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                               value: icon['name'] as String,
                               child: Row(
                                 children: [
-                                  FaIcon(
-                                    icon['icon'] as IconData,
-                                    size: 16,
-                                    color: DColors.textPrimary,
-                                  ),
+                                  FaIcon(icon['icon'] as IconData, size: 16, color: DColors.textPrimary),
                                   SizedBox(width: 8),
                                   Text(
                                     icon['label'] as String,
-                                    style: context.fonts.bodySmall.rubik(
-                                      color: DColors.textPrimary,
-                                    ),
+                                    style: context.fonts.bodySmall.rubik(color: DColors.textPrimary),
                                   ),
                                 ],
                               ),
                             );
                           }).toList(),
-                          onChanged: (value) =>
-                              setState(() => _selectedIcon = value!),
+                          onChanged: (value) => setState(() => _selectedIcon = value!),
                         ),
                       ),
                     ),
@@ -258,26 +224,16 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Name',
-                      style: context.fonts.bodySmall.rubik(
-                        color: DColors.textSecondary,
-                      ),
-                    ),
+                    Text('Name', style: context.fonts.bodySmall.rubik(color: DColors.textSecondary)),
                     SizedBox(height: 4),
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
                         hintText: 'e.g., Flutter',
-                        hintStyle: context.fonts.bodySmall.rubik(
-                          color: DColors.textSecondary,
-                        ),
+                        hintStyle: context.fonts.bodySmall.rubik(color: DColors.textSecondary),
                         filled: true,
                         fillColor: DColors.cardBackground,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: s.paddingMd,
-                          vertical: s.paddingSm,
-                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: s.paddingMd, vertical: s.paddingSm),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(s.borderRadiusSm),
                           borderSide: BorderSide(color: DColors.cardBorder),
@@ -288,10 +244,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(s.borderRadiusSm),
-                          borderSide: BorderSide(
-                            color: DColors.primaryButton,
-                            width: 2,
-                          ),
+                          borderSide: BorderSide(color: DColors.primaryButton, width: 2),
                         ),
                       ),
                     ),
@@ -306,12 +259,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Category',
-                style: context.fonts.bodySmall.rubik(
-                  color: DColors.textSecondary,
-                ),
-              ),
+              Text('Category', style: context.fonts.bodySmall.rubik(color: DColors.textSecondary)),
               SizedBox(height: 4),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: s.paddingSm),
@@ -328,16 +276,10 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                     items: categories.map((cat) {
                       return DropdownMenuItem<String>(
                         value: cat,
-                        child: Text(
-                          cat,
-                          style: context.fonts.bodySmall.rubik(
-                            color: DColors.textPrimary,
-                          ),
-                        ),
+                        child: Text(cat, style: context.fonts.bodySmall.rubik(color: DColors.textPrimary)),
                       );
                     }).toList(),
-                    onChanged: (value) =>
-                        setState(() => _selectedCategory = value!),
+                    onChanged: (value) => setState(() => _selectedCategory = value!),
                   ),
                 ),
               ),
@@ -349,12 +291,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Color',
-                style: context.fonts.bodySmall.rubik(
-                  color: DColors.textSecondary,
-                ),
-              ),
+              Text('Color', style: context.fonts.bodySmall.rubik(color: DColors.textSecondary)),
               SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -362,8 +299,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                 children: colorPalette.map((color) {
                   final isSelected = _selectedColor == color['hex'];
                   return InkWell(
-                    onTap: () =>
-                        setState(() => _selectedColor = color['hex'] as String),
+                    onTap: () => setState(() => _selectedColor = color['hex'] as String),
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
                       width: 32,
@@ -371,24 +307,17 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
                       decoration: BoxDecoration(
                         color: _hexToColor(color['hex'] as String),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: isSelected ? Colors.white : Colors.transparent,
-                          width: 2,
-                        ),
+                        border: Border.all(color: isSelected ? Colors.white : Colors.transparent, width: 2),
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: _hexToColor(
-                                    color['hex'] as String,
-                                  ).withAlpha(150),
+                                  color: _hexToColor(color['hex'] as String).withAlpha(150),
                                   blurRadius: 8,
                                 ),
                               ]
                             : null,
                       ),
-                      child: isSelected
-                          ? Icon(Icons.check, size: 16, color: Colors.white)
-                          : null,
+                      child: isSelected ? Icon(Icons.check, size: 16, color: Colors.white) : null,
                     ),
                   );
                 }).toList(),
@@ -422,10 +351,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
       children: [
         Text(
           'Added Technologies',
-          style: context.fonts.bodyMedium.rubik(
-            fontWeight: FontWeight.w600,
-            color: DColors.textPrimary,
-          ),
+          style: context.fonts.bodyMedium.rubik(fontWeight: FontWeight.w600, color: DColors.textPrimary),
         ),
         SizedBox(height: s.paddingMd),
         Wrap(
@@ -441,12 +367,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
     );
   }
 
-  Widget _buildTechItem(
-    BuildContext context,
-    DSizes s,
-    Map<String, dynamic> item,
-    int index,
-  ) {
+  Widget _buildTechItem(BuildContext context, DSizes s, Map<String, dynamic> item, int index) {
     final color = _hexToColor(item['colorHex'] as String? ?? '#3B82F6');
     final iconData =
         availableIcons.firstWhere(
@@ -468,13 +389,8 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
           Container(
             width: 36,
             height: 36,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: FaIcon(iconData, size: 16, color: Colors.white),
-            ),
+            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(8)),
+            child: Center(child: FaIcon(iconData, size: 16, color: Colors.white)),
           ),
           SizedBox(width: s.paddingSm),
           Column(
@@ -489,9 +405,7 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
               ),
               Text(
                 item['category'] as String? ?? '',
-                style: context.fonts.bodySmall.rubik(
-                  color: DColors.textSecondary,
-                ),
+                style: context.fonts.bodySmall.rubik(color: DColors.textSecondary),
               ),
             ],
           ),
@@ -516,15 +430,13 @@ class _TechStackExtendedSectionState extends State<TechStackExtendedSection> {
       'colorHex': _selectedColor,
     };
 
-    final updated = List<Map<String, dynamic>>.from(widget.techStackExtended)
-      ..add(newItem);
+    final updated = List<Map<String, dynamic>>.from(widget.techStackExtended)..add(newItem);
     widget.onChanged(updated);
     _nameController.clear();
   }
 
   void _removeItem(int index) {
-    final updated = List<Map<String, dynamic>>.from(widget.techStackExtended)
-      ..removeAt(index);
+    final updated = List<Map<String, dynamic>>.from(widget.techStackExtended)..removeAt(index);
     widget.onChanged(updated);
   }
 

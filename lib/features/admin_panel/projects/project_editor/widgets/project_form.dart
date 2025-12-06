@@ -203,20 +203,20 @@ class _ProjectFormState extends State<ProjectForm> {
           ),
           SizedBox(height: s.spaceBtwItems),
 
+          // Section 4.5: Key Features Extended
+          KeyFeaturesExtendedSection(
+            keyFeaturesExtended: _keyFeaturesExtended,
+            onChanged: (value) => setState(() => _keyFeaturesExtended = value),
+          ),
+          SizedBox(height: s.spaceBtwItems),
+
           // Section 4: Features & Results
-          FeaturesResultsSection(
+          ResultsSection(
             keyFeatures: _keyFeatures,
             results: _results,
             testimonialController: _testimonialController,
             onFeaturesChanged: (value) => setState(() => _keyFeatures = value),
             onResultsChanged: (value) => setState(() => _results = value),
-          ),
-          SizedBox(height: s.spaceBtwItems),
-
-          // Section 4.5: Key Features Extended
-          KeyFeaturesExtendedSection(
-            keyFeaturesExtended: _keyFeaturesExtended,
-            onChanged: (value) => setState(() => _keyFeaturesExtended = value),
           ),
           SizedBox(height: s.spaceBtwItems),
 
