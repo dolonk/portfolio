@@ -38,12 +38,18 @@ class _ProjectEditorPageState extends State<ProjectEditorPage> {
 
     return AdminLayout(
       title: isEditMode ? 'Edit Project' : 'Create New Project',
-      child: isEditMode ? _buildEditMode(context, s, projectProvider) : _buildForm(context, s),
+      child: isEditMode
+          ? _buildEditMode(context, s, projectProvider)
+          : _buildForm(context, s),
     );
   }
 
   /// Edit Mode - Uses Provider's detailState
-  Widget _buildEditMode(BuildContext context, DSizes s, ProjectProvider provider) {
+  Widget _buildEditMode(
+    BuildContext context,
+    DSizes s,
+    ProjectProvider provider,
+  ) {
     return DStateBuilder<Project>(
       state: provider.detailState,
       onLoading: () => const Center(
@@ -80,7 +86,11 @@ class _ProjectEditorPageState extends State<ProjectEditorPage> {
   }
 
   /// Common Form Builder
-  Widget _buildForm(BuildContext context, DSizes s, {Project? existingProject}) {
+  Widget _buildForm(
+    BuildContext context,
+    DSizes s, {
+    Project? existingProject,
+  }) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(s.paddingLg),
       child: Center(

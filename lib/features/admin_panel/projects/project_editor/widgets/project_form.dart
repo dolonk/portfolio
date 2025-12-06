@@ -9,13 +9,21 @@ import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/s
 import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/sections/platform_tech_section.dart';
 import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/sections/project_details_section.dart';
 import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/sections/publishing_section.dart';
+import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/sections/solution_steps_section.dart';
+import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/sections/tech_stack_extended_section.dart';
+import 'package:portfolio/features/admin_panel/projects/project_editor/widgets/sections/key_features_extended_section.dart';
 
 class ProjectForm extends StatefulWidget {
   final Project? existingProject;
   final VoidCallback onCancel;
   final Function(Project project, bool publish) onSave;
 
-  const ProjectForm({super.key, this.existingProject, required this.onCancel, required this.onSave});
+  const ProjectForm({
+    super.key,
+    this.existingProject,
+    required this.onCancel,
+    required this.onSave,
+  });
 
   @override
   State<ProjectForm> createState() => _ProjectFormState();
@@ -50,6 +58,9 @@ class _ProjectFormState extends State<ProjectForm> {
   List<String> _keyFeatures = [];
   Map<String, String> _results = {};
   List<String> _galleryImages = [];
+  Map<String, dynamic> _solutionSteps = {};
+  List<Map<String, dynamic>> _techStackExtended = [];
+  List<Map<String, dynamic>> _keyFeaturesExtended = [];
   bool _isPublished = false;
   bool _isFeatured = false;
 
@@ -105,6 +116,13 @@ class _ProjectFormState extends State<ProjectForm> {
       _keyFeatures = List.from(p.keyFeatures);
       _results = Map.from(p.results);
       _galleryImages = List.from(p.galleryImages);
+      _solutionSteps = Map<String, dynamic>.from(p.solutionSteps);
+      _techStackExtended = p.techStackExtended
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
+      _keyFeaturesExtended = p.keyFeaturesExtended
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
       _isPublished = p.isPublished;
       _isFeatured = p.isFeatured;
     }
@@ -160,6 +178,13 @@ class _ProjectFormState extends State<ProjectForm> {
           ),
           SizedBox(height: s.spaceBtwItems),
 
+          // Section 2.5: Tech Stack Extended
+          TechStackExtendedSection(
+            techStackExtended: _techStackExtended,
+            onChanged: (value) => setState(() => _techStackExtended = value),
+          ),
+          SizedBox(height: s.spaceBtwItems),
+
           // Section 3: Project Details
           ProjectDetailsSection(
             clientNameController: _clientNameController,
@@ -171,6 +196,13 @@ class _ProjectFormState extends State<ProjectForm> {
           ),
           SizedBox(height: s.spaceBtwItems),
 
+          // Section 3.5: Solution Steps
+          SolutionStepsSection(
+            solutionSteps: _solutionSteps,
+            onChanged: (value) => setState(() => _solutionSteps = value),
+          ),
+          SizedBox(height: s.spaceBtwItems),
+
           // Section 4: Features & Results
           FeaturesResultsSection(
             keyFeatures: _keyFeatures,
@@ -178,6 +210,13 @@ class _ProjectFormState extends State<ProjectForm> {
             testimonialController: _testimonialController,
             onFeaturesChanged: (value) => setState(() => _keyFeatures = value),
             onResultsChanged: (value) => setState(() => _results = value),
+          ),
+          SizedBox(height: s.spaceBtwItems),
+
+          // Section 4.5: Key Features Extended
+          KeyFeaturesExtendedSection(
+            keyFeaturesExtended: _keyFeaturesExtended,
+            onChanged: (value) => setState(() => _keyFeaturesExtended = value),
           ),
           SizedBox(height: s.spaceBtwItems),
 
@@ -303,7 +342,9 @@ class _ProjectFormState extends State<ProjectForm> {
 
     // Create project entity
     final project = Project(
-      id: widget.existingProject?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id:
+          widget.existingProject?.id ??
+          DateTime.now().millisecondsSinceEpoch.toString(),
       title: _titleController.text.trim(),
       tagline: _taglineController.text.trim(),
       category: _category,
@@ -321,10 +362,19 @@ class _ProjectFormState extends State<ProjectForm> {
       results: _results,
       clientTestimonial: _testimonialController.text.trim(),
       galleryImages: _galleryImages,
+      solutionSteps: _solutionSteps,
+      techStackExtended: _techStackExtended,
+      keyFeaturesExtended: _keyFeaturesExtended,
       demoVideoUrl: _demoVideoUrlController.text.trim(),
-      liveUrl: _liveUrlController.text.trim().isEmpty ? null : _liveUrlController.text.trim(),
-      appStoreUrl: _appStoreUrlController.text.trim().isEmpty ? null : _appStoreUrlController.text.trim(),
-      playStoreUrl: _playStoreUrlController.text.trim().isEmpty ? null : _playStoreUrlController.text.trim(),
+      liveUrl: _liveUrlController.text.trim().isEmpty
+          ? null
+          : _liveUrlController.text.trim(),
+      appStoreUrl: _appStoreUrlController.text.trim().isEmpty
+          ? null
+          : _appStoreUrlController.text.trim(),
+      playStoreUrl: _playStoreUrlController.text.trim().isEmpty
+          ? null
+          : _playStoreUrlController.text.trim(),
       githubUrl: _githubUrlController.text.trim(),
       createdAt: widget.existingProject?.createdAt ?? DateTime.now(),
       updatedAt: DateTime.now(),
